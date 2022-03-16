@@ -19,6 +19,11 @@
     "editor.formatOnSave": true,
     "editor.formatOnType": true,
   },
+  "[css]": {
+    "editor.defaultFormatter": "numso.prettier-standard-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+  },
   "eslint.validate": [
     "javascript",
     "javascriptreact",
