@@ -17,3 +17,11 @@ h1 {
 h2 {
   @apply prose prose-lg;
 }
+
+.menu-li{
+  @apply px-1 rounded-lg hover:bg-gray-100;
+}
+
+.menu-a {
+  @apply prose prose-sm px-1;
+}
