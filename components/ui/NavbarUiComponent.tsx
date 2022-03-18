@@ -4,9 +4,9 @@ import { AiOutlineSearch, AiOutlineShoppingCart } from 'react-icons/ai'
 
 export const NavbarUiComponent: FC = () => {
   return (
-    <nav className='w-full py-3 flex flex-row justify-center items-center'>
+    <nav className='fixed z-50 top-0 bg-white w-full py-3 flex flex-row justify-center items-center'>
       <div className='w-[96%] flex flex-row'>
-        <div className='w-1/2 md:w-[10%]'>
+        <div className='w-1/2 lg:w-[10%]'>
           <Link href='/'>
             <a>
               <span className='prose prose-base font-bold'>Teslo |</span>
@@ -14,7 +14,7 @@ export const NavbarUiComponent: FC = () => {
             </a>
           </Link>
         </div>
-        <div className='hidden md:block w-[80%]'>
+        <div className='hidden lg:block w-[80%]'>
           <ul className='flex flex-row justify-center items-center gap-1'>
             <li className='menu-li'>
               <Link href='/category/woman'>
@@ -34,7 +34,7 @@ export const NavbarUiComponent: FC = () => {
           </ul>
         </div>
 
-        <div className='w-1/2 md:w-[10%] flex flex-row gap-3 justify-end md:justify-center items-center'>
+        <div className='w-1/2 lg:w-[10%] flex flex-row gap-3 justify-end lg:justify-center items-center'>
           <a href=''>
             <AiOutlineSearch className='text-xl' />
           </a>
