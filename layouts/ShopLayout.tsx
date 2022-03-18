@@ -1,5 +1,9 @@
 import { FC } from 'react'
-import { HeaderMetaComponent, NavbarUiComponent } from '../components'
+import {
+  HeaderMetaComponent,
+  NavbarUiComponent,
+  SidebarUiComponent
+} from '../components'
 
 export interface IShopLayoutProps {
   title: string
@@ -21,8 +25,7 @@ export const ShopLayout: FC<IShopLayoutProps> = ({
         imageFullUrl={imageFullUrl}
       />
       <NavbarUiComponent />
-      {/* TODO: Sidebar */}
-
+      <SidebarUiComponent />
       <main>{children}</main>
     </>
   )

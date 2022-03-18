@@ -1,10 +1,14 @@
 import Link from 'next/link'
 import { FC } from 'react'
 import { AiOutlineSearch, AiOutlineShoppingCart } from 'react-icons/ai'
+import { useDispatch } from 'react-redux'
+import { changeMenu } from '../../store/features'
 
 export const NavbarUiComponent: FC = () => {
+  const dispatch = useDispatch()
+
   return (
-    <nav className='fixed z-50 top-0 bg-white w-full py-3 flex flex-row justify-center items-center'>
+    <nav className='fixed z-40 top-0 bg-white w-full py-3 flex flex-row justify-center items-center'>
       <div className='w-[96%] flex flex-row'>
         <div className='w-1/2 lg:w-[10%]'>
           <Link href='/'>
@@ -46,7 +50,12 @@ export const NavbarUiComponent: FC = () => {
               <AiOutlineShoppingCart className='text-xl' />
             </a>
           </div>
-          <button className='menu-a font-medium'>Menú</button>
+          <button
+            onClick={() => dispatch(changeMenu(true))}
+            className='menu-a font-medium'
+          >
+            Menú
+          </button>
         </div>
       </div>
     </nav>
