@@ -10,12 +10,12 @@ const HeaderMetaComponent: FC<IShopLayoutProps> = ({
   return (
     <Head>
       <title> {title} </title>
-      <meta name='' content={pageDescription} />
       <meta name='description' content={pageDescription} />
       <meta property='og:title' content={title} />
       <meta property='og:description' content={pageDescription} />
       {imageFullUrl && <meta property='og:image' content={imageFullUrl} />}
       <meta property='og:type' content='website' />
+      {/* TODO: url de la página */}
       {/* <meta property='og:url' content='https://teslo-shop.vercel.app/' /> */}
       <meta property='og:site_name' content='Teslo-Shop' />
       <meta name='twitter:card' content='summary_large_image' />
@@ -24,6 +24,7 @@ const HeaderMetaComponent: FC<IShopLayoutProps> = ({
       {imageFullUrl && <meta name='twitter:image' content={imageFullUrl} />}
       <meta name='twitter:site' content='@teslo_shop' />
       <meta name='twitter:creator' content='@teslo_shop' />
+      {/* TODO: url de la página */}
       {/* <meta name='twitter:domain' content='https://teslo-shop.vercel.app/' /> */}
       <meta name='twitter:image:alt' content='Teslo-Shop' />
       <meta name='twitter:image:width' content='1200' />
