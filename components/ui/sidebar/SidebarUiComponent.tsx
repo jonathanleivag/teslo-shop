@@ -4,6 +4,8 @@ import { MenuUiComponent } from '../../'
 import { RootState } from '../../../store'
 import { changeMenu } from '../../../store/features'
 
+// TODO: arreglar el pestañeo de cuando se oculta el menu
+
 export const SidebarUiComponent: FC = () => {
   const open = useSelector((state: RootState) => state.menu.open)
   const dispatch = useDispatch()
