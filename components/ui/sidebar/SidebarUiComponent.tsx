@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { MenuUiComponent } from '../../'
 import { RootState } from '../../../store'
 import { changeMenu } from '../../../store/features'
 
@@ -19,7 +20,9 @@ export const SidebarUiComponent: FC = () => {
           className={`menu_content ${
             open ? 'menu_content_is_open' : 'menu_content_is_not_open'
           }`}
-        ></div>
+        >
+          <MenuUiComponent />
+        </div>
       </div>
     </section>
   )

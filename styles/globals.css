@@ -49,7 +49,9 @@ p {
   @apply prose prose-sm px-1;
 }
 
-/* sidebar */
+/* -------------------------------------------------------------------------- */
+/*                                   sidebar                                  */
+/* -------------------------------------------------------------------------- */
 
 .base {
   @apply w-screen h-screen fixed flex flex-row transform duration-75 delay-300;
@@ -81,4 +83,8 @@ p {
 
 .menu_content_is_not_open {
   @apply -right-[1000%] ease-in;
+}
+
+.li_sidebar {
+  @apply w-full flex flex-row justify-start items-center gap-4 my-3;
 }

@@ -1,1 +1,2 @@
-export { SidebarUiComponent } from './SidebarUiComponent'
+export * from './SidebarUiComponent'
+export * from './MenuUiComponent'
