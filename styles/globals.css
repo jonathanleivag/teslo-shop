@@ -93,3 +93,11 @@ p {
 .li_sidebar {
   @apply w-full flex flex-row justify-start items-center gap-4 my-3;
 }
+
+/* -------------------------------------------------------------------------- */
+/*                            Carousel Product Slug                           */
+/* -------------------------------------------------------------------------- */
+
+.buttonCarousel {
+  @apply absolute hidden group-hover:flex z-30 top-[50%];
+}

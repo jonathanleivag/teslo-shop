@@ -1,37 +1,43 @@
 import { NextPage } from 'next'
-import { ShopLayout } from '../../layouts'
+import {
+  ButtonAddProductComponent,
+  CarouselProductSlugComponent,
+  CountUiComponent,
+  SizeSelectorProductSlugComponent
+} from '../../components'
 import { initialData } from '../../database/products'
-import Image from 'next/image'
-import { useBlurDataURL } from '../../hooks'
+import { ShopLayout } from '../../layouts'
 
-const product = initialData.products[0]
+const product = initialData.products[5]
 
 const SlugPage: NextPage = () => {
-  const blurDataUrl = useBlurDataURL(100, 400 * 0.9)
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
-      <div className='w-full min-h-[100vh] flex flex-col md:flex-row'>
-        <div className='w-full md:w-[60%] h-96 md:h-auto relative'>
-          <Image
-            layout='fill'
-            src={`/products/${product.images[0]}`}
-            alt={product.description}
-            className='transform duration-300 ease-in-out object-contain md:object-cover'
-            loading='lazy'
-            placeholder='blur'
-            blurDataURL={blurDataUrl}
-          />
+      <div className='w-full min-h-[100vh] flex flex-col xl:flex-row'>
+        <div className='w-full xl:w-[60%] relative overflow-hidden'>
+          <CarouselProductSlugComponent product={product} />
         </div>
-        <div className='w-full md:w-[40%] flex flex-row justify-center items-center md:items-start'>
+        <div className='w-full xl:w-[40%] flex flex-col lg:flex-row xl:flex-col justify-center items-center lg:items-start xl:justify-start xl:items-center'>
           <div className='w-[90%]'>
             <h1 className='font-semibold text-3xl'>{product.title}</h1>
             <p className='text-xl my-2'>${product.price} </p>
             <h2 className='text-lg my-2'>Cantidad </h2>
-            <button className='p-2 bg-blue-600 w-full text-white rounded-full my-5'>
-              Agregar al carro
-            </button>
+            <CountUiComponent />
+          </div>
+          <div className='w-[90%]'>
+            <h2 className='text-lg my-2'>Talla</h2>
+            <SizeSelectorProductSlugComponent
+              selectedSize={undefined}
+              sizes={product.sizes}
+            />
+            <div className='w-full lg:hidden'>
+              <ButtonAddProductComponent />
+            </div>
             <h2 className='text-lg my-2'>Descripción</h2>
             <p className='text-sm'> {product.description} </p>
+            <div className='w-full hidden lg:block'>
+              <ButtonAddProductComponent />
+            </div>
           </div>
         </div>
       </div>
