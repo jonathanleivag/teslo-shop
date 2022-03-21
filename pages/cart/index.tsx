@@ -14,7 +14,7 @@ const CartPage: NextPage = () => {
     >
       <TitleUiComponent>Carrito</TitleUiComponent>
       <div className='w-full flex flex-col gap-10 sm:flex-row'>
-        <div className='w-full sm:max-h-[calc(100vh-200px)] sm:overflow-y-auto sm:w-[60%] sm:overflow-hidden'>
+        <div className='w-full sm:max-h-[calc(100vh-250px)] sm:overflow-y-auto sm:w-[60%] sm:overflow-hidden'>
           <CardListCartComponent edit />
         </div>
 
