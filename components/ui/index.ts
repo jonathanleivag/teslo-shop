@@ -1,3 +1,5 @@
 export * from './CountUiComponent'
 export * from './NavbarUiComponent'
 export * from './sidebar'
+export * from './TitleUiComponent'
+export * from './ImageUiComponent'

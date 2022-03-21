@@ -1,16 +1,13 @@
 import Image from 'next/image'
 import { FC } from 'react'
-import { useBlurDataURL } from '../../../hooks'
+import { useBlurDataURL } from '../../hooks'
 
-export interface IImageProductSlugProps {
+export interface IImageUiProps {
   image: string
   description: string
 }
 
-export const ImageProductSlugComponent: FC<IImageProductSlugProps> = ({
-  image,
-  description
-}) => {
+export const ImageUiComponent: FC<IImageUiProps> = ({ image, description }) => {
   const blurDataUrl = useBlurDataURL(100, 400 * 0.9)
 
   return (

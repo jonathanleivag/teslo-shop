@@ -12,7 +12,7 @@ import { FC } from 'react'
 import { FaChevronCircleLeft, FaChevronCircleRight } from 'react-icons/fa'
 import { ButtonProductSlugComponent } from '../..'
 import { IProduct } from '../../../interfaces'
-import { ImageProductSlugComponent } from './ImageProductSlugComponent'
+import { ImageUiComponent } from '../../ui'
 
 export interface ICarouselProductSlugProps {
   product: IProduct
@@ -42,10 +42,7 @@ export const CarouselProductSlugComponent: FC<ICarouselProductSlugProps> = ({
       <Slider>
         {product.images.map((image, index) => (
           <Slide key={index} index={index}>
-            <ImageProductSlugComponent
-              image={image}
-              description={product.description}
-            />
+            <ImageUiComponent image={image} description={product.description} />
           </Slide>
         ))}
       </Slider>
@@ -56,10 +53,7 @@ export const CarouselProductSlugComponent: FC<ICarouselProductSlugProps> = ({
             key={index}
             slide={index}
           >
-            <ImageProductSlugComponent
-              image={image}
-              description={product.description}
-            />
+            <ImageUiComponent image={image} description={product.description} />
           </Dot>
         ))}
       </DotGroup>

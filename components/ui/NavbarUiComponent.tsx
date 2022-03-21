@@ -46,9 +46,11 @@ export const NavbarUiComponent: FC = () => {
             <div className='absolute flex flex-row justify-center items-center text-white text-[10px] h-4 w-4 -top-2 -right-2 rounded-full bg-blue-600'>
               2
             </div>
-            <a href=''>
-              <AiOutlineShoppingCart className='text-xl' />
-            </a>
+            <Link href='/cart' passHref>
+              <a>
+                <AiOutlineShoppingCart className='text-xl' />
+              </a>
+            </Link>
           </div>
           <button
             onClick={() => dispatch(changeMenu(true))}
