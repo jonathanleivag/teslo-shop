@@ -1,8 +1,21 @@
 import { FC } from 'react'
+import { SummaryResumePersonalComponent } from '..'
 
-export const OrderSummaryCartComponent: FC = () => {
+export interface IOrderSummaryCartComponentProps {
+  resume: boolean
+}
+
+export const OrderSummaryCartComponent: FC<IOrderSummaryCartComponentProps> = ({
+  resume
+}) => {
   return (
     <div className='w-full py-3'>
+      {resume && <SummaryResumePersonalComponent />}
+      {resume && (
+        <div className='w-full flex flex-row justify-end'>
+          <a className='text-sm text-blue-600'>Editar</a>
+        </div>
+      )}
       <div className='w-full flex flex-row'>
         <div className='w-1/2 flex flex-row justify-start'>Nº de producto:</div>
         <div className='w-1/2 flex flex-row justify-end'>3 items</div>

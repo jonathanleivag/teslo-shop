@@ -1,15 +1,25 @@
 import { FC } from 'react'
 import { OrderSummaryCartComponent } from '..'
 
-export const OrderCartComponent: FC = () => {
+export interface IOrderCartComponentProps {
+  title?: string
+  resume?: boolean
+  buttonText?: string
+}
+
+export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
+  title = 'Orden',
+  resume = false,
+  buttonText = 'Checkout'
+}) => {
   return (
     <div className='w-[90%] min-h-[100px] border rounded-xl shadow-lg px-2'>
-      <div className='border-b px-2'>
-        <h3>Orden</h3>
+      <div className='border-b px-2 py-1'>
+        <h3> {title} </h3>
       </div>
-      <OrderSummaryCartComponent />
-      <button className='w-full my-3 bg-blue-600 text-white rounded-full'>
-        Checkout
+      <OrderSummaryCartComponent resume={resume} />
+      <button className='w-full my-3 py-1 bg-blue-600 text-white rounded-full'>
+        {buttonText}
       </button>
     </div>
   )
