@@ -101,3 +101,11 @@ p {
 .buttonCarousel {
   @apply absolute hidden group-hover:flex z-30 top-[50%];
 }
+
+.css-1s2u09g-control {
+  @apply focus:outline-none border py-0 rounded-full my-2 px-2 !important;
+}
+
+.css-1pahdxg-control {
+  @apply shadow-none border-none !important;
+}
