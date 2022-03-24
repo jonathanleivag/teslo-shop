@@ -1,4 +1,4 @@
-# Teslo Shop
+# Teslo Shop web
 
 <img src="./img.png">
 
