@@ -8,7 +8,7 @@ export interface ILoginLayoutProps {
 export const LoginLayout: FC<ILoginLayoutProps> = ({ title, children }) => {
   return (
     <>
-      <HeaderLoginMetaComponent title={title} />
+      <HeaderLoginMetaComponent title={`${title} Teslo-Shop`} />
       <main> {children} </main>
     </>
   )
