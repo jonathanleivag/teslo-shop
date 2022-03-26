@@ -10,8 +10,8 @@ export interface IProduct {
   title: string
   type: TValidType
   gender: TGender
-  createdAt: Date
-  updatedAt: Date
+  createdAt: string
+  updatedAt: string
 }
 
 export type TValidSize = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL'
