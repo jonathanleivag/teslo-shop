@@ -1,10 +1,4 @@
-import { IProduct } from '../interfaces'
-
-export interface SeedData {
-  products: IProduct[]
-}
-
-export const initialData: SeedData = {
+export const initialData = {
   products: [
     {
       id: '1',

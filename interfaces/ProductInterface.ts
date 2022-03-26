@@ -9,8 +9,11 @@ export interface IProduct {
   tags: string[]
   title: string
   type: TValidType
-  gender: 'men' | 'woman' | 'kid' | 'unisex'
+  gender: TGender
+  createdAt: Date
+  updatedAt: Date
 }
 
 export type TValidSize = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL'
 export type TValidType = 'shirts' | 'pants' | 'hoodies' | 'hats'
+export type TGender = 'men' | 'woman' | 'kid' | 'unisex'
