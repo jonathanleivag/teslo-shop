@@ -15,7 +15,7 @@ export const ProductCardComponet: FC<ProductCardComponentProps> = ({
   const blurDataUrl = useBlurDataURL(100, 400 * 0.9)
 
   return (
-    <Link href='/product/slug' passHref prefetch={false}>
+    <Link href={`/product/${product.slug}`} passHref prefetch={false}>
       <a>
         <div
           className='w-full h-[400px] 2xl:h-[440px] flex flex-col'
