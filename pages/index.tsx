@@ -1,9 +1,15 @@
 import { NextPage } from 'next'
+import {
+  FullScreenLoadingUiComponent,
+  ProductListComponent,
+  TitleUiComponent
+} from '../components'
 import { ShopLayout } from '../layouts'
-import { initialData } from '../database/products'
-import { ProductListComponent, TitleUiComponent } from '../components'
+import { useProducts } from '../hooks/useProducts'
 
 const HomePage: NextPage = () => {
+  const { isLoading, products } = useProducts()
+
   return (
     <ShopLayout
       title={'Teslo-Shop - Home'}
@@ -11,7 +17,8 @@ const HomePage: NextPage = () => {
     >
       <TitleUiComponent>TESLO SHOP</TitleUiComponent>
       <h2 className='mb-5 prose-xl'>Todos los productos</h2>
-      <ProductListComponent products={initialData.products} />
+      {isLoading && <FullScreenLoadingUiComponent />}
+      {!isLoading && <ProductListComponent products={products} />}
     </ShopLayout>
   )
 }
