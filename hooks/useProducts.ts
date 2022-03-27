@@ -23,7 +23,9 @@ const fetcher = (url: string, gender: TUseProducts = null) =>
       }
       `
     }
-  }).then(res => res.data.data.products)
+  })
+    .then(res => res.data.data.products)
+    .catch(error => console.error(error))
 
 export const useProducts = (
   config: SWRConfiguration = {},
@@ -31,7 +33,7 @@ export const useProducts = (
 ) => {
   const { data, error } = useSWR<IProduct[]>(
     NEXT_PUBLIC_URL_API,
-    url => fetcher(url, gender),
+    (url: string) => fetcher(url, gender),
     config
   )
   return {
