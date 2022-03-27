@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { AiOutlineSearch, AiOutlineShoppingCart } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
@@ -6,6 +7,7 @@ import { changeMenu } from '../../store/features'
 
 export const NavbarUiComponent: FC = () => {
   const dispatch = useDispatch()
+  const { asPath } = useRouter()
 
   return (
     <nav className='fixed z-40 top-0 bg-white w-full py-3 flex flex-row justify-center items-center'>
@@ -20,17 +22,26 @@ export const NavbarUiComponent: FC = () => {
         </div>
         <div className='hidden lg:block w-[80%]'>
           <ul className='flex flex-row justify-center items-center gap-1'>
-            <li className='menu-li'>
+            <li
+              className={`menu-li ${asPath === '/category/woman' &&
+                'bg-gray-300'}`}
+            >
               <Link href='/category/woman'>
                 <a className='menu-a'>Mujeres</a>
               </Link>
             </li>
-            <li className='menu-li'>
+            <li
+              className={`menu-li ${asPath === '/category/men' &&
+                'bg-gray-300'}`}
+            >
               <Link href='/category/men'>
                 <a className='menu-a'>Hombres</a>
               </Link>
             </li>
-            <li className='menu-li'>
+            <li
+              className={`menu-li ${asPath === '/category/kid' &&
+                'bg-gray-300'}`}
+            >
               <Link href='/category/kid'>
                 <a className='menu-a'>Niños</a>
               </Link>
