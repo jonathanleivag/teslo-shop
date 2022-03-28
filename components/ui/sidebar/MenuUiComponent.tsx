@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import { FC } from 'react'
 import { AiOutlineMan, AiOutlineWoman } from 'react-icons/ai'
-import { BiSearchAlt2 } from 'react-icons/bi'
 import { BsDoorClosed, BsKey } from 'react-icons/bs'
 import { FaChild } from 'react-icons/fa'
 import { FiUsers } from 'react-icons/fi'
 import { HiOutlineUserCircle } from 'react-icons/hi'
 import { MdOutlineCategory, MdProductionQuantityLimits } from 'react-icons/md'
+import { SearchUiComponent } from '../..'
 
 export const MenuUiComponent: FC = () => {
   return (
@@ -14,14 +14,7 @@ export const MenuUiComponent: FC = () => {
       <ul className='w-[85%] h-full flex flex-col'>
         {/* search */}
         <li>
-          <div className='li_sidebar border-b mb-5'>
-            <input
-              type='text'
-              className='w-full focus:outline-none font-light'
-              placeholder='Buscar...'
-            />
-            <BiSearchAlt2 className='text-2xl pointer-events-none' />
-          </div>
+          <SearchUiComponent />
         </li>
 
         {/* menu profile */}
