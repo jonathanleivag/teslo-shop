@@ -16,8 +16,10 @@ URL_API= url del backend
 Primero, ejecute el servidor de desarrollo:
 
 ```bash
+npm install
 npm run dev
 # or
+yarn
 yarn dev
 ```
 
