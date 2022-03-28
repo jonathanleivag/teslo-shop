@@ -4,6 +4,15 @@
 
 ### Empezando
 
+El archivo .env.example renombrar a .env
+
+```bash
+NEXT_PUBLIC_URL_API= url del backend
+URL_API= url del backend
+```
+
+* Backend: [teslo-shop-api](https://github.com/jonathanleivag/teslo-shop-api)
+
 Primero, ejecute el servidor de desarrollo:
 
 ```bash
