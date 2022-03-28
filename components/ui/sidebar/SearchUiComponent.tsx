@@ -18,6 +18,7 @@ export const SearchUiComponent: FC = () => {
   return (
     <div className='li_sidebar border-b mb-5'>
       <input
+        autoFocus
         value={searchTerm}
         onChange={e => setSearchTerm(e.target.value)}
         type='text'

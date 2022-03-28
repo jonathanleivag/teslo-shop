@@ -50,9 +50,10 @@ export const NavbarUiComponent: FC = () => {
         </div>
 
         <div className='w-1/2 lg:w-[10%] flex flex-row gap-3 justify-end lg:justify-center items-center'>
-          <a href=''>
+          <button onClick={() => dispatch(changeMenu(true))}>
             <AiOutlineSearch className='text-xl' />
-          </a>
+          </button>
+
           <div className='relative'>
             <div className='absolute flex flex-row justify-center items-center text-white text-[10px] h-4 w-4 -top-2 -right-2 rounded-full bg-blue-600'>
               2
