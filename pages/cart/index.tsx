@@ -1,15 +1,22 @@
 import { NextPage } from 'next'
+import { useSelector } from 'react-redux'
 import {
   CardListCartComponent,
   OrderCartComponent,
   TitleUiComponent
 } from '../../components'
 import { ShopLayout } from '../../layouts'
+import { RootState } from '../../store'
 
 const CartPage: NextPage = () => {
+  const productsInCart = useSelector(
+    (state: RootState) => state.cart.ordenSummary.numberOfItem
+  )
   return (
     <ShopLayout
-      title={'Carrito - 3'}
+      title={`Carrito - ${productsInCart} ${
+        productsInCart > 1 ? 'productos' : 'producto'
+      }`}
       pageDescription={'Carrito de compras Toslo Shop'}
     >
       <TitleUiComponent>Carrito</TitleUiComponent>

@@ -1,9 +1,13 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import {
   HeaderMetaComponent,
   NavbarUiComponent,
   SidebarUiComponent
 } from '../components'
+import Cookies from 'js-cookie'
+import { useDispatch, useSelector } from 'react-redux'
+import { addCookies, changeOrdenSummary } from '../store/features'
+import { RootState } from '../store/index'
 
 export interface IShopLayoutProps {
   title: string
@@ -17,6 +21,32 @@ export const ShopLayout: FC<IShopLayoutProps> = ({
   imageFullUrl,
   children
 }) => {
+  const dispatch = useDispatch()
+  const cart = useSelector((state: RootState) => state.cart.cart)
+
+  useEffect(() => {
+    try {
+      const productCookies = Cookies.get('cart')
+        ? JSON.parse(Cookies.get('cart')!)
+        : []
+      dispatch(addCookies(productCookies))
+    } catch (error) {
+      dispatch(addCookies([]))
+    }
+
+    return () => {}
+  }, [dispatch])
+
+  useEffect(() => {
+    Cookies.set('cart', JSON.stringify(cart))
+    return () => {}
+  }, [cart])
+
+  useEffect(() => {
+    dispatch(changeOrdenSummary())
+    return () => {}
+  }, [cart, dispatch])
+
   return (
     <>
       <HeaderMetaComponent

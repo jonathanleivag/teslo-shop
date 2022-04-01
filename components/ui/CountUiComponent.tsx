@@ -1,17 +1,35 @@
-import { FC, useState } from 'react'
+import { Dispatch, FC, SetStateAction, useEffect } from 'react'
+import { ICartData } from '../../store/features'
 
 export type TArithmetic = 'sum' | 'subtract'
 
-export const CountUiComponent: FC = () => {
-  const [count, setCount] = useState<number>(0)
+export type TCountUiComponent = {
+  count: number
+  setCount: (count: number) => void
+  inStock: number
+  setTempCartProduct: Dispatch<SetStateAction<ICartData>>
+}
+
+export const CountUiComponent: FC<TCountUiComponent> = ({
+  count,
+  setCount,
+  setTempCartProduct,
+  inStock
+}) => {
+  useEffect(() => {
+    setTempCartProduct(prevState => ({ ...prevState, quantity: count }))
+    return () => {}
+  }, [count, setTempCartProduct])
 
   const handleCount = (operation: TArithmetic) => {
     switch (operation) {
       case 'sum':
-        setCount(count + 1)
+        if (count < inStock) {
+          setCount(count + 1)
+        }
         break
       case 'subtract':
-        if (count > 0) {
+        if (count > 1) {
           setCount(count - 1)
         }
         break

@@ -2,15 +2,24 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { AiOutlineSearch, AiOutlineShoppingCart } from 'react-icons/ai'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { changeMenu } from '../../store/features'
+import { RootState } from '../../store/index'
 
 export const NavbarUiComponent: FC = () => {
   const dispatch = useDispatch()
   const { asPath } = useRouter()
+  const open = useSelector((state: RootState) => state.menu.open)
+  const totalCart = useSelector(
+    (state: RootState) => state.cart.ordenSummary.numberOfItem
+  )
 
   return (
-    <nav className='fixed z-40 top-0 bg-white w-full py-3 flex flex-row justify-center items-center'>
+    <nav
+      className={`fixed transform ease-in-out duration-1000 ${
+        open ? 'z-40' : 'z-[60]'
+      }  top-0 bg-white w-full py-3 flex flex-row justify-center items-center`}
+    >
       <div className='w-[96%] flex flex-row'>
         <div className='w-1/2 lg:w-[10%]'>
           <Link href='/'>
@@ -55,9 +64,11 @@ export const NavbarUiComponent: FC = () => {
           </button>
 
           <div className='relative'>
-            <div className='absolute flex flex-row justify-center items-center text-white text-[10px] h-4 w-4 -top-2 -right-2 rounded-full bg-blue-600'>
-              2
-            </div>
+            {totalCart > 0 && (
+              <div className='absolute flex flex-row justify-center items-center text-white text-[10px] h-4 w-4 -top-2 -right-2 rounded-full bg-blue-600'>
+                {totalCart > 9 ? '9+' : totalCart}
+              </div>
+            )}
             <Link href='/cart' passHref>
               <a>
                 <AiOutlineShoppingCart className='text-xl' />

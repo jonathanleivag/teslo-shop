@@ -15,7 +15,9 @@ export const SidebarUiComponent: FC = () => {
   }
 
   return (
-    <section className={`base ${open ? 'base_is_open' : 'base_is_not_open'}`}>
+    <section
+      className={`z-[60] base ${open ? 'base_is_open' : 'base_is_not_open'}`}
+    >
       <button className='button_sidebar' onClick={handleClose} />
       <div className='menu_sidebar'>
         <div
