@@ -1,9 +1,9 @@
-import axios from 'axios'
 import { GetServerSideProps, NextPage, GetServerSidePropsResult } from 'next'
 import { ProductListComponent, TitleUiComponent } from '../../components'
 import { AllProductsGql, SearchProductGql } from '../../gql'
 import { IProduct } from '../../interfaces'
 import { ShopLayout } from '../../layouts'
+import { axiosGraphqlUtils } from '../../utils'
 
 export interface ISearchPageProps {
   products: IProduct[]
@@ -50,10 +50,11 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   }
 
   try {
-    const { data } = await axios({
-      url: process.env.URL_API,
-      method: 'POST',
-      data: { query: SearchProductGql(params!.query as string) }
+    const data = await axiosGraphqlUtils({
+      query: SearchProductGql,
+      variables: {
+        search: params!.query as string
+      }
     })
 
     if (params!.query?.length === 0) resp = error
@@ -61,7 +62,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const foundProducts = data.data.searchProduct.length > 0
 
     if (data.errors) {
-      // resp = error
+      resp = error
     } else {
       if (foundProducts) {
         resp = {
@@ -72,11 +73,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
           }
         }
       } else {
-        const { data } = await axios({
-          url: process.env.URL_API,
-          method: 'POST',
-          data: { query: AllProductsGql() }
-        })
+        const data = await axiosGraphqlUtils({ query: AllProductsGql })
         resp = {
           props: {
             products: data.data.products,
@@ -87,7 +84,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       }
     }
   } catch (e) {
-    // resp = error
+    resp = error
   }
 
   return resp

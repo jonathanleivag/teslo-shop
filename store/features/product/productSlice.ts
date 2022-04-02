@@ -1,8 +1,9 @@
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit'
-import axios from 'axios'
-import { ProducByIdGql, ProductsGql, TUseProducts } from '../../../gql'
-import { IProduct } from '../../../interfaces'
-import { NEXT_PUBLIC_URL_API } from '../../../utils'
+import { ProducByIdGql, ProductsGql } from '../../../gql'
+import { IProduct, TGender } from '../../../interfaces'
+import { axiosGraphqlUtils } from '../../../utils'
+
+export type TUseProducts = TGender | null
 
 export interface IInitialState {
   products: IProduct[]
@@ -49,13 +50,12 @@ export const addProduct = (gender: TUseProducts) => async (
 ) => {
   try {
     dispatch(changeLoading(true))
-    const { data } = await axios({
-      url: NEXT_PUBLIC_URL_API,
-      method: 'POST',
-      data: { query: ProductsGql(gender) }
+    const { data } = await axiosGraphqlUtils({
+      query: ProductsGql,
+      variables: { gender }
     })
     dispatch(changeLoading(false))
-    dispatch(addProductAction(data.data.products))
+    dispatch(addProductAction(data.products))
   } catch (error) {
     dispatch(changeLoading(false))
     dispatch(changeError(error))
@@ -65,10 +65,9 @@ export const addProduct = (gender: TUseProducts) => async (
 export const setInStock = (id: string) => async (dispatch: Dispatch) => {
   try {
     dispatch(changeLoading(true))
-    const { data } = await axios({
-      url: NEXT_PUBLIC_URL_API,
-      method: 'POST',
-      data: { query: ProducByIdGql(id) }
+    const data = await axiosGraphqlUtils({
+      query: ProducByIdGql,
+      variables: { producByIdId: id }
     })
     dispatch(changeInStock(data.data.producById.inStock))
     dispatch(changeLoading(false))

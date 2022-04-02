@@ -1,4 +1,3 @@
-import axios from 'axios'
 import {
   GetStaticPaths,
   GetStaticPathsResult,
@@ -22,6 +21,7 @@ import { IProduct, TValidSize } from '../../interfaces'
 import { ShopLayout } from '../../layouts'
 import { RootState } from '../../store'
 import { ICartData } from '../../store/features'
+import { axiosGraphqlUtils } from '../../utils'
 
 export interface ISlugPageProps {
   product: IProduct
@@ -160,11 +160,8 @@ export const getStaticPaths: GetStaticPaths = async ctx => {
     fallback: true
   }
   try {
-    const { data } = await axios({
-      url: process.env.URL_API,
-      method: 'POST',
-      data: { query: SlugProductsGql() }
-    })
+    const data = await axiosGraphqlUtils({ query: SlugProductsGql })
+
     if (data.errors) {
       console.error(data.errors)
     } else {
@@ -194,10 +191,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 
   try {
-    const { data } = await axios({
-      url: process.env.URL_API,
-      method: 'POST',
-      data: { query: ProductBySlugGql(params!.slug as string) }
+    const data = await axiosGraphqlUtils({
+      query: ProductBySlugGql,
+      variables: {
+        slug: params!.slug as string
+      }
     })
 
     if (data.errors) {
