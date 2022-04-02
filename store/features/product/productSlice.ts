@@ -1,6 +1,7 @@
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
-import { IProduct, TGender } from '../../../interfaces'
+import { ProducByIdGql, ProductsGql, TUseProducts } from '../../../gql'
+import { IProduct } from '../../../interfaces'
 import { NEXT_PUBLIC_URL_API } from '../../../utils'
 
 export interface IInitialState {
@@ -16,8 +17,6 @@ const initialState: IInitialState = {
   loading: false,
   inStock: 0
 }
-
-export type TUseProducts = TGender | null
 
 const productSlice = createSlice({
   name: 'product',
@@ -53,20 +52,7 @@ export const addProduct = (gender: TUseProducts) => async (
     const { data } = await axios({
       url: NEXT_PUBLIC_URL_API,
       method: 'POST',
-      data: {
-        query: `
-        query Products {
-          products(gender: ${gender}) {
-            id
-            images
-            inStock
-            price
-            slug
-            title
-          }
-        }
-        `
-      }
+      data: { query: ProductsGql(gender) }
     })
     dispatch(changeLoading(false))
     dispatch(addProductAction(data.data.products))
@@ -82,15 +68,7 @@ export const setInStock = (id: string) => async (dispatch: Dispatch) => {
     const { data } = await axios({
       url: NEXT_PUBLIC_URL_API,
       method: 'POST',
-      data: {
-        query: `
-        query ProducById {
-          producById(id: ${JSON.stringify(id)}) {
-            inStock
-          }
-        }
-        `
-      }
+      data: { query: ProducByIdGql(id) }
     })
     dispatch(changeInStock(data.data.producById.inStock))
     dispatch(changeLoading(false))

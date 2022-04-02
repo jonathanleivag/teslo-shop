@@ -17,6 +17,7 @@ import {
   ShareButtonProduct,
   SizeSelectorProductSlugComponent
 } from '../../components'
+import { ProductBySlugGql, SlugProductsGql } from '../../gql'
 import { IProduct, TValidSize } from '../../interfaces'
 import { ShopLayout } from '../../layouts'
 import { RootState } from '../../store'
@@ -162,15 +163,7 @@ export const getStaticPaths: GetStaticPaths = async ctx => {
     const { data } = await axios({
       url: process.env.URL_API,
       method: 'POST',
-      data: {
-        query: `
-        query Products {
-          products {
-            slug
-          }
-        }
-        `
-      }
+      data: { query: SlugProductsGql() }
     })
     if (data.errors) {
       console.error(data.errors)
@@ -204,23 +197,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const { data } = await axios({
       url: process.env.URL_API,
       method: 'POST',
-      data: {
-        query: `
-            query ProductBySlug {
-              productBySlug(slug: ${JSON.stringify(params!.slug)}) {
-                id
-                slug
-                gender
-                description
-                images
-                inStock
-                price
-                sizes
-                title
-              }
-            }
-              `
-      }
+      data: { query: ProductBySlugGql(params!.slug as string) }
     })
 
     if (data.errors) {

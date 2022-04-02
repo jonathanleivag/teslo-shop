@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { GetServerSideProps, NextPage, GetServerSidePropsResult } from 'next'
 import { ProductListComponent, TitleUiComponent } from '../../components'
+import { AllProductsGql, SearchProductGql } from '../../gql'
 import { IProduct } from '../../interfaces'
 import { ShopLayout } from '../../layouts'
 
@@ -52,20 +53,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const { data } = await axios({
       url: process.env.URL_API,
       method: 'POST',
-      data: {
-        query: `
-        query SearchProduct {
-          searchProduct(search: ${JSON.stringify(params!.query)}) {
-            id
-            images
-            inStock
-            price
-            slug
-            title
-          }
-        }
-              `
-      }
+      data: { query: SearchProductGql(params!.query as string) }
     })
 
     if (params!.query?.length === 0) resp = error
@@ -87,20 +75,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
         const { data } = await axios({
           url: process.env.URL_API,
           method: 'POST',
-          data: {
-            query: `
-            query Products {
-              products {
-                id
-                images
-                inStock
-                price
-                slug
-                title
-              }
-            }
-                  `
-          }
+          data: { query: AllProductsGql() }
         })
         resp = {
           props: {
