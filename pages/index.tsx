@@ -5,10 +5,11 @@ import {
   TitleUiComponent
 } from '../components'
 import { ShopLayout } from '../layouts'
-import { useProducts } from '../hooks/useProducts'
+import { useSelector } from 'react-redux'
+import { RootState } from '../store/index'
 
 const HomePage: NextPage = () => {
-  const { isLoading, products } = useProducts()
+  const { products, loading } = useSelector((state: RootState) => state.product)
 
   return (
     <ShopLayout
@@ -17,8 +18,8 @@ const HomePage: NextPage = () => {
     >
       <TitleUiComponent>TESLO SHOP</TitleUiComponent>
       <h2 className='mb-5 prose-xl'>Todos los productos</h2>
-      {isLoading && <FullScreenLoadingUiComponent />}
-      {!isLoading && <ProductListComponent products={products} />}
+      {loading && <FullScreenLoadingUiComponent />}
+      {!loading && <ProductListComponent products={products} />}
     </ShopLayout>
   )
 }

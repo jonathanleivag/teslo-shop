@@ -1,9 +1,9 @@
 import { FC, useState, useEffect } from 'react'
 import { CountUiComponent } from '..'
-import { ICartData, updateQuantity } from '../../store/features'
-import { useDispatch } from 'react-redux'
-import { useProductStock } from '../../hooks'
+import { ICartData, setInStock, updateQuantity } from '../../store/features'
+import { useDispatch, useSelector } from 'react-redux'
 import { FullScreenLoadingUiComponent } from '../ui'
+import { RootState } from '../../store/index'
 
 export interface ICountCartComponent {
   product: ICartData
@@ -24,7 +24,13 @@ export const CountCartComponent: FC<ICountCartComponent> = ({ product }) => {
 
   const [copyTempCartProduct] = useState<ICartData>(tempCartProduct)
   const dispatch = useDispatch()
-  const { inStock, isLoading } = useProductStock({}, tempCartProduct.id)
+  const { inStock, loading } = useSelector((state: RootState) => state.product)
+
+  useEffect(() => {
+    dispatch(setInStock(tempCartProduct.id))
+    return () => {}
+  }, [dispatch, tempCartProduct.id])
+
   useEffect(() => {
     setTempCartProduct(p => ({ ...p, quantity: count }))
     return () => {}
@@ -37,7 +43,7 @@ export const CountCartComponent: FC<ICountCartComponent> = ({ product }) => {
     return () => {}
   }, [copyTempCartProduct.quantity, dispatch, tempCartProduct])
 
-  if (isLoading) <FullScreenLoadingUiComponent />
+  if (loading) <FullScreenLoadingUiComponent />
 
   return (
     <div className='w-full my-2'>

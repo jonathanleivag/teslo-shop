@@ -22,7 +22,7 @@ export const NavbarUiComponent: FC = () => {
     >
       <div className='w-[96%] flex flex-row'>
         <div className='w-1/2 lg:w-[10%]'>
-          <Link href='/'>
+          <Link href='/' replace passHref shallow={false}>
             <a>
               <span className='prose prose-base font-bold'>Teslo |</span>
               <span className='prose prose-sm font-sans'> Shop</span>
@@ -35,7 +35,7 @@ export const NavbarUiComponent: FC = () => {
               className={`menu-li ${asPath === '/category/woman' &&
                 'bg-gray-300'}`}
             >
-              <Link href='/category/woman'>
+              <Link href='/category/woman' passHref replace shallow={false}>
                 <a className='menu-a'>Mujeres</a>
               </Link>
             </li>
@@ -43,7 +43,7 @@ export const NavbarUiComponent: FC = () => {
               className={`menu-li ${asPath === '/category/men' &&
                 'bg-gray-300'}`}
             >
-              <Link href='/category/men'>
+              <Link href='/category/men' passHref replace shallow={false}>
                 <a className='menu-a'>Hombres</a>
               </Link>
             </li>
@@ -51,7 +51,7 @@ export const NavbarUiComponent: FC = () => {
               className={`menu-li ${asPath === '/category/kid' &&
                 'bg-gray-300'}`}
             >
-              <Link href='/category/kid'>
+              <Link href='/category/kid' passHref replace shallow={false}>
                 <a className='menu-a'>Niños</a>
               </Link>
             </li>
@@ -69,7 +69,7 @@ export const NavbarUiComponent: FC = () => {
                 {totalCart > 9 ? '9+' : totalCart}
               </div>
             )}
-            <Link href='/cart' passHref>
+            <Link href='/cart' passHref replace shallow={false}>
               <a>
                 <AiOutlineShoppingCart className='text-xl' />
               </a>
