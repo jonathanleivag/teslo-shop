@@ -1,14 +1,24 @@
 import { NextPage } from 'next'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   FullScreenLoadingUiComponent,
   ProductListComponent,
   TitleUiComponent
 } from '../../components'
-import { useProducts } from '../../hooks'
 import { ShopLayout } from '../../layouts'
+import { RootState } from '../../store'
+import { addProduct } from '../../store/features'
 
 const WomanPage: NextPage = () => {
-  const { isLoading, products } = useProducts({}, 'woman')
+  const { products, loading } = useSelector((state: RootState) => state.product)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(addProduct('woman'))
+    return () => {}
+  }, [dispatch])
 
   return (
     <ShopLayout
@@ -19,8 +29,8 @@ const WomanPage: NextPage = () => {
     >
       <TitleUiComponent>Mujeres</TitleUiComponent>
       <h2 className='mb-5 prose-xl'>Todos los productos para mujeres</h2>
-      {isLoading && <FullScreenLoadingUiComponent />}
-      {!isLoading && <ProductListComponent products={products} />}
+      {loading && <FullScreenLoadingUiComponent />}
+      {!loading && <ProductListComponent products={products} />}
     </ShopLayout>
   )
 }

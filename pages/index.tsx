@@ -5,11 +5,19 @@ import {
   TitleUiComponent
 } from '../components'
 import { ShopLayout } from '../layouts'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../store/index'
+import { useEffect } from 'react'
+import { addProduct } from '../store/features'
 
 const HomePage: NextPage = () => {
   const { products, loading } = useSelector((state: RootState) => state.product)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(addProduct(null))
+    return () => {}
+  }, [dispatch])
 
   return (
     <ShopLayout
