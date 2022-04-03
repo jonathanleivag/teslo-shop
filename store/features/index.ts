@@ -3,4 +3,4 @@ export { default as cartReducer, addToCart, cartSlice, type ICartData, addCookie
 export type { IMenuState } from './menu/menuSlice'
 export type { ICartState } from './cart/cartSlice'
 export { default as productReducer, addProduct, addProductAction, changeError, changeLoading, setInStock, changeInStock, type IInitialState, type TUseProducts } from './product/productSlice'
-export { default as userReducer, type IUserSlice, loginAction, login } from './user/userSlice'
+export { default as userReducer, type IUserSlice, loginAction, login, registerUser } from './user/userSlice'

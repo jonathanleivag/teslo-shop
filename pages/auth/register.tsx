@@ -1,8 +1,38 @@
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { LoginLayout } from '../../layouts'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { registerValidation } from '../../validations'
+import { useDispatch, useSelector } from 'react-redux'
+import { registerUser } from '../../store/features'
+import { RootState } from '../../store'
+
+export type TRegisterInputs = {
+  name: string
+  email: string
+  password: string
+  password0: string
+}
 
 const RegisterPage: NextPage = () => {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors }
+  } = useForm<TRegisterInputs>({
+    mode: 'onChange',
+    resolver: yupResolver(registerValidation)
+  })
+
+  const user = useSelector((state: RootState) => state.user)
+
+  const dispatch = useDispatch()
+
+  const onSubmit = handleSubmit(async (input: TRegisterInputs) => {
+    dispatch(registerUser(input))
+  })
+
   return (
     <LoginLayout title={'Crear cuenta'}>
       <div className='w-screen min-h-[calc(100vh-150px)] flex flex-row justify-center items-center'>
@@ -13,57 +43,96 @@ const RegisterPage: NextPage = () => {
               <span className='prose prose-xl font-sans'> Shop</span>
             </a>
           </Link>
+          {user.error && (
+            <div className='w-full h-6 rounded-full px-3 overflow-hidden bg-red-600'>
+              <p className='text-white'> {user.error} </p>
+            </div>
+          )}
+          {user.isError && (
+            <div className='w-full h-8 py-1 rounded-full px-3 overflow-hidden bg-red-600'>
+              <p className='text-white'> {user.isError} </p>
+            </div>
+          )}
+
+          {user.message && (
+            <div className='w-full h-8 py-1 rounded-full px-3 overflow-hidden bg-green-600'>
+              <p className='text-white'> {user.message} </p>
+            </div>
+          )}
           <div className='w-full mt-3'>
             <h1 className='text-lg'>Crear cuenta</h1>
           </div>
           <div className='w-full'>
-            <form className='w-full mb-5'>
+            <form className='w-full mb-5' onSubmit={onSubmit}>
               <div className='w-full flex flex-col gap-1 mb-2'>
                 <label htmlFor='name'>Nombre</label>
                 <input
                   type='text'
-                  name='name'
                   id='name'
                   placeholder='Jonathan'
                   className='w-full border-2 border-gray-400 rounded-lg py-2 px-4'
+                  {...register('name')}
                 />
-              </div>
-
-              <div className='w-full flex flex-col gap-1 mb-2'>
-                <label htmlFor='lastname'>Apellidos</label>
-                <input
-                  type='text'
-                  name='lastname'
-                  id='lastname'
-                  placeholder='Leiva Gómez'
-                  className='w-full border-2 border-gray-400 rounded-lg py-2 px-4'
-                />
+                {errors.name?.message && (
+                  <div className='w-full h-8  py-1 rounded-full px-3 overflow-hidden bg-red-600'>
+                    <p className='text-white'> {errors.name.message} </p>
+                  </div>
+                )}
               </div>
 
               <div className='w-full flex flex-col gap-1 mb-2'>
                 <label htmlFor='email'>Email</label>
                 <input
                   type='email'
-                  name='email'
                   id='email'
                   placeholder='email@email.cl'
                   className='w-full border-2 border-gray-400 rounded-lg py-2 px-4'
+                  {...register('email')}
                 />
+                {errors.email?.message && (
+                  <div className='w-full h-8  py-1 rounded-full px-3 overflow-hidden bg-red-600'>
+                    <p className='text-white'> {errors.email.message} </p>
+                  </div>
+                )}
               </div>
 
-              <div className='w-full flex flex-col gap-1'>
+              <div className='w-full flex flex-col gap-1 mb-2'>
                 <label htmlFor='password'>Contraseña</label>
                 <input
                   type='password'
-                  name='password'
                   id='password'
                   placeholder='********'
                   className='w-full border-2 border-gray-400 rounded-lg py-2 px-4'
+                  {...register('password')}
                 />
+                {errors.password?.message && (
+                  <div className='w-full h-8  py-1 rounded-full px-3 overflow-hidden bg-red-600'>
+                    <p className='text-white'> {errors.password.message} </p>
+                  </div>
+                )}
+              </div>
+
+              <div className='w-full flex flex-col gap-1'>
+                <label htmlFor='password'>Repita la contraseña</label>
+                <input
+                  type='password'
+                  id='password0'
+                  placeholder='********'
+                  className='w-full border-2 border-gray-400 rounded-lg py-2 px-4'
+                  {...register('password0')}
+                />
+                {errors.password0?.message && (
+                  <div className='w-full h-8  py-1 rounded-full px-3 overflow-hidden bg-red-600'>
+                    <p className='text-white'> {errors.password0.message} </p>
+                  </div>
+                )}
               </div>
 
               <div className='w-full my-5'>
-                <button className='w-full py-2 border border-blue-600 bg-blue-600 text-white rounded-full'>
+                <button
+                  type='submit'
+                  className='w-full py-2 border border-blue-600 bg-blue-600 text-white rounded-full'
+                >
                   Ingresar
                 </button>
               </div>

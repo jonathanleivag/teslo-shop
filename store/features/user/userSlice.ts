@@ -1,6 +1,7 @@
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit'
-import { loginGql } from '../../../gql'
+import { loginGql, registerGql } from '../../../gql'
 import { TLoginInputs } from '../../../pages/auth/login'
+import { TRegisterInputs } from '../../../pages/auth/register'
 import { axiosGraphqlUtils } from '../../../utils'
 
 export interface IUserSlice {
@@ -79,6 +80,30 @@ export const login = (input: TLoginInputs) => async (dispatch: Dispatch) => {
       }, 2000)
     } else {
       dispatch(loginAction(data.data.login))
+      dispatch(changeLoading(false))
+    }
+  } catch (error) {
+    dispatch(changeError(error))
+    dispatch(changeLoading(false))
+  }
+}
+
+export const registerUser = (input: TRegisterInputs) => async (
+  dispatch: Dispatch
+) => {
+  try {
+    const data = await axiosGraphqlUtils({
+      query: registerGql,
+      variables: { input: { ...input, role: 'client' } }
+    })
+    if (data.errors) {
+      dispatch(changeIsError(data.errors[0].message))
+      setTimeout(() => {
+        dispatch(changeIsError(undefined))
+        dispatch(changeLoading(false))
+      }, 2000)
+    } else {
+      dispatch(loginAction(data.data.register))
       dispatch(changeLoading(false))
     }
   } catch (error) {

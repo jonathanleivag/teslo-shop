@@ -10,8 +10,20 @@ export const loginGql = gql`
         name
         email
         role
-        createdAt
-        updatedAt
+      }
+    }
+  }
+`
+export const registerGql = gql`
+  mutation Register($input: UserRegisterInput) {
+    register(input: $input) {
+      message
+      token
+      user {
+        id
+        name
+        email
+        role
       }
     }
   }

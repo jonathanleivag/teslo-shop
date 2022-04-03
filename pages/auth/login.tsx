@@ -21,7 +21,9 @@ const LoginPage: NextPage = () => {
   const dispatch = useDispatch()
   const user = useSelector((state: RootState) => state.user)
 
-  const onSubmit = async (input: TLoginInputs) => dispatch(login(input))
+  const onSubmit = handleSubmit(async (input: TLoginInputs) => {
+    dispatch(login(input))
+  })
 
   return (
     <LoginLayout title={'Ingresar'}>
@@ -53,11 +55,7 @@ const LoginPage: NextPage = () => {
             <h1 className='text-lg'>Iniciar Sesión</h1>
           </div>
           <div className='w-full'>
-            <form
-              className='w-full mb-5'
-              onSubmit={handleSubmit(onSubmit)}
-              noValidate
-            >
+            <form className='w-full mb-5' onSubmit={onSubmit} noValidate>
               <div className='w-full flex flex-col gap-1 mb-2'>
                 <label htmlFor='email'>Email</label>
                 <input
