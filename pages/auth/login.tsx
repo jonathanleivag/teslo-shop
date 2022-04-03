@@ -1,8 +1,28 @@
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { LoginLayout } from '../../layouts'
+import { useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../../store/features'
+import { RootState } from '../../store'
+
+export type TLoginInputs = {
+  email: string
+  password: string
+}
 
 const LoginPage: NextPage = () => {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors }
+  } = useForm<TLoginInputs>({ mode: 'onTouched' })
+
+  const dispatch = useDispatch()
+  const user = useSelector((state: RootState) => state.user)
+
+  const onSubmit = async (input: TLoginInputs) => dispatch(login(input))
+
   return (
     <LoginLayout title={'Ingresar'}>
       <div className='w-screen min-h-[calc(100vh-150px)] flex flex-row justify-center items-center'>
@@ -13,36 +33,77 @@ const LoginPage: NextPage = () => {
               <span className='prose prose-xl font-sans'> Shop</span>
             </a>
           </Link>
+          {user.error && (
+            <div className='w-full h-6 rounded-full px-3 overflow-hidden bg-red-600'>
+              <p className='text-white'> {user.error} </p>
+            </div>
+          )}
+          {user.isError && (
+            <div className='w-full h-8 py-1 rounded-full px-3 overflow-hidden bg-red-600'>
+              <p className='text-white'> {user.isError} </p>
+            </div>
+          )}
+
+          {user.message && (
+            <div className='w-full h-8 py-1 rounded-full px-3 overflow-hidden bg-green-600'>
+              <p className='text-white'> {user.message} </p>
+            </div>
+          )}
           <div className='w-full mt-3'>
             <h1 className='text-lg'>Iniciar Sesión</h1>
           </div>
           <div className='w-full'>
-            <form className='w-full mb-5'>
+            <form
+              className='w-full mb-5'
+              onSubmit={handleSubmit(onSubmit)}
+              noValidate
+            >
               <div className='w-full flex flex-col gap-1 mb-2'>
                 <label htmlFor='email'>Email</label>
                 <input
                   type='email'
-                  name='email'
                   id='email'
                   placeholder='email@email.cl'
                   className='w-full border-2 border-gray-400 rounded-lg py-2 px-4'
+                  {...register('email', {
+                    required: 'El email es obligatorio'
+                  })}
                 />
+                {errors.email?.message && (
+                  <div className='w-full h-8  py-1 rounded-full px-3 overflow-hidden bg-red-600'>
+                    <p className='text-white'> {errors.email.message} </p>
+                  </div>
+                )}
               </div>
 
               <div className='w-full flex flex-col gap-1'>
                 <label htmlFor='password'>Contraseña</label>
                 <input
                   type='password'
-                  name='password'
                   id='password'
                   placeholder='********'
                   className='w-full border-2 border-gray-400 rounded-lg py-2 px-4'
+                  {...register('password', {
+                    required: 'La contraseña es obligatoria'
+                  })}
                 />
+                {errors.password?.message && (
+                  <div className='w-full h-8 py-1 rounded-full px-3 overflow-hidden bg-red-600'>
+                    <p className='text-white'> {errors.password.message} </p>
+                  </div>
+                )}
               </div>
 
               <div className='w-full my-5'>
-                <button className='w-full py-2 border border-blue-600 bg-blue-600 text-white rounded-full'>
-                  Ingresar
+                <button
+                  disabled={user.loading}
+                  className={`w-full py-2 border border-blue-600 ${
+                    user.loading
+                      ? 'bg-transparent text-blue-600'
+                      : 'bg-blue-600 text-white'
+                  }   rounded-full`}
+                >
+                  {user.loading ? 'Cargando...' : 'Ingresar'}
                 </button>
               </div>
             </form>
