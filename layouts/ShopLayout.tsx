@@ -6,7 +6,7 @@ import {
 } from '../components'
 import Cookies from 'js-cookie'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCookies, changeOrdenSummary } from '../store/features'
+import { addCookies, changeOrdenSummary, loginAction } from '../store/features'
 import { RootState } from '../store/index'
 
 export interface IShopLayoutProps {
@@ -46,6 +46,15 @@ export const ShopLayout: FC<IShopLayoutProps> = ({
     dispatch(changeOrdenSummary())
     return () => {}
   }, [cart, dispatch])
+
+  useEffect(() => {
+    const tokenCookies = Cookies.get('token') ? Cookies.get('token') : ''
+    const userCookies = Cookies.get('user')
+      ? JSON.parse(Cookies.get('user')!)
+      : {}
+    dispatch(loginAction({ token: tokenCookies, user: userCookies }))
+    return () => {}
+  }, [dispatch])
 
   return (
     <>

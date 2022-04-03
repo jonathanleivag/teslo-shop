@@ -1,4 +1,5 @@
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit'
+import Cookies from 'js-cookie'
 import { loginGql, registerGql } from '../../../gql'
 import { TLoginInputs } from '../../../pages/auth/login'
 import { TRegisterInputs } from '../../../pages/auth/register'
@@ -80,6 +81,8 @@ export const login = (input: TLoginInputs) => async (dispatch: Dispatch) => {
       }, 2000)
     } else {
       dispatch(loginAction(data.data.login))
+      Cookies.set('token', data.data.login.token!)
+      Cookies.set('user', JSON.stringify(data.data.login.user))
       dispatch(changeLoading(false))
     }
   } catch (error) {
@@ -105,6 +108,8 @@ export const registerUser = (input: TRegisterInputs) => async (
     } else {
       dispatch(loginAction(data.data.register))
       dispatch(changeLoading(false))
+      Cookies.set('token', data.data.register.token!)
+      Cookies.set('user', JSON.stringify(data.data.register.user))
     }
   } catch (error) {
     dispatch(changeError(error))
