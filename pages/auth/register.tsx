@@ -7,6 +7,7 @@ import { registerValidation } from '../../validations'
 import { useDispatch, useSelector } from 'react-redux'
 import { registerUser } from '../../store/features'
 import { RootState } from '../../store'
+import { useRouter } from 'next/router'
 
 export type TRegisterInputs = {
   name: string
@@ -28,6 +29,8 @@ const RegisterPage: NextPage = () => {
   const user = useSelector((state: RootState) => state.user)
 
   const dispatch = useDispatch()
+
+  const router = useRouter()
 
   const onSubmit = handleSubmit(async (input: TRegisterInputs) => {
     dispatch(registerUser(input))
@@ -138,7 +141,11 @@ const RegisterPage: NextPage = () => {
               </div>
             </form>
             <div className='w-full flex flex-row justify-center md:justify-end'>
-              <Link href='/auth/login' passHref>
+              <Link
+                href={`/auth/login?redirect=${(router.query
+                  .redirect as string) || '/'}`}
+                passHref
+              >
                 <a className='text-blue-600 border-b border-transparent hover:border-blue-600'>
                   ¿Ya tienes cuenta?
                 </a>

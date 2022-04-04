@@ -4,8 +4,6 @@ import { MenuUiComponent } from '../../'
 import { RootState } from '../../../store'
 import { changeMenu } from '../../../store/features'
 
-// TODO: arreglar el pestañeo de cuando se oculta el menu
-
 export const SidebarUiComponent: FC = () => {
   const open = useSelector((state: RootState) => state.menu.open)
   const dispatch = useDispatch()
@@ -16,7 +14,7 @@ export const SidebarUiComponent: FC = () => {
 
   return (
     <section
-      className={`z-[60] base ${open ? 'base_is_open' : 'base_is_not_open'}`}
+      className={`z-[1000] base ${open ? 'base_is_open' : 'base_is_not_open'}`}
     >
       <button className='button_sidebar' onClick={handleClose} />
       <div className='menu_sidebar'>

@@ -7,11 +7,25 @@ import {
 } from '../../components'
 import { ShopLayout } from '../../layouts'
 import { RootState } from '../../store'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 const CartPage: NextPage = () => {
   const productsInCart = useSelector(
     (state: RootState) => state.cart.ordenSummary.numberOfItem
   )
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (productsInCart === 0) {
+      router.replace('/cart/empty')
+    }
+    return () => {}
+  }, [productsInCart, router])
+
+  if (productsInCart === 0) return <></>
+
   return (
     <ShopLayout
       title={`Carrito - ${productsInCart} ${

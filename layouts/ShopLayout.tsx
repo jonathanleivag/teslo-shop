@@ -6,7 +6,12 @@ import {
 } from '../components'
 import Cookies from 'js-cookie'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCookies, changeOrdenSummary, loginAction } from '../store/features'
+import {
+  addCookies,
+  addDirection,
+  changeOrdenSummary,
+  loginAction
+} from '../store/features'
 import { RootState } from '../store/index'
 import { axiosGraphqlUtils } from '../utils'
 import { checkTokenGql } from '../gql'
@@ -81,6 +86,11 @@ export const ShopLayout: FC<IShopLayoutProps> = ({
 
     checkToken()
 
+    return () => {}
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(addDirection())
     return () => {}
   }, [dispatch])
 

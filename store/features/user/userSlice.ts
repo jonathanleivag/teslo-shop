@@ -55,6 +55,13 @@ const userSlice = createSlice({
     },
     changeLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload
+    },
+    logoutAction: state => {
+      state.user = undefined
+      state.message = undefined
+      state.token = undefined
+      state.isError = undefined
+      state.error = undefined
     }
   }
 })
@@ -63,7 +70,8 @@ export const {
   loginAction,
   changeIsError,
   changeError,
-  changeLoading
+  changeLoading,
+  logoutAction
 } = userSlice.actions
 
 export const login = (input: TLoginInputs) => async (dispatch: Dispatch) => {

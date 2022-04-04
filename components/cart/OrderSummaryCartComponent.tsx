@@ -32,8 +32,7 @@ export const OrderSummaryCartComponent: FC<IOrderSummaryCartComponentProps> = ({
       <div className='w-full flex flex-row'>
         <div className='w-1/2 flex flex-row justify-start'>Subtotal:</div>
         <div className='w-1/2 flex flex-row justify-end'>
-          {' '}
-          {priceClp(subtotal)}{' '}
+          {priceClp(subtotal)}
         </div>
       </div>
       <div className='w-full flex flex-row'>

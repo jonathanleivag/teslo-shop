@@ -24,7 +24,7 @@ export const ProductCardComponet: FC<ProductCardComponentProps> = ({
         >
           <div className='w-full h-[90%] relative'>
             {product.inStock === 0 && (
-              <div className='absolute z-50 top-5 w-full flex flex-row justify-end pr-5'>
+              <div className='absolute z-[45] top-5 w-full flex flex-row justify-end pr-5'>
                 <div className='py-[2px] px-[4px] bg-black rounded-full'>
                   <p className='text-white p-[2px] text-sm'>
                     No hay disponible

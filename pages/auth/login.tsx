@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../store/features'
 import { RootState } from '../../store'
+import { useRouter } from 'next/router'
 
 export type TLoginInputs = {
   email: string
@@ -19,10 +20,14 @@ const LoginPage: NextPage = () => {
   } = useForm<TLoginInputs>({ mode: 'onTouched' })
 
   const dispatch = useDispatch()
+  const router = useRouter()
+
   const user = useSelector((state: RootState) => state.user)
 
   const onSubmit = handleSubmit(async (input: TLoginInputs) => {
     dispatch(login(input))
+    const redirect = (router.query.redirect as string) || '/'
+    router.replace(redirect)
   })
 
   return (
@@ -106,7 +111,11 @@ const LoginPage: NextPage = () => {
               </div>
             </form>
             <div className='w-full flex flex-row justify-center md:justify-end'>
-              <Link href='/auth/register' passHref>
+              <Link
+                href={`/auth/register?redirect=${(router.query
+                  .redirect as string) || '/'}`}
+                passHref
+              >
                 <a className='text-blue-600 border-b border-transparent hover:border-blue-600'>
                   ¿No tienes cuenta?
                 </a>
