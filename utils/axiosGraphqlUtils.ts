@@ -11,10 +11,16 @@ export const axiosGraphqlUtils = async ({
   query,
   variables
 }: IAxiosGraphqlUtils) => {
-  const { data } = await axios.post(NEXT_PUBLIC_URL_API, {
-    query: print(query),
-    variables
-  })
+  const { data } = await axios.post(
+    NEXT_PUBLIC_URL_API,
+    {
+      query: print(query),
+      variables
+    },
+    {
+      withCredentials: true
+    }
+  )
 
   return data
 }

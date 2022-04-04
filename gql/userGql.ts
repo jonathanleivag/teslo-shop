@@ -28,3 +28,17 @@ export const registerGql = gql`
     }
   }
 `
+
+export const checkTokenGql = gql`
+  query CheckToken {
+    checkToken {
+      token
+      user {
+        id
+        name
+        email
+        role
+      }
+    }
+  }
+`

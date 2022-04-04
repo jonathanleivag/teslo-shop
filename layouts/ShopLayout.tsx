@@ -8,6 +8,8 @@ import Cookies from 'js-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCookies, changeOrdenSummary, loginAction } from '../store/features'
 import { RootState } from '../store/index'
+import { axiosGraphqlUtils } from '../utils'
+import { checkTokenGql } from '../gql'
 
 export interface IShopLayoutProps {
   title: string
@@ -48,11 +50,35 @@ export const ShopLayout: FC<IShopLayoutProps> = ({
   }, [cart, dispatch])
 
   useEffect(() => {
-    const tokenCookies = Cookies.get('token') ? Cookies.get('token') : ''
-    const userCookies = Cookies.get('user')
-      ? JSON.parse(Cookies.get('user')!)
-      : {}
-    dispatch(loginAction({ token: tokenCookies, user: userCookies }))
+    const checkToken = async () => {
+      try {
+        const data = await axiosGraphqlUtils({ query: checkTokenGql })
+        if (data.errors) {
+          Cookies.remove('token')
+          Cookies.remove('user')
+          dispatch(
+            loginAction({
+              token: undefined,
+              user: undefined
+            })
+          )
+        } else {
+          Cookies.set('user', JSON.stringify(data.data.checkToken.user))
+          Cookies.set('token', data.data.checkToken.token)
+          dispatch(
+            loginAction({
+              token: data.data.checkToken.token,
+              user: data.data.checkToken.user
+            })
+          )
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    checkToken()
+
     return () => {}
   }, [dispatch])
 
