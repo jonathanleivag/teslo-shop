@@ -52,25 +52,27 @@ export const ShopLayout: FC<IShopLayoutProps> = ({
   useEffect(() => {
     const checkToken = async () => {
       try {
-        const data = await axiosGraphqlUtils({ query: checkTokenGql })
-        if (data.errors) {
-          Cookies.remove('token')
-          Cookies.remove('user')
-          dispatch(
-            loginAction({
-              token: undefined,
-              user: undefined
-            })
-          )
-        } else {
-          Cookies.set('user', JSON.stringify(data.data.checkToken.user))
-          Cookies.set('token', data.data.checkToken.token)
-          dispatch(
-            loginAction({
-              token: data.data.checkToken.token,
-              user: data.data.checkToken.user
-            })
-          )
+        if (Cookies.get('token')) {
+          const data = await axiosGraphqlUtils({ query: checkTokenGql })
+          if (data.errors) {
+            Cookies.remove('token')
+            Cookies.remove('user')
+            dispatch(
+              loginAction({
+                token: undefined,
+                user: undefined
+              })
+            )
+          } else {
+            Cookies.set('user', JSON.stringify(data.data.checkToken.user))
+            Cookies.set('token', data.data.checkToken.token)
+            dispatch(
+              loginAction({
+                token: data.data.checkToken.token,
+                user: data.data.checkToken.user
+              })
+            )
+          }
         }
       } catch (error) {
         console.error(error)
