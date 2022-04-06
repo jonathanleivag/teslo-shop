@@ -14,6 +14,18 @@ const SummaryPage: NextPage = () => {
   const router = useRouter()
   const name = useSelector((state: RootState) => state.direcition.name)
 
+  const numberOfItem = useSelector(
+    (state: RootState) => state.cart.ordenSummary.numberOfItem
+  )
+
+  useEffect(() => {
+    if (numberOfItem === 0) {
+      router.push('/')
+    }
+
+    return () => {}
+  }, [numberOfItem, router])
+
   useEffect(() => {
     if (name === '') {
       router.push('/checkout/address')
@@ -22,6 +34,7 @@ const SummaryPage: NextPage = () => {
   }, [name, router])
 
   if (name === '') return <></>
+  if (numberOfItem === 0) return <></>
 
   return (
     <ShopLayout
@@ -37,7 +50,9 @@ const SummaryPage: NextPage = () => {
         <div className='w-full sm:w-[40%] flex flex-row justify-center items-start rounded-full'>
           <OrderCartComponent
             resume
-            title='Resumen de orden (3 productos)'
+            title={`Resumen de orden (${numberOfItem} ${
+              numberOfItem === 1 ? 'producto' : 'productos'
+            })`}
             buttonText='Confirmar orden'
           />
         </div>

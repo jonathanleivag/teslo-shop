@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { FC } from 'react'
 import { useSelector } from 'react-redux'
 import { SummaryResumePersonalComponent } from '..'
@@ -20,7 +21,9 @@ export const OrderSummaryCartComponent: FC<IOrderSummaryCartComponentProps> = ({
       {resume && <SummaryResumePersonalComponent />}
       {resume && (
         <div className='w-full flex flex-row justify-end'>
-          <a className='text-sm text-blue-600'>Editar</a>
+          <Link href='/cart' passHref>
+            <a className='text-sm text-blue-600'>Editar</a>
+          </Link>
         </div>
       )}
       <div className='w-full flex flex-row'>
