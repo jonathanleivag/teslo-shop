@@ -1,11 +1,14 @@
-import { NextPage } from 'next'
+import { GetServerSideProps, GetServerSidePropsResult, NextPage } from 'next'
+import { getProviders, getSession, signIn } from 'next-auth/react'
 import Link from 'next/link'
-import { LoginLayout } from '../../layouts'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { login } from '../../store/features'
+import { LoginOauthAuthComponent } from '../../components'
+import { LoginLayout } from '../../layouts'
 import { RootState } from '../../store'
-import { useRouter } from 'next/router'
+import { login } from '../../store/features'
 
 export type TLoginInputs = {
   email: string
@@ -21,13 +24,21 @@ const LoginPage: NextPage = () => {
 
   const dispatch = useDispatch()
   const router = useRouter()
+  const [provider, setProvider] = useState<any>({})
 
   const user = useSelector((state: RootState) => state.user)
 
+  useEffect(() => {
+    getProviders().then(setProvider)
+    return () => {}
+  }, [])
+
   const onSubmit = handleSubmit(async (input: TLoginInputs) => {
     dispatch(login(input))
-    const redirect = (router.query.redirect as string) || '/'
-    router.replace(redirect)
+    await signIn('credentials', {
+      email: input.email,
+      password: input.password
+    })
   })
 
   return (
@@ -122,10 +133,31 @@ const LoginPage: NextPage = () => {
               </Link>
             </div>
           </div>
+          {provider && <LoginOauthAuthComponent provider={provider} />}
         </div>
       </div>
     </LoginLayout>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  let resp: GetServerSidePropsResult<{}> = { props: {} }
+
+  const session = await getSession({ req: ctx.req })
+  const { redirect = '/' } = ctx.query
+
+  if (session) {
+    resp = {
+      redirect: {
+        destination: redirect.toString(),
+        permanent: false
+      }
+    }
+  } else {
+    resp = { props: {} }
+  }
+
+  return resp
 }
 
 export default LoginPage

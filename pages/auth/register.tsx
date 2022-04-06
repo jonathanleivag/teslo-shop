@@ -1,4 +1,4 @@
-import { NextPage } from 'next'
+import { GetServerSideProps, GetServerSidePropsResult, NextPage } from 'next'
 import Link from 'next/link'
 import { LoginLayout } from '../../layouts'
 import { useForm } from 'react-hook-form'
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { registerUser } from '../../store/features'
 import { RootState } from '../../store'
 import { useRouter } from 'next/router'
+import { getSession } from 'next-auth/react'
 
 export type TRegisterInputs = {
   name: string
@@ -156,6 +157,26 @@ const RegisterPage: NextPage = () => {
       </div>
     </LoginLayout>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  let resp: GetServerSidePropsResult<{}> = { props: {} }
+
+  const session = await getSession({ req: ctx.req })
+  const { redirect = '/' } = ctx.query
+
+  if (session) {
+    resp = {
+      redirect: {
+        destination: redirect.toString(),
+        permanent: false
+      }
+    }
+  } else {
+    resp = { props: {} }
+  }
+
+  return resp
 }
 
 export default RegisterPage

@@ -9,6 +9,19 @@ El archivo .env.example renombrar a .env
 ```bash
 NEXT_PUBLIC_URL_API= url del backend
 URL_API= url del backend
+
+
+# next auth
+NEXTAUTH_SECRET= Random key
+
+FACEBOOK_CLIENT_ID=
+FACEBOOK_CLIENT_SECRET=
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+GITHUB_ID=
+GITHUB_SECRET=
 ```
 
 * Backend: [teslo-shop-api](https://github.com/jonathanleivag/teslo-shop-api)
@@ -31,6 +44,10 @@ Abra [http://localhost:3000](http://localhost:3000) con su navegador para ver el
 # auth
 Login -> http://localhost:3000/auth/login
 Registrar -> http://localhost:3000/auth/register
+
+# cart
+carrito vacío -> http://localhost:3000/cart/empty
+carrito -> http://localhost:3000/cart
 
 #verificación
 dirección -> http://localhost:3000/checkout/address

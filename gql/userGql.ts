@@ -42,3 +42,20 @@ export const checkTokenGql = gql`
     }
   }
 `
+
+export const loginWithOauthGql = gql`
+  mutation LoginWithOauth($input: UserLoginWithOauthInput!) {
+    loginWithOauth(input: $input) {
+      token
+      user {
+        id
+        name
+        email
+        role
+        createdAt
+        updatedAt
+      }
+      message
+    }
+  }
+`

@@ -10,11 +10,11 @@ import {
   addCookies,
   addDirection,
   changeOrdenSummary,
+  IUserSlice,
   loginAction
 } from '../store/features'
 import { RootState } from '../store/index'
-import { axiosGraphqlUtils } from '../utils'
-import { checkTokenGql } from '../gql'
+import { useSession } from 'next-auth/react'
 
 export interface IShopLayoutProps {
   title: string
@@ -30,6 +30,7 @@ export const ShopLayout: FC<IShopLayoutProps> = ({
 }) => {
   const dispatch = useDispatch()
   const cart = useSelector((state: RootState) => state.cart.cart)
+  const { data, status } = useSession()
 
   useEffect(() => {
     try {
@@ -55,44 +56,16 @@ export const ShopLayout: FC<IShopLayoutProps> = ({
   }, [cart, dispatch])
 
   useEffect(() => {
-    const checkToken = async () => {
-      try {
-        if (Cookies.get('token')) {
-          const data = await axiosGraphqlUtils({ query: checkTokenGql })
-          if (data.errors) {
-            Cookies.remove('token')
-            Cookies.remove('user')
-            dispatch(
-              loginAction({
-                token: undefined,
-                user: undefined
-              })
-            )
-          } else {
-            Cookies.set('user', JSON.stringify(data.data.checkToken.user))
-            Cookies.set('token', data.data.checkToken.token)
-            dispatch(
-              loginAction({
-                token: data.data.checkToken.token,
-                user: data.data.checkToken.user
-              })
-            )
-          }
-        }
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-    checkToken()
-
+    dispatch(addDirection())
     return () => {}
   }, [dispatch])
 
   useEffect(() => {
-    dispatch(addDirection())
+    if (status === 'authenticated') {
+      dispatch(loginAction(data.user as IUserSlice))
+    }
     return () => {}
-  }, [dispatch])
+  }, [data, dispatch, status])
 
   return (
     <>

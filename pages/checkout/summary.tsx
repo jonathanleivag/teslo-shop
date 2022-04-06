@@ -1,12 +1,28 @@
 import { NextPage } from 'next'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import {
   CardListCartComponent,
   OrderCartComponent,
   TitleUiComponent
 } from '../../components'
 import { ShopLayout } from '../../layouts'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store'
 
 const SummaryPage: NextPage = () => {
+  const router = useRouter()
+  const name = useSelector((state: RootState) => state.direcition.name)
+
+  useEffect(() => {
+    if (name === '') {
+      router.push('/checkout/address')
+    }
+    return () => {}
+  }, [name, router])
+
+  if (name === '') return <></>
+
   return (
     <ShopLayout
       title={'Resumen de ordern'}

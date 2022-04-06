@@ -1,4 +1,7 @@
+import Cookies from 'js-cookie'
+import { signOut } from 'next-auth/react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { AiOutlineMan, AiOutlineWoman } from 'react-icons/ai'
 import { BsDoorClosed, BsKey } from 'react-icons/bs'
@@ -6,13 +9,11 @@ import { FaChild } from 'react-icons/fa'
 import { FiUsers } from 'react-icons/fi'
 import { HiOutlineUserCircle } from 'react-icons/hi'
 import { MdOutlineCategory, MdProductionQuantityLimits } from 'react-icons/md'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
 import { SearchUiComponent } from '../..'
 import { RootState } from '../../../store'
-import Cookies from 'js-cookie'
 import { changeMenu, logoutAction } from '../../../store/features'
-import { useRouter } from 'next/router'
 
 export const MenuUiComponent: FC = () => {
   const user = useSelector((state: RootState) => state.user)
@@ -29,8 +30,20 @@ export const MenuUiComponent: FC = () => {
       if (result.isConfirmed) {
         Cookies.remove('token')
         Cookies.remove('user')
+        Cookies.remove('cart')
+
+        Cookies.remove('name')
+        Cookies.remove('lastname')
+        Cookies.remove('address')
+        Cookies.remove('address0')
+        Cookies.remove('postalCode')
+        Cookies.remove('city')
+        Cookies.remove('phono')
+        Cookies.remove('country')
+
         dispatch(logoutAction())
         dispatch(changeMenu(false))
+        signOut()
       }
     })
   }

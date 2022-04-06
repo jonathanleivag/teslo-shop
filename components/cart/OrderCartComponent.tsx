@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { OrderSummaryCartComponent } from '..'
 
@@ -14,6 +15,14 @@ export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
   buttonText = 'Checkout',
   byId = false
 }) => {
+  const router = useRouter()
+
+  const handleRedirect = () => {
+    if (title === 'Orden') {
+      router.push('/checkout/address')
+    }
+  }
+
   return (
     <div className='w-[90%] min-h-[100px] border rounded-xl shadow-lg px-2'>
       <div className='border-b px-2 py-1'>
@@ -30,7 +39,10 @@ export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
       )}
 
       {!byId && (
-        <button className='w-full my-3 py-1 bg-blue-600 text-white rounded-full'>
+        <button
+          onClick={handleRedirect}
+          className='w-full my-3 py-1 bg-blue-600 text-white rounded-full'
+        >
           {buttonText}
         </button>
       )}

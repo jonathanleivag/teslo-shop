@@ -4,16 +4,18 @@ import { loginGql, registerGql } from '../../../gql'
 import { TLoginInputs } from '../../../pages/auth/login'
 import { TRegisterInputs } from '../../../pages/auth/register'
 import { axiosGraphqlUtils } from '../../../utils'
+import { signIn } from 'next-auth/react'
 
+export interface IUser {
+  id: string
+  name: string
+  email: string
+  role: string
+  createdAt: string
+  updatedAt: string
+}
 export interface IUserSlice {
-  user?: {
-    id: string
-    name: string
-    email: string
-    role: string
-    createdAt: string
-    updatedAt: string
-  }
+  user?: IUser
   message?: string
   token?: string
   isError?: string
@@ -118,6 +120,10 @@ export const registerUser = (input: TRegisterInputs) => async (
       dispatch(changeLoading(false))
       Cookies.set('token', data.data.register.token!)
       Cookies.set('user', JSON.stringify(data.data.register.user))
+      await signIn('credentials', {
+        email: input.email,
+        password: input.password
+      })
     }
   } catch (error) {
     dispatch(changeError(error))
