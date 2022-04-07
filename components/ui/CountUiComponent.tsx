@@ -6,6 +6,7 @@ export type TArithmetic = 'sum' | 'subtract'
 export type TCountUiComponent = {
   count: number
   setCount: (count: number) => void
+  setCountCopy: (count: number) => void
   inStock: number
   setTempCartProduct: Dispatch<SetStateAction<ICartData>>
 }
@@ -13,6 +14,7 @@ export type TCountUiComponent = {
 export const CountUiComponent: FC<TCountUiComponent> = ({
   count,
   setCount,
+  setCountCopy,
   setTempCartProduct,
   inStock
 }) => {
@@ -26,11 +28,13 @@ export const CountUiComponent: FC<TCountUiComponent> = ({
       case 'sum':
         if (count < inStock) {
           setCount(count + 1)
+          setCountCopy(count + 1)
         }
         break
       case 'subtract':
         if (count > 1) {
           setCount(count - 1)
+          setCountCopy(count - 1)
         }
         break
       default:

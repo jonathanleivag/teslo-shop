@@ -4,7 +4,7 @@ import {
   cartReducer,
   productReducer,
   userReducer,
-  directionReducer
+  addressReducer
 } from './features'
 
 export const store = configureStore({
@@ -13,7 +13,7 @@ export const store = configureStore({
     cart: cartReducer,
     product: productReducer,
     user: userReducer,
-    direcition: directionReducer
+    address: addressReducer
   }
 })
 

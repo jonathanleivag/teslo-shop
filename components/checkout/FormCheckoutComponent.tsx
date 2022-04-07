@@ -1,36 +1,36 @@
-import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Select from 'react-select'
-import { countries } from '../../database/countries'
-import { addDirection } from '../../store/features'
+import { IAddressPageProps } from '../../pages/checkout/address'
+import { RootState } from '../../store/index'
+import { addAddress, editAddress, TCountry } from '../../store/features'
 
 export type TCheckInputs = {
-  name: string
-  lastname: string
+  id: string
   address: string
   address0: string
   postalCode: string
   city: string
   phono: string
-  country: string
+  country: TCountry
 }
 
-export const FormCheckoutComponent: FC = () => {
+export const FormCheckoutComponent: FC<IAddressPageProps> = ({ countries }) => {
+  const selectedAddress = useSelector(
+    (state: RootState) => state.address.selectedAddress
+  )
   const [defaultValues] = useState<TCheckInputs>({
-    name: Cookies.get('name') || '',
-    lastname: Cookies.get('lastname') || '',
-    address: Cookies.get('address') || '',
-    address0: Cookies.get('address0') || '',
-    postalCode: Cookies.get('postalCode') || '',
-    city: Cookies.get('city') || '',
-    phono: Cookies.get('phono') || '',
-    country: Cookies.get('country')
-      ? JSON.parse(Cookies.get('country')!)
-      : countries[0]
+    id: selectedAddress?.id || '',
+    address: selectedAddress?.address || '',
+    address0: selectedAddress?.address0 || '',
+    postalCode: selectedAddress?.postalCode || '',
+    city: selectedAddress?.city || '',
+    phono: selectedAddress?.phono || '',
+    country: selectedAddress?.country || countries[0]
   })
+  const [editSelected, setEditSelected] = useState<string | boolean>(false)
   const {
     handleSubmit,
     register,
@@ -38,20 +38,60 @@ export const FormCheckoutComponent: FC = () => {
     setValue
   } = useForm<TCheckInputs>({ defaultValues })
 
+  const userId = useSelector((state: RootState) => state.user.user?.id)
+
   const router = useRouter()
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    const { edit = null } = router.query
+    if (edit === null) {
+      setEditSelected(false)
+    } else {
+      setEditSelected(edit.toString())
+    }
+    return () => {}
+  }, [router.query])
+
   const onSubmit = handleSubmit(async input => {
-    Cookies.set('name', input.name)
-    Cookies.set('lastname', input.lastname)
-    Cookies.set('address', input.address)
-    Cookies.set('address0', input.address0)
-    Cookies.set('postalCode', input.postalCode)
-    Cookies.set('city', input.city)
-    Cookies.set('phono', input.phono)
-    Cookies.set('country', JSON.stringify(input.country))
-    dispatch(addDirection())
-    router.push('/checkout/summary')
+    const { address, address0, postalCode, city, phono, country } = input
+
+    const { edit = null } = router.query
+
+    if (edit === null) {
+      setEditSelected(false)
+      dispatch(
+        addAddress(
+          {
+            address,
+            address0,
+            postalCode,
+            city,
+            phono,
+            country
+          },
+          userId!,
+          router
+        )
+      )
+    } else {
+      setEditSelected(edit.toString())
+      dispatch(
+        editAddress(
+          {
+            address,
+            address0,
+            postalCode,
+            city,
+            phono,
+            country
+          },
+          selectedAddress?.id!,
+          userId!,
+          router
+        )
+      )
+    }
   })
 
   return (
@@ -59,40 +99,6 @@ export const FormCheckoutComponent: FC = () => {
       onSubmit={onSubmit}
       className='w-[90%] grid grid-cols-1 md:grid-cols-2 gap-5'
     >
-      {/* name */}
-      <div className='w-full flex flex-col'>
-        <label htmlFor='name'>Nombre</label>
-        <input
-          type='text'
-          id='name'
-          className='focus:outline-none border py-1 rounded-full my-2 px-2'
-          placeholder='Nombre'
-          {...register('name', { required: 'El nombre es requerido' })}
-        />
-        {errors.name?.message && (
-          <div className='w-full h-8  py-1 rounded-full px-3 overflow-hidden bg-red-600'>
-            <p className='text-white'> {errors.name.message} </p>
-          </div>
-        )}
-      </div>
-
-      {/* lastname */}
-      <div className='w-full flex flex-col'>
-        <label htmlFor='lastname'>Apellidos</label>
-        <input
-          type='text'
-          id='lastname'
-          className='focus:outline-none border py-1 rounded-full my-2 px-2'
-          placeholder='Apellidos'
-          {...register('lastname', { required: 'El apellido es requerido' })}
-        />
-        {errors.lastname?.message && (
-          <div className='w-full h-8  py-1 rounded-full px-3 overflow-hidden bg-red-600'>
-            <p className='text-white'> {errors.lastname.message} </p>
-          </div>
-        )}
-      </div>
-
       {/* address */}
       <div className='w-full flex flex-col'>
         <label htmlFor='address'>Dirección</label>
@@ -172,15 +178,11 @@ export const FormCheckoutComponent: FC = () => {
           placeholder='País'
           defaultValue={defaultValues.country}
           onChange={e => {
-            setValue('country', e!)
+            const event: any = e
+            setValue('country', event)
           }}
           options={countries as any}
         />
-        {errors.country?.message && (
-          <div className='w-full h-8  py-1 rounded-full px-3 overflow-hidden bg-red-600'>
-            <p className='text-white'> {errors.country.message} </p>
-          </div>
-        )}
       </div>
 
       {/* phono */}
@@ -206,7 +208,9 @@ export const FormCheckoutComponent: FC = () => {
           type='submit'
           className='md:w-[30%] w-full p-1 rounded-full bg-blue-600 text-white'
         >
-          Revisar pedido
+          {editSelected === 'addressEdit'
+            ? 'Editar dirección'
+            : ' Revisar pedido'}
         </button>
       </div>
     </form>

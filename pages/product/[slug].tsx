@@ -29,6 +29,7 @@ export interface ISlugPageProps {
 
 const SlugPage: NextPage<ISlugPageProps> = ({ product }) => {
   const [count, setCount] = useState<number>(1)
+  const [countCopy, setCountCopy] = useState<number>(count)
   const [tempCartProduct, setTempCartProduct] = useState<ICartData>({
     id: product.id,
     image: product.images[0],
@@ -59,12 +60,19 @@ const SlugPage: NextPage<ISlugPageProps> = ({ product }) => {
         setSelected(true)
       } else {
         setSelected(false)
-        if (!router.query.quantity) setCount(1)
+        if (!router.query.quantity) setCount(countCopy)
       }
     }
 
     return () => {}
-  }, [tempCartProduct.size, cart, product.id, router.query.quantity])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    tempCartProduct.size,
+    cart,
+    product.id,
+    router.query.quantity,
+    router.query.cart
+  ])
 
   useEffect(() => {
     if (router.query.size) {
@@ -103,13 +111,18 @@ const SlugPage: NextPage<ISlugPageProps> = ({ product }) => {
           <div className='w-[90%]'>
             <h1 className='font-semibold text-3xl'>{product.title}</h1>
             <p className='text-xl my-2'>${product.price} </p>
-            <h2 className='text-lg my-2'>Cantidad </h2>
-            <CountUiComponent
-              setTempCartProduct={setTempCartProduct}
-              inStock={product.inStock}
-              count={count}
-              setCount={setCount}
-            />
+            {tempCartProduct.size && (
+              <>
+                <h2 className='text-lg my-2'>Cantidad </h2>
+                <CountUiComponent
+                  setTempCartProduct={setTempCartProduct}
+                  inStock={product.inStock}
+                  count={count}
+                  setCount={setCount}
+                  setCountCopy={setCountCopy}
+                />
+              </>
+            )}
           </div>
           <div className='w-[90%]'>
             <h2 className='text-lg my-2'>Talla</h2>

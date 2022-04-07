@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { OrderSummaryCartComponent } from '..'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store/index'
 
 export interface IOrderCartComponentProps {
   title?: string
@@ -16,10 +18,15 @@ export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
   byId = false
 }) => {
   const router = useRouter()
+  const address = useSelector((state: RootState) => state.address.address)
 
   const handleRedirect = () => {
     if (title === 'Orden') {
-      router.push('/checkout/address')
+      if (address.length === 0) {
+        router.push('/checkout/address')
+      } else {
+        router.push('/checkout/address/history')
+      }
     }
   }
 

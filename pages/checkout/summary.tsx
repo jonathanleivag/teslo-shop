@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import {
   CardListCartComponent,
+  FullScreenLoadingUiComponent,
   OrderCartComponent,
   TitleUiComponent
 } from '../../components'
@@ -12,10 +13,13 @@ import { RootState } from '../../store'
 
 const SummaryPage: NextPage = () => {
   const router = useRouter()
-  const name = useSelector((state: RootState) => state.direcition.name)
 
   const numberOfItem = useSelector(
     (state: RootState) => state.cart.ordenSummary.numberOfItem
+  )
+
+  const address = useSelector(
+    (state: RootState) => state.address.selectedAddress?.address
   )
 
   useEffect(() => {
@@ -27,14 +31,14 @@ const SummaryPage: NextPage = () => {
   }, [numberOfItem, router])
 
   useEffect(() => {
-    if (name === '') {
+    if (address === '') {
       router.push('/checkout/address')
     }
     return () => {}
-  }, [name, router])
+  }, [address, router])
 
-  if (name === '') return <></>
-  if (numberOfItem === 0) return <></>
+  if (address === '') return <FullScreenLoadingUiComponent />
+  if (numberOfItem === 0) return <FullScreenLoadingUiComponent />
 
   return (
     <ShopLayout

@@ -8,9 +8,9 @@ import Cookies from 'js-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   addCookies,
-  addDirection,
   changeOrdenSummary,
   IUserSlice,
+  loadAction,
   loginAction
 } from '../store/features'
 import { RootState } from '../store/index'
@@ -30,6 +30,7 @@ export const ShopLayout: FC<IShopLayoutProps> = ({
 }) => {
   const dispatch = useDispatch()
   const cart = useSelector((state: RootState) => state.cart.cart)
+  const user = useSelector((state: RootState) => state.user.user)
   const { data, status } = useSession()
 
   useEffect(() => {
@@ -56,9 +57,13 @@ export const ShopLayout: FC<IShopLayoutProps> = ({
   }, [cart, dispatch])
 
   useEffect(() => {
-    dispatch(addDirection())
+    if (user?.id) {
+      dispatch(loadAction(user.id))
+    } else {
+      dispatch(loadAction(''))
+    }
     return () => {}
-  }, [dispatch])
+  }, [dispatch, user?.id])
 
   useEffect(() => {
     if (status === 'authenticated') {

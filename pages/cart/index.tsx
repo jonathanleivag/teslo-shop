@@ -2,6 +2,7 @@ import { NextPage } from 'next'
 import { useSelector } from 'react-redux'
 import {
   CardListCartComponent,
+  FullScreenLoadingUiComponent,
   OrderCartComponent,
   TitleUiComponent
 } from '../../components'
@@ -24,7 +25,7 @@ const CartPage: NextPage = () => {
     return () => {}
   }, [productsInCart, router])
 
-  if (productsInCart === 0) return <></>
+  if (productsInCart === 0) return <FullScreenLoadingUiComponent />
 
   return (
     <ShopLayout
