@@ -51,6 +51,7 @@ carrito -> http://localhost:3000/cart
 
 #verificación
 dirección -> http://localhost:3000/checkout/address
+historial de dirección -> http://localhost:3000/checkout/address/history
 Resumen -> http://localhost:3000/checkout/summary
 
 #ordenes
