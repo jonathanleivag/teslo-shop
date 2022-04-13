@@ -49,7 +49,7 @@ export const MenuUiComponent: FC = () => {
   }
 
   const handleLogin = () => {
-    router.push(`/auth/login?redirect=${router.pathname}`)
+    router.push(`/auth/login?redirect=${router.asPath}`)
     dispatch(changeMenu(false))
   }
 
