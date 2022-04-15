@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
+import { useSession0 } from '../../hooks'
 import { ICartData, removeProduct } from '../../store/features'
 
 export interface IRemoveProductComponentProps {
@@ -11,6 +12,7 @@ export const RemoveProductComponent: FC<IRemoveProductComponentProps> = ({
   product
 }) => {
   const dispatch = useDispatch()
+  const session = useSession0()
 
   const handlerRemove = () => {
     Swal.fire({
@@ -20,7 +22,7 @@ export const RemoveProductComponent: FC<IRemoveProductComponentProps> = ({
       confirmButtonText: 'Remover'
     }).then(result => {
       if (result.isConfirmed) {
-        dispatch(removeProduct(product))
+        dispatch(removeProduct(product, session))
         const Toast = Swal.mixin({
           toast: true,
           position: 'top-end',

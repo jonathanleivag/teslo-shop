@@ -34,11 +34,11 @@ const LoginPage: NextPage = () => {
   }, [])
 
   const onSubmit = handleSubmit(async (input: TLoginInputs) => {
-    dispatch(login(input))
     await signIn('credentials', {
       email: input.email,
       password: input.password
     })
+    dispatch(login(input))
   })
 
   return (
@@ -144,12 +144,15 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   let resp: GetServerSidePropsResult<{}> = { props: {} }
 
   const session = await getSession({ req: ctx.req })
-  const { redirect = '/' } = ctx.query
+  const { redirect = '/', size = '' } = ctx.query
 
   if (session) {
     resp = {
       redirect: {
-        destination: redirect.toString(),
+        destination:
+          size !== ''
+            ? `${redirect.toString()}&size=${size}`
+            : redirect.toString(),
         permanent: false
       }
     }

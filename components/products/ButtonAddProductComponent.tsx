@@ -1,7 +1,9 @@
-import { FC, useState, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
+import { useSession0 } from '../../hooks/useSession0'
 import { addToCart, ICartData } from '../../store/features'
+import { useRouter } from 'next/router'
 
 export interface IButtonProductComponent {
   inStock: number
@@ -16,15 +18,17 @@ export const ButtonAddProductComponent: FC<IButtonProductComponent> = ({
 }) => {
   const [text, setText] = useState<string>('')
   const dispatch = useDispatch()
+  const session = useSession0()
+  const route = useRouter()
 
   useEffect(() => {
     setText(selected ? 'Actualizar carrito' : 'Agregar al carro')
     return () => {}
   }, [selected])
 
-  const handleAddToCart = () => {
-    if (tempCartProduct.quantity > 0 && tempCartProduct.size) {
-      dispatch(addToCart(tempCartProduct))
+  const addToCard = async () => {
+    try {
+      dispatch(addToCart(tempCartProduct, session))
       const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -42,6 +46,31 @@ export const ButtonAddProductComponent: FC<IButtonProductComponent> = ({
         iconColor: '#2563EB',
         title: `${tempCartProduct.title} agregado al carrito`
       })
+    } catch (error) {
+      //
+    }
+  }
+
+  const redirect = () => {
+    if (tempCartProduct.size) {
+      route.push(
+        `/auth/login?redirect=${route.asPath}${
+          tempCartProduct.quantity || tempCartProduct.size ? '?' : ''
+        }${
+          tempCartProduct.quantity ? `quantity=${tempCartProduct.quantity}` : ''
+        }${tempCartProduct.quantity && tempCartProduct.size ? '&' : ''}${
+          tempCartProduct.size ? `size=${tempCartProduct.size}` : ''
+        }`
+      )
+    } else {
+      route.push(`/auth/login/?redirect=${route.asPath}`)
+    }
+  }
+
+  const handleAddToCart = () => {
+    if (tempCartProduct.quantity > 0 && tempCartProduct.size) {
+      if (session) addToCard()
+      else redirect()
     }
   }
 
@@ -50,7 +79,7 @@ export const ButtonAddProductComponent: FC<IButtonProductComponent> = ({
       {inStock !== 0 && (
         <button
           onClick={handleAddToCart}
-          className={`p-2 my-2 ${
+          className={`p-2 ${
             tempCartProduct.quantity > 0 && tempCartProduct.size
               ? 'bg-blue-600 text-white'
               : 'border-blue-600 border text-blue-600 cursor-not-allowed'

@@ -1,4 +1,5 @@
 export * from './addressGql'
 export * from './countryGql'
+export * from './orderGql'
 export * from './productGql'
 export * from './userGql'

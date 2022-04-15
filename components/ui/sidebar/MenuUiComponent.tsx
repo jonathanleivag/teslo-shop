@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie'
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -28,19 +27,6 @@ export const MenuUiComponent: FC = () => {
       confirmButtonText: 'Cerrar'
     }).then(result => {
       if (result.isConfirmed) {
-        Cookies.remove('token')
-        Cookies.remove('user')
-        Cookies.remove('cart')
-
-        Cookies.remove('name')
-        Cookies.remove('lastname')
-        Cookies.remove('address')
-        Cookies.remove('address0')
-        Cookies.remove('postalCode')
-        Cookies.remove('city')
-        Cookies.remove('phono')
-        Cookies.remove('country')
-
         dispatch(logoutAction())
         dispatch(changeMenu(false))
         signOut()

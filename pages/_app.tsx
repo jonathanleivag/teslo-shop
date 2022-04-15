@@ -5,9 +5,9 @@ import '../styles/fonts/Roboto/roboto.css'
 import '../styles/globals.css'
 import { SessionProvider } from 'next-auth/react'
 
-function MyApp ({ Component, pageProps }: AppProps) {
+function MyApp ({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <SessionProvider>
+    <SessionProvider session={session}>
       <Provider store={store}>
         <Component {...pageProps} />
       </Provider>

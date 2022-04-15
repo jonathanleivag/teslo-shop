@@ -4,6 +4,7 @@ import { ICartData, setInStock, updateQuantity } from '../../store/features'
 import { useDispatch, useSelector } from 'react-redux'
 import { FullScreenLoadingUiComponent } from '../ui'
 import { RootState } from '../../store/index'
+import { useSession0 } from '../../hooks/useSession0'
 
 export interface ICountCartComponent {
   product: ICartData
@@ -25,6 +26,7 @@ export const CountCartComponent: FC<ICountCartComponent> = ({ product }) => {
   const [copyTempCartProduct] = useState<ICartData>(tempCartProduct)
   const dispatch = useDispatch()
   const { inStock, loading } = useSelector((state: RootState) => state.product)
+  const session = useSession0()
 
   useEffect(() => {
     dispatch(setInStock(tempCartProduct.id))
@@ -38,10 +40,10 @@ export const CountCartComponent: FC<ICountCartComponent> = ({ product }) => {
 
   useEffect(() => {
     if (copyTempCartProduct.quantity !== tempCartProduct.quantity) {
-      dispatch(updateQuantity(tempCartProduct))
+      dispatch(updateQuantity(tempCartProduct, session))
     }
     return () => {}
-  }, [copyTempCartProduct.quantity, dispatch, tempCartProduct])
+  }, [copyTempCartProduct.quantity, dispatch, session, tempCartProduct])
 
   if (loading) <FullScreenLoadingUiComponent />
 

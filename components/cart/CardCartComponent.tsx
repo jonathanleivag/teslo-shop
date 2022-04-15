@@ -8,6 +8,7 @@ import {
   ImageUiComponent
 } from '..'
 import { ICartData, removeProduct } from '../../store/features'
+import { useSession0 } from '../../hooks/useSession0'
 
 export interface ICardCartComponent extends ICardListCartComponentProps {
   product: ICartData
@@ -18,6 +19,7 @@ export const CardCartComponent: FC<ICardCartComponent> = ({
   edit
 }) => {
   const dispatch = useDispatch()
+  const session = useSession0()
   const handlerRemove = () => {
     Swal.fire({
       title: '¿Quieres remover este producto?',
@@ -26,7 +28,7 @@ export const CardCartComponent: FC<ICardCartComponent> = ({
       confirmButtonText: 'Remover'
     }).then(result => {
       if (result.isConfirmed) {
-        dispatch(removeProduct(product))
+        dispatch(removeProduct(product, session))
         const Toast = Swal.mixin({
           toast: true,
           position: 'top-end',

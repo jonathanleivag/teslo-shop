@@ -86,7 +86,7 @@ export const {
   deleteAddressAction
 } = directionSlice.actions
 
-export const loadAction = (idUser: string = '') => async (
+export const loadAddress = (idUser: string = '') => async (
   dispatch: Dispatch
 ) => {
   if (idUser && idUser !== '') {

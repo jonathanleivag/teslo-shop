@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { TGender, TValidSize } from '../../../interfaces'
-import { NEXT_PUBLIC_TAX } from '../../../utils'
+import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit'
+import { RootState } from '../..'
+import { ILogin, TGender, TValidSize } from '../../../interfaces'
+import { addOrderInCartUtil, NEXT_PUBLIC_TAX } from '../../../utils'
 
 export interface ICartData {
   id: string
@@ -39,7 +40,7 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart: (state, action: PayloadAction<ICartData>) => {
+    addToCartAction: (state, action: PayloadAction<ICartData>) => {
       const productInCart = state.cart.some(p => p.id === action.payload.id)
       if (!productInCart) {
         state.cart.push(action.payload)
@@ -66,7 +67,7 @@ export const cartSlice = createSlice({
     addCookies (state, action: PayloadAction<ICartData[]>) {
       state.cart = action.payload
     },
-    updateQuantity (state, action: PayloadAction<ICartData>) {
+    updateQuantityAction (state, action: PayloadAction<ICartData>) {
       state.cart = state.cart.map(p => {
         if (p.id !== action.payload.id) {
           return p
@@ -77,7 +78,7 @@ export const cartSlice = createSlice({
         return action.payload
       })
     },
-    removeProduct (state, action: PayloadAction<ICartData>) {
+    removeProductAction (state, action: PayloadAction<ICartData>) {
       state.cart = state.cart.filter(
         p => !(p.id === action.payload.id && p.size === action.payload.size)
       )
@@ -105,11 +106,49 @@ export const cartSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
-  addToCart,
+  addToCartAction,
   addCookies,
-  updateQuantity,
-  removeProduct,
+  updateQuantityAction,
+  removeProductAction,
   changeOrdenSummary
 } = cartSlice.actions
+
+export const addToCart = (produt: ICartData, session: ILogin | null) => (
+  dispatch: Dispatch,
+  getState: () => RootState
+) => {
+  dispatch(addToCartAction(produt))
+  dispatch(changeOrdenSummary())
+  addOrderInCartUtil(
+    session,
+    getState().cart.ordenSummary,
+    getState().cart.cart
+  )
+}
+
+export const updateQuantity = (produt: ICartData, session: ILogin | null) => (
+  dispatch: Dispatch,
+  getState: () => RootState
+) => {
+  dispatch(updateQuantityAction(produt))
+  dispatch(changeOrdenSummary())
+  addOrderInCartUtil(
+    session,
+    getState().cart.ordenSummary,
+    getState().cart.cart
+  )
+}
+export const removeProduct = (produt: ICartData, session: ILogin | null) => (
+  dispatch: Dispatch,
+  getState: () => RootState
+) => {
+  dispatch(removeProductAction(produt))
+  dispatch(changeOrdenSummary())
+  addOrderInCartUtil(
+    session,
+    getState().cart.ordenSummary,
+    getState().cart.cart
+  )
+}
 
 export default cartSlice.reducer

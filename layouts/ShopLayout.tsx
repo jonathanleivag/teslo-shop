@@ -4,15 +4,8 @@ import {
   NavbarUiComponent,
   SidebarUiComponent
 } from '../components'
-import Cookies from 'js-cookie'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  addCookies,
-  changeOrdenSummary,
-  IUserSlice,
-  loadAction,
-  loginAction
-} from '../store/features'
+import { IUserSlice, loadAddress, loginAction } from '../store/features'
 import { RootState } from '../store/index'
 import { useSession } from 'next-auth/react'
 
@@ -29,38 +22,14 @@ export const ShopLayout: FC<IShopLayoutProps> = ({
   children
 }) => {
   const dispatch = useDispatch()
-  const cart = useSelector((state: RootState) => state.cart.cart)
   const user = useSelector((state: RootState) => state.user.user)
   const { data, status } = useSession()
 
   useEffect(() => {
-    try {
-      const productCookies = Cookies.get('cart')
-        ? JSON.parse(Cookies.get('cart')!)
-        : []
-      dispatch(addCookies(productCookies))
-    } catch (error) {
-      dispatch(addCookies([]))
-    }
-
-    return () => {}
-  }, [dispatch])
-
-  useEffect(() => {
-    Cookies.set('cart', JSON.stringify(cart))
-    return () => {}
-  }, [cart])
-
-  useEffect(() => {
-    dispatch(changeOrdenSummary())
-    return () => {}
-  }, [cart, dispatch])
-
-  useEffect(() => {
     if (user?.id) {
-      dispatch(loadAction(user.id))
+      dispatch(loadAddress(user.id))
     } else {
-      dispatch(loadAction(''))
+      dispatch(loadAddress(''))
     }
     return () => {}
   }, [dispatch, user?.id])
