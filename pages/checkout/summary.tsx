@@ -22,6 +22,8 @@ const SummaryPage: NextPage = () => {
     (state: RootState) => state.address.selectedAddress?.address
   )
 
+  const cart = useSelector((state: RootState) => state.cart)
+
   useEffect(() => {
     if (numberOfItem === 0) {
       router.push('/')
@@ -46,6 +48,23 @@ const SummaryPage: NextPage = () => {
       pageDescription={'Resumen de ordern'}
     >
       <TitleUiComponent>Resumen de orden</TitleUiComponent>
+
+      {cart.isError && (
+        <div className='w-full flex flex-row justify-center items-center my-5'>
+          <div className='w-[80%] rounded-full bg-red-600 px-2'>
+            <p className='text-white'> {cart.isError} </p>
+          </div>
+        </div>
+      )}
+
+      {cart.message !== '' && (
+        <div className='w-full flex flex-row justify-center items-center my-5'>
+          <div className='w-[80%] rounded-full bg-green-600 px-2'>
+            <p className='text-white'> {cart.message} </p>
+          </div>
+        </div>
+      )}
+
       <div className='w-full flex flex-col gap-10 sm:flex-row'>
         <div className='w-full sm:max-h-[calc(100vh-250px)] sm:overflow-y-auto sm:w-[60%] sm:overflow-hidden'>
           <CardListCartComponent />
