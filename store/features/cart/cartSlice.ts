@@ -172,12 +172,14 @@ export const loadOrderInCart = (idUser: string) => async (
 ) => {
   try {
     dispatch(changeLoading(true))
-    const { data } = await axiosGraphqlUtils({
+    const data = await axiosGraphqlUtils({
       query: loadOrderInCartGql,
       variables: { idUser }
     })
-    const loadOrderInCart = data.loadOrderInCart as IOrder
-    dispatch(loadOrderInCartAction(loadOrderInCart))
+    if (!data.errors) {
+      const loadOrderInCart = data.data.loadOrderInCart as IOrder
+      dispatch(loadOrderInCartAction(loadOrderInCart))
+    }
     dispatch(changeLoading(false))
   } catch (error) {
     console.error(error)
