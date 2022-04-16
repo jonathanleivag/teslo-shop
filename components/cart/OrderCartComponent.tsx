@@ -38,7 +38,7 @@ export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
 
     if (buttonText === 'Confirmar orden') {
       if (session?.user.id && selectedAddress) {
-        dispatch(orderAndReset(session.user.id!, selectedAddress.id!))
+        dispatch(orderAndReset(session.user.id!, selectedAddress.id!, router))
       }
     }
   }

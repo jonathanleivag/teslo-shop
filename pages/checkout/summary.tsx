@@ -30,7 +30,8 @@ const SummaryPage: NextPage = () => {
     }
 
     return () => {}
-  }, [numberOfItem, router])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (address === '') {
@@ -53,14 +54,6 @@ const SummaryPage: NextPage = () => {
         <div className='w-full flex flex-row justify-center items-center my-5'>
           <div className='w-[80%] rounded-full bg-red-600 px-2'>
             <p className='text-white'> {cart.isError} </p>
-          </div>
-        </div>
-      )}
-
-      {cart.message !== '' && (
-        <div className='w-full flex flex-row justify-center items-center my-5'>
-          <div className='w-[80%] rounded-full bg-green-600 px-2'>
-            <p className='text-white'> {cart.message} </p>
           </div>
         </div>
       )}

@@ -1,4 +1,5 @@
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit'
+import { NextRouter } from 'next/router'
 import { RootState } from '../..'
 import { loadOrderInCartGql, orderGql } from '../../../gql'
 import { ILogin, TGender, TValidSize, IOrder } from '../../../interfaces'
@@ -31,7 +32,6 @@ export interface ICartState {
   ordenSummary: IOrdenSummary
   loading: boolean | undefined
   isError: boolean | string
-  message: string
 }
 
 const initialState: ICartState = {
@@ -43,8 +43,7 @@ const initialState: ICartState = {
     total: 0
   },
   loading: undefined,
-  isError: false,
-  message: ''
+  isError: false
 }
 
 export const cartSlice = createSlice({
@@ -129,13 +128,9 @@ export const cartSlice = createSlice({
       }
       state.loading = undefined
       state.isError = false
-      state.message = ''
     },
     changeIsError (state, action: PayloadAction<boolean | string>) {
       state.isError = action.payload
-    },
-    changeMessage (state, action: PayloadAction<string>) {
-      state.message = action.payload
     }
   }
 })
@@ -150,8 +145,7 @@ export const {
   loadOrderInCartAction,
   changeLoading,
   resetCart,
-  changeIsError,
-  changeMessage
+  changeIsError
 } = cartSlice.actions
 
 export const addToCart = (produt: ICartData, session: ILogin | null) => (
@@ -212,9 +206,11 @@ export const loadOrderInCart = (idUser: string) => async (
   }
 }
 
-export const orderAndReset = (idUser: string, address: string) => async (
-  dispatch: Dispatch
-) => {
+export const orderAndReset = (
+  idUser: string,
+  address: string,
+  router: NextRouter
+) => async (dispatch: Dispatch) => {
   try {
     const data = await axiosGraphqlUtils({
       query: orderGql,
@@ -229,10 +225,7 @@ export const orderAndReset = (idUser: string, address: string) => async (
     } else {
       dispatch(resetCart())
       dispatch(changeIsError(false))
-      dispatch(changeMessage(data.data.order))
-      setTimeout(() => {
-        dispatch(changeMessage(''))
-      }, 2000)
+      router.replace(`/orders/${data.data.order}`)
     }
   } catch (error) {
     dispatch(changeIsError('Error al realizar la orden'))
