@@ -21,6 +21,9 @@ export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
 }) => {
   const router = useRouter()
   const address = useSelector((state: RootState) => state.address.address)
+  const selectedAddress = useSelector(
+    (state: RootState) => state.address.selectedAddress
+  )
   const dispatch = useDispatch()
   const session = useSession0()
 
@@ -34,8 +37,8 @@ export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
     }
 
     if (buttonText === 'Confirmar orden') {
-      if (session?.user.id) {
-        dispatch(orderAndReset(session.user.id!))
+      if (session?.user.id && selectedAddress) {
+        dispatch(orderAndReset(session.user.id!, selectedAddress.id!))
       }
     }
   }

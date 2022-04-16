@@ -212,11 +212,13 @@ export const loadOrderInCart = (idUser: string) => async (
   }
 }
 
-export const orderAndReset = (idUser: string) => async (dispatch: Dispatch) => {
+export const orderAndReset = (idUser: string, address: string) => async (
+  dispatch: Dispatch
+) => {
   try {
     const data = await axiosGraphqlUtils({
       query: orderGql,
-      variables: { idUser }
+      variables: { idUser, address }
     })
 
     if (data.errors) {
