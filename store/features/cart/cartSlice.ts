@@ -1,7 +1,12 @@
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../..'
-import { ILogin, TGender, TValidSize } from '../../../interfaces'
-import { addOrderInCartUtil, NEXT_PUBLIC_TAX } from '../../../utils'
+import { loadOrderInCartGql } from '../../../gql'
+import { ILogin, TGender, TValidSize, IOrder } from '../../../interfaces'
+import {
+  addOrderInCartUtil,
+  axiosGraphqlUtils,
+  NEXT_PUBLIC_TAX
+} from '../../../utils'
 
 export interface ICartData {
   id: string
@@ -24,6 +29,7 @@ export interface IOrdenSummary {
 export interface ICartState {
   cart: ICartData[]
   ordenSummary: IOrdenSummary
+  loading: boolean | undefined
 }
 
 const initialState: ICartState = {
@@ -33,7 +39,8 @@ const initialState: ICartState = {
     subtotal: 0,
     tax: 0,
     total: 0
-  }
+  },
+  loading: undefined
 }
 
 export const cartSlice = createSlice({
@@ -100,6 +107,13 @@ export const cartSlice = createSlice({
         tax,
         total: subtotal + tax
       }
+    },
+    loadOrderInCartAction (state, action: PayloadAction<IOrder>) {
+      state.cart = action.payload.orderItems
+      state.ordenSummary = action.payload
+    },
+    changeLoading (state, action: PayloadAction<boolean>) {
+      state.loading = action.payload
     }
   }
 })
@@ -110,7 +124,9 @@ export const {
   addCookies,
   updateQuantityAction,
   removeProductAction,
-  changeOrdenSummary
+  changeOrdenSummary,
+  loadOrderInCartAction,
+  changeLoading
 } = cartSlice.actions
 
 export const addToCart = (produt: ICartData, session: ILogin | null) => (
@@ -149,6 +165,24 @@ export const removeProduct = (produt: ICartData, session: ILogin | null) => (
     getState().cart.ordenSummary,
     getState().cart.cart
   )
+}
+
+export const loadOrderInCart = (idUser: string) => async (
+  dispatch: Dispatch
+) => {
+  try {
+    dispatch(changeLoading(true))
+    const { data } = await axiosGraphqlUtils({
+      query: loadOrderInCartGql,
+      variables: { idUser }
+    })
+    const loadOrderInCart = data.loadOrderInCart as IOrder
+    dispatch(loadOrderInCartAction(loadOrderInCart))
+    dispatch(changeLoading(false))
+  } catch (error) {
+    console.error(error)
+    dispatch(changeLoading(false))
+  }
 }
 
 export default cartSlice.reducer

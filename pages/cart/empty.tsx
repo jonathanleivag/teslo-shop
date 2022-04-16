@@ -1,9 +1,29 @@
 import { NextPage } from 'next'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import { BsCartX } from 'react-icons/bs'
+import { useSelector } from 'react-redux'
+import { FullScreenLoadingUiComponent } from '../../components'
 import { ShopLayout } from '../../layouts'
+import { RootState } from '../../store'
 
 const EmptyPage: NextPage = () => {
+  const productsInCart = useSelector(
+    (state: RootState) => state.cart.ordenSummary.numberOfItem
+  )
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (productsInCart !== 0) {
+      router.replace('/cart')
+    }
+    return () => {}
+  }, [productsInCart, router])
+
+  if (productsInCart !== 0) return <FullScreenLoadingUiComponent />
+
   return (
     <ShopLayout
       title={'Carrito vació'}

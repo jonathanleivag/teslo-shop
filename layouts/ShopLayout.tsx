@@ -5,7 +5,12 @@ import {
   SidebarUiComponent
 } from '../components'
 import { useDispatch, useSelector } from 'react-redux'
-import { IUserSlice, loadAddress, loginAction } from '../store/features'
+import {
+  IUserSlice,
+  loadAddress,
+  loadOrderInCart,
+  loginAction
+} from '../store/features'
 import { RootState } from '../store/index'
 import { useSession } from 'next-auth/react'
 
@@ -30,6 +35,13 @@ export const ShopLayout: FC<IShopLayoutProps> = ({
       dispatch(loadAddress(user.id))
     } else {
       dispatch(loadAddress(''))
+    }
+    return () => {}
+  }, [dispatch, user?.id])
+
+  useEffect(() => {
+    if (user?.id) {
+      dispatch(loadOrderInCart(user.id))
     }
     return () => {}
   }, [dispatch, user?.id])

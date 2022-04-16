@@ -5,3 +5,24 @@ export const addOrderGql = gql`
     addOrder(input: $input)
   }
 `
+
+export const loadOrderInCartGql = gql`
+  query LoadOrderInCart($idUser: ID!) {
+    loadOrderInCart(idUser: $idUser) {
+      numberOfItem
+      subtotal
+      tax
+      total
+      orderItems {
+        id
+        image
+        price
+        slug
+        title
+        gender
+        size
+        quantity
+      }
+    }
+  }
+`
