@@ -1,8 +1,10 @@
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { OrderSummaryCartComponent } from '..'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../store/index'
+import { orderAndReset } from '../../store/features'
+import { useSession0 } from '../../hooks/useSession0'
 
 export interface IOrderCartComponentProps {
   title?: string
@@ -19,6 +21,8 @@ export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
 }) => {
   const router = useRouter()
   const address = useSelector((state: RootState) => state.address.address)
+  const dispatch = useDispatch()
+  const session = useSession0()
 
   const handleRedirect = () => {
     if (title === 'Orden') {
@@ -26,6 +30,12 @@ export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
         router.push('/checkout/address')
       } else {
         router.push('/checkout/address/history')
+      }
+    }
+
+    if (buttonText === 'Confirmar orden') {
+      if (session?.user.id) {
+        dispatch(orderAndReset(session.user.id!))
       }
     }
   }

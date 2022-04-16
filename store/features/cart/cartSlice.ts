@@ -1,6 +1,6 @@
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../..'
-import { loadOrderInCartGql } from '../../../gql'
+import { loadOrderInCartGql, orderGql } from '../../../gql'
 import { ILogin, TGender, TValidSize, IOrder } from '../../../interfaces'
 import {
   addOrderInCartUtil,
@@ -30,6 +30,8 @@ export interface ICartState {
   cart: ICartData[]
   ordenSummary: IOrdenSummary
   loading: boolean | undefined
+  isError: boolean | string
+  message: string
 }
 
 const initialState: ICartState = {
@@ -40,7 +42,9 @@ const initialState: ICartState = {
     tax: 0,
     total: 0
   },
-  loading: undefined
+  loading: undefined,
+  isError: false,
+  message: ''
 }
 
 export const cartSlice = createSlice({
@@ -114,6 +118,24 @@ export const cartSlice = createSlice({
     },
     changeLoading (state, action: PayloadAction<boolean>) {
       state.loading = action.payload
+    },
+    resetCart (state) {
+      state.cart = []
+      state.ordenSummary = {
+        numberOfItem: 0,
+        subtotal: 0,
+        tax: 0,
+        total: 0
+      }
+      state.loading = undefined
+      state.isError = false
+      state.message = ''
+    },
+    changeIsError (state, action: PayloadAction<boolean | string>) {
+      state.isError = action.payload
+    },
+    changeMessage (state, action: PayloadAction<string>) {
+      state.message = action.payload
     }
   }
 })
@@ -126,7 +148,10 @@ export const {
   removeProductAction,
   changeOrdenSummary,
   loadOrderInCartAction,
-  changeLoading
+  changeLoading,
+  resetCart,
+  changeIsError,
+  changeMessage
 } = cartSlice.actions
 
 export const addToCart = (produt: ICartData, session: ILogin | null) => (
@@ -184,6 +209,34 @@ export const loadOrderInCart = (idUser: string) => async (
   } catch (error) {
     console.error(error)
     dispatch(changeLoading(false))
+  }
+}
+
+export const orderAndReset = (idUser: string) => async (dispatch: Dispatch) => {
+  try {
+    const data = await axiosGraphqlUtils({
+      query: orderGql,
+      variables: { idUser }
+    })
+
+    if (data.errors) {
+      dispatch(changeIsError(data.errors[0].message))
+      setTimeout(() => {
+        dispatch(changeIsError(false))
+      }, 2000)
+    } else {
+      dispatch(resetCart())
+      dispatch(changeIsError(false))
+      dispatch(changeMessage(data.data.order))
+      setTimeout(() => {
+        dispatch(changeMessage(''))
+      }, 2000)
+    }
+  } catch (error) {
+    dispatch(changeIsError('Error al realizar la orden'))
+    setTimeout(() => {
+      dispatch(changeIsError(false))
+    }, 2000)
   }
 }
 

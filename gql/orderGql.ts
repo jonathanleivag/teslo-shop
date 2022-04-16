@@ -26,3 +26,9 @@ export const loadOrderInCartGql = gql`
     }
   }
 `
+
+export const orderGql = gql`
+  mutation Order($idUser: ID!) {
+    order(idUser: $idUser)
+  }
+`
