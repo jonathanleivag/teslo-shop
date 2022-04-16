@@ -5,14 +5,16 @@ import { NEXT_PUBLIC_URL_API } from '.'
 export interface IAxiosGraphqlUtils {
   query: DocumentNode
   variables?: object
+  url?: string
 }
 
 export const axiosGraphqlUtils = async ({
   query,
-  variables
+  variables,
+  url = NEXT_PUBLIC_URL_API
 }: IAxiosGraphqlUtils) => {
   const { data } = await axios.post(
-    NEXT_PUBLIC_URL_API,
+    url,
     {
       query: print(query),
       variables

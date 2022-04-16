@@ -32,3 +32,40 @@ export const orderGql = gql`
     order(idUser: $idUser, address: $address)
   }
 `
+export const getOneOrderGql = gql`
+  query GetOneOrder($getOneOrderId: ID!) {
+    getOneOrder(id: $getOneOrderId) {
+      id
+      user {
+        id
+      }
+      numberOfItem
+      subtotal
+      tax
+      total
+      isPaid
+      paidAt
+      paymetResult
+      orderItems {
+        id
+        image
+        price
+        slug
+        title
+        gender
+        size
+        quantity
+      }
+      address {
+        address
+        address0
+        postalCode
+        city
+        phono
+        country {
+          label
+        }
+      }
+    }
+  }
+`

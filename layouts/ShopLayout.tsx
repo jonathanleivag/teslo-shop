@@ -62,7 +62,7 @@ export const ShopLayout: FC<IShopLayoutProps> = ({
       />
       <NavbarUiComponent />
       <SidebarUiComponent />
-      <main className='mx-auto max-w-[1440px] py-[80px] px-2 md:px-[60px]'>
+      <main className='mx-auto max-w-[1440px] py-[80px] px-2 md:px-[60px] overflow-hidden'>
         {children}
       </main>
     </>
