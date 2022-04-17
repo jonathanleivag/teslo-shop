@@ -72,7 +72,7 @@ const HistoryPage: NextPage = () => {
     router.push('/checkout/address?edit=addressEdit')
     dispatch(selectedAddressAction(event))
   }
-
+  // TODO: No puedes eliminar una dirección si tienes pedido asociado a esa dirección
   return (
     <ShopLayout
       title={titleAndDescription}

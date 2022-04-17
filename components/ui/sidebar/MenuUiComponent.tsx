@@ -13,6 +13,7 @@ import Swal from 'sweetalert2'
 import { SearchUiComponent } from '../..'
 import { RootState } from '../../../store'
 import { changeMenu, logoutAction } from '../../../store/features'
+import { navigateTo } from '../../../utils'
 
 export const MenuUiComponent: FC = () => {
   const user = useSelector((state: RootState) => state.user)
@@ -54,9 +55,14 @@ export const MenuUiComponent: FC = () => {
               <HiOutlineUserCircle className='text-2xl' />
               <p className='prose-lg'>Perfil</p>
             </li>
-            <li className='li_sidebar'>
-              <MdProductionQuantityLimits className='text-2xl' />
-              <p className='prose-lg'>Mis ordenes</p>
+            <li>
+              <button
+                className='li_sidebar'
+                onClick={() => navigateTo(router, dispatch, '/orders/history')}
+              >
+                <MdProductionQuantityLimits className='text-2xl' />
+                <p className='prose-lg'>Mis ordenes</p>
+              </button>
             </li>
             <li>
               <button className='li_sidebar' onClick={handleLogout}>
