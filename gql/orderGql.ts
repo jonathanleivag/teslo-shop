@@ -75,54 +75,21 @@ export const getAllOrdersByUserGql = gql`
     getAllOrderByUser(idUser: $idUser) {
       id
       user {
-        id
         name
         email
-        role
-        createdAt
-        updatedAt
       }
       numberOfItem
-      subtotal
-      tax
       total
       isPaid
       paidAt
       paymetResult
-      orderItems {
-        id
-        image
-        price
-        slug
-        title
-        gender
-        size
-        quantity
-      }
-      inCart
       address {
-        id
         address
-        address0
-        postalCode
-        city
-        phono
         country {
-          id
-          label
           value
         }
-        user {
-          id
-          name
-          email
-          role
-          createdAt
-          updatedAt
-        }
-        createdAt
-        updatedAt
       }
+      updatedAt
     }
   }
 `
