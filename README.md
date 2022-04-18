@@ -7,21 +7,24 @@
 El archivo .env.example renombrar a .env
 
 ```bash
-NEXT_PUBLIC_URL_API= url del backend
-URL_API= url del backend
+NEXT_PUBLIC_URL_API= #url del backend
+URL_API= #url del backend
 
 
 # next auth
-NEXTAUTH_SECRET= Random key
+NEXTAUTH_SECRET= # Random key
 
-FACEBOOK_CLIENT_ID=
-FACEBOOK_CLIENT_SECRET=
+FACEBOOK_CLIENT_ID= #cliente id de facebook
+FACEBOOK_CLIENT_SECRET= #clave secreta de facebook
 
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
+GOOGLE_CLIENT_ID= #cliente id de google
+GOOGLE_CLIENT_SECRET= #clave secreta de google
 
-GITHUB_ID=
-GITHUB_SECRET=
+GITHUB_ID= #cliente id de github
+GITHUB_SECRET= #clave secreta de github
+
+# paypal
+NEXT_PUBLIC_PAYPAL_CLIENT_ID= # clave publica de paypal
 ```
 
 * Backend: [teslo-shop-api](https://github.com/jonathanleivag/teslo-shop-api)

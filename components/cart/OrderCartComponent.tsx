@@ -1,11 +1,14 @@
 import { useRouter } from 'next/router'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { OrderSummaryCartComponent } from '..'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../store/index'
 import { orderAndReset } from '../../store/features'
 import { useSession0 } from '../../hooks/useSession0'
 import { MdCreditCardOff, MdOutlineCreditScore } from 'react-icons/md'
+import { PayPalButtonsOrderComponent } from '../order'
+import { IOrderOne } from '../../interfaces'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 
 export interface IOrderCartComponentProps {
   title?: string
@@ -13,6 +16,7 @@ export interface IOrderCartComponentProps {
   buttonText?: string
   byId?: boolean
   edit?: boolean
+  orderOne?: IOrderOne
 }
 
 export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
@@ -20,7 +24,8 @@ export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
   resume = false,
   buttonText = 'Checkout',
   byId = false,
-  edit = true
+  edit = true,
+  orderOne
 }) => {
   const router = useRouter()
   const address = useSelector((state: RootState) => state.address.address)
@@ -30,6 +35,7 @@ export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
   const order = useSelector((state: RootState) => state.order.selectedOrder)
   const dispatch = useDispatch()
   const session = useSession0()
+  const [isPaying, setIsPaying] = useState<boolean>(false)
 
   const handleRedirect = () => {
     if (title === 'Orden') {
@@ -71,9 +77,20 @@ export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
               <p className='text-red-600'>Pendiente de pago</p>
             </div>
           </div>
-          <button className='w-[95%] p-1 text-white bg-blue-600 my-5 rounded-full'>
-            Pagar
-          </button>
+          <div className='w-[95%] p-1 my-5 rounded-full'>
+            {!isPaying && (
+              <PayPalButtonsOrderComponent
+                orderId={orderOne?.id!}
+                total={orderOne?.total!}
+                setIsPaying={setIsPaying}
+              />
+            )}
+            {isPaying && (
+              <div className='w-full flex flex-row justify-center items-center'>
+                <AiOutlineLoading3Quarters className='animate-spin text-4xl text-blue-600' />
+              </div>
+            )}
+          </div>
         </div>
       )}
 

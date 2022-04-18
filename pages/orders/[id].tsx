@@ -68,6 +68,7 @@ const OrderByIdPage: NextPage<IPropsOrderByIdPage> = ({ order }) => {
             edit={false}
             title={'Resumen de orden'}
             byId
+            orderOne={order}
           />
         </div>
       </div>

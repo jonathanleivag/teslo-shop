@@ -1,5 +1,6 @@
 export * from './addressGql'
 export * from './countryGql'
 export * from './orderGql'
+export * from './paypalGql'
 export * from './productGql'
 export * from './userGql'
