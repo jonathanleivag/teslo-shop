@@ -1,18 +1,9 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import {
   HeaderMetaComponent,
   NavbarUiComponent,
   SidebarUiComponent
 } from '../components'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  IUserSlice,
-  loadAddress,
-  loadOrderInCart,
-  loginAction
-} from '../store/features'
-import { RootState } from '../store/index'
-import { useSession } from 'next-auth/react'
 
 export interface IShopLayoutProps {
   title: string
@@ -26,33 +17,6 @@ export const ShopLayout: FC<IShopLayoutProps> = ({
   imageFullUrl,
   children
 }) => {
-  const dispatch = useDispatch()
-  const user = useSelector((state: RootState) => state.user.user)
-  const { data, status } = useSession()
-
-  useEffect(() => {
-    if (user?.id) {
-      dispatch(loadAddress(user.id))
-    } else {
-      dispatch(loadAddress(''))
-    }
-    return () => {}
-  }, [dispatch, user?.id])
-
-  useEffect(() => {
-    if (user?.id) {
-      dispatch(loadOrderInCart(user.id))
-    }
-    return () => {}
-  }, [dispatch, user?.id])
-
-  useEffect(() => {
-    if (status === 'authenticated') {
-      dispatch(loginAction(data.user as IUserSlice))
-    }
-    return () => {}
-  }, [data, dispatch, status])
-
   return (
     <>
       <HeaderMetaComponent

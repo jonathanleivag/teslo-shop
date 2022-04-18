@@ -2,6 +2,7 @@ import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 import { SessionProvider } from 'next-auth/react'
 import { AppProps } from 'next/app'
 import { Provider } from 'react-redux'
+import { LoadLayout } from '../layouts'
 import { store } from '../store'
 import '../styles/fonts/Roboto/roboto.css'
 import '../styles/globals.css'
@@ -14,7 +15,9 @@ function MyApp ({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         options={{ 'client-id': NEXT_PUBLIC_PAYPAL_CLIENT_ID }}
       >
         <Provider store={store}>
-          <Component {...pageProps} />
+          <LoadLayout>
+            <Component {...pageProps} />
+          </LoadLayout>
         </Provider>
       </PayPalScriptProvider>
     </SessionProvider>
