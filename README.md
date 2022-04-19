@@ -64,6 +64,9 @@ Historial de compra -> http://localhost:3000/orders/history
 #productos
 ver producto -> http://localhost:3000/product/slug
 
+# admin
+dashboard -> http://localhost:3000/admin
+
 #raiz
 404
 home -> http://localhost:3000/
