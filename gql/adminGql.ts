@@ -1,8 +1,8 @@
 import { gql } from 'graphql-tag'
 
 export const dashboardGql = gql`
-  query Dashboard {
-    dashboard {
+  query Dashboard($idUser: ID!) {
+    dashboard(idUser: $idUser) {
       numberOfOrders
       paidOrders
       numberOfClient

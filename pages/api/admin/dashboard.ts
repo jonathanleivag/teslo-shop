@@ -3,6 +3,8 @@ import { IDashboard } from '../../admin'
 import { axiosGraphqlUtils } from '../../../utils/axiosGraphqlUtils'
 import { dashboardGql } from '../../../gql'
 import { URL_API } from '../../../utils'
+import { getToken } from 'next-auth/jwt'
+import { ILogin } from '../../../interfaces'
 
 export default async function dashboard (
   req: NextApiRequest,
@@ -17,11 +19,23 @@ export default async function dashboard (
     lowInventory: 0,
     noPaidOrders: 0
   }
-  const data = await axiosGraphqlUtils({ query: dashboardGql, url: URL_API })
+  const session = await getToken({
+    req: req as any,
+    secret: process.env.NEXTAUTH_SECRET
+  })
 
-  if (!data.errors) {
-    const dashboardData: IDashboard = data.data.dashboard
-    resp = dashboardData
+  if (session) {
+    const user = session.user as ILogin
+    const data = await axiosGraphqlUtils({
+      query: dashboardGql,
+      url: URL_API,
+      variables: { idUser: user.user.id }
+    })
+
+    if (!data.errors) {
+      const dashboardData: IDashboard = data.data.dashboard
+      resp = dashboardData
+    }
   }
 
   res.status(200).json(resp)
