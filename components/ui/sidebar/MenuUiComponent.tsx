@@ -142,9 +142,14 @@ export const MenuUiComponent: FC = () => {
               <MdProductionQuantityLimits className='text-2xl' />
               <p className='prose-lg'>Ordenes</p>
             </li>
-            <li className='li_sidebar'>
-              <FiUsers className='text-2xl' />
-              <p className='prose-lg'>Usuarios</p>
+            <li>
+              <button
+                onClick={() => navigateTo(router, dispatch, '/admin/users')}
+                className='li_sidebar'
+              >
+                <FiUsers className='text-2xl' />
+                <p className='prose-lg'>Usuarios</p>
+              </button>
             </li>
           </ul>
         </>

@@ -13,3 +13,21 @@ export const dashboardGql = gql`
     }
   }
 `
+
+export const getUsersGql = gql`
+  query GetUsers($idUser: ID!) {
+    getUsers(idUser: $idUser) {
+      id
+      name
+      email
+      role
+      createdAt
+      updatedAt
+    }
+  }
+`
+export const updateRoleGql = gql`
+  mutation UpdateRole($input: UpdateRoleInput) {
+    updateRole(input: $input)
+  }
+`

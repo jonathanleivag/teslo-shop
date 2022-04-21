@@ -47,7 +47,9 @@ const HistoryPage: NextPage<IHistoryProps> = ({ orders }) => {
             <Cell>
               {(rowData, _) => {
                 return (
-                  <a href={`mailto:${rowData.email}`}>{rowData.user.email}</a>
+                  <a href={`mailto:${rowData.user.email}`}>
+                    {rowData.user.email}
+                  </a>
                 )
               }}
             </Cell>

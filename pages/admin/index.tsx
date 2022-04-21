@@ -29,7 +29,7 @@ export interface IDashboard {
 const fetcher = (url: string) => fetch(url).then(r => r.json())
 
 const AdminPage: NextPage = () => {
-  const { data, error } = useSWR<IDashboard>('api/admin/dashboard', fetcher, {
+  const { data, error } = useSWR<IDashboard>('/api/admin/dashboard', fetcher, {
     refreshInterval: 30 * 1000
   })
 

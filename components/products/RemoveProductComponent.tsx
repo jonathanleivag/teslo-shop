@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
 import { useSession0 } from '../../hooks'
 import { ICartData, removeProduct } from '../../store/features'
+import { Toast } from '../../utils'
 
 export interface IRemoveProductComponentProps {
   product: ICartData
@@ -23,18 +24,6 @@ export const RemoveProductComponent: FC<IRemoveProductComponentProps> = ({
     }).then(result => {
       if (result.isConfirmed) {
         dispatch(removeProduct(product, session))
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: toast => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-          }
-        })
-
         Toast.fire({
           icon: 'success',
           iconColor: '#2563EB',

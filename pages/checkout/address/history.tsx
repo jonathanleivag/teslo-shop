@@ -10,6 +10,7 @@ import { TCheckInputs, TitleUiComponent } from '../../../components'
 import { ShopLayout } from '../../../layouts'
 import { RootState } from '../../../store'
 import { deleteAddress, selectedAddressAction } from '../../../store/features'
+import { Toast } from '../../../utils'
 
 const titleAndDescription: string = 'Historial de direcciones'
 
@@ -47,17 +48,6 @@ const HistoryPage: NextPage = () => {
       if (result.isConfirmed) {
         dispatch(deleteAddress(id))
         dispatch(selectedAddressAction(undefined))
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: toast => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-          }
-        })
 
         Toast.fire({
           icon: 'success',

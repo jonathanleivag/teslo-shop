@@ -1,9 +1,9 @@
+import { useRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import Swal from 'sweetalert2'
 import { useSession0 } from '../../hooks/useSession0'
 import { addToCart, ICartData } from '../../store/features'
-import { useRouter } from 'next/router'
+import { Toast } from '../../utils'
 
 export interface IButtonProductComponent {
   inStock: number
@@ -29,17 +29,6 @@ export const ButtonAddProductComponent: FC<IButtonProductComponent> = ({
   const addToCard = async () => {
     try {
       dispatch(addToCart(tempCartProduct, session))
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: toast => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-      })
 
       Toast.fire({
         icon: 'success',

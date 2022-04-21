@@ -1,7 +1,6 @@
 import { FC } from 'react'
 import { PayPalButtons } from '@paypal/react-paypal-js'
-import Swal from 'sweetalert2'
-import { axiosGraphqlUtils } from '../../utils'
+import { axiosGraphqlUtils, Toast } from '../../utils'
 import { payPaypalGql } from '../../gql'
 import { useSession0 } from '../../hooks/useSession0'
 import { useRouter } from 'next/router'
@@ -11,17 +10,6 @@ export interface IPayPalButtonsOrderComponentProps {
   orderId: string
   setIsPaying: (value: boolean) => void
 }
-const Toast = Swal.mixin({
-  toast: true,
-  position: 'top-end',
-  showConfirmButton: false,
-  timer: 3000,
-  timerProgressBar: true,
-  didOpen: toast => {
-    toast.addEventListener('mouseenter', Swal.stopTimer)
-    toast.addEventListener('mouseleave', Swal.resumeTimer)
-  }
-})
 
 export const PayPalButtonsOrderComponent: FC<IPayPalButtonsOrderComponentProps> = ({
   total,

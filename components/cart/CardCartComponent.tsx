@@ -9,6 +9,7 @@ import {
 } from '..'
 import { ICartData, removeProduct } from '../../store/features'
 import { useSession0 } from '../../hooks/useSession0'
+import { Toast } from '../../utils'
 
 export interface ICardCartComponent extends ICardListCartComponentProps {
   product: ICartData
@@ -29,18 +30,6 @@ export const CardCartComponent: FC<ICardCartComponent> = ({
     }).then(result => {
       if (result.isConfirmed) {
         dispatch(removeProduct(product, session))
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: toast => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-          }
-        })
-
         Toast.fire({
           icon: 'success',
           iconColor: '#2563EB',
