@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { FC } from 'react'
 import { IconType } from 'react-icons'
 import { AdminNavbarComponent, SidebarUiComponent } from '../components'
@@ -7,16 +8,21 @@ export interface IAdminLayoutProps {
   title: string
   subTitle: string
   Icon?: IconType
+  titleHead: string
 }
 
 export const AdminLayout: FC<IAdminLayoutProps> = ({
   title,
   subTitle,
   Icon,
-  children
+  children,
+  titleHead
 }) => {
   return (
     <>
+      <Head>
+        <title>Admin - {titleHead} </title>
+      </Head>
       <AdminNavbarComponent />
       <SidebarUiComponent />
       <main className='mx-auto max-w-[1440px] py-[80px] px-2 md:px-[60px] overflow-hidden'>

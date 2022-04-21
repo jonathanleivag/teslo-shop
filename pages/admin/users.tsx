@@ -33,6 +33,7 @@ const UsersPage: NextPage = () => {
       title={'Usuarios'}
       subTitle={'Manteción de usuarios'}
       Icon={GrGroup}
+      titleHead={'Usuarios'}
     >
       <Table
         renderEmpty={() => (
