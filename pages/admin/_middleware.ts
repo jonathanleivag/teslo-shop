@@ -10,7 +10,9 @@ export async function middleware (req: NextRequest, ev: NextFetchEvent) {
   })
 
   if (!session) {
-    const requestPage = req.page.name
+    const requestPage = req.page.params?.id
+      ? `/admin/orders/${req.page.params!.id}`
+      : '/admin/orders'
     return NextResponse.redirect(`${origin}/auth/login?redirect=${requestPage}`)
   }
 

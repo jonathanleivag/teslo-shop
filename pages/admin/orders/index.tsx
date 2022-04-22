@@ -4,28 +4,24 @@ import es from 'date-fns/locale/es'
 import { GetServerSideProps, GetServerSidePropsResult, NextPage } from 'next'
 import { getSession } from 'next-auth/react'
 import Link from 'next/link'
+import { BsCartCheck } from 'react-icons/bs'
 import { Cell, Column, HeaderCell, Table } from 'rsuite-table'
 import 'rsuite-table/dist/css/rsuite-table.css'
-import { TitleUiComponent } from '../../components'
-import { getAllOrdersByUserGql } from '../../gql'
-import { priceClp } from '../../helpers'
-import { IOrderOne } from '../../interfaces'
-import { ILogin } from '../../interfaces/loginInterface'
-import { ShopLayout } from '../../layouts'
-import { axiosGraphqlUtils } from '../../utils'
-import { URL_API } from '../../utils/envUtil'
+import { getAllOrderGql } from '../../../gql'
+import { priceClp } from '../../../helpers'
+import { ILogin, IOrderOne } from '../../../interfaces'
+import { AdminLayout } from '../../../layouts/AdminLayout'
+import { axiosGraphqlUtils, URL_API } from '../../../utils'
+import { IHistoryProps } from '../../orders/history'
 
-export interface IHistoryProps {
-  orders: IOrderOne[]
-}
-
-const HistoryPage: NextPage<IHistoryProps> = ({ orders }) => {
+const OrdersPage: NextPage<IHistoryProps> = ({ orders }) => {
   return (
-    <ShopLayout
-      title={'Historial de ordenes'}
-      pageDescription={'Historial de ordenes'}
+    <AdminLayout
+      title={'Ordenes'}
+      subTitle={'Mantenimientos de ordenes'}
+      titleHead={'Ordenes'}
+      Icon={BsCartCheck}
     >
-      <TitleUiComponent>Historial de ordenes</TitleUiComponent>
       <Table
         renderEmpty={() => (
           <div className='w-full h-full flex flex-row justify-center items-center'>
@@ -119,14 +115,14 @@ const HistoryPage: NextPage<IHistoryProps> = ({ orders }) => {
           <HeaderCell>Orden</HeaderCell>
           <Cell>
             {(rowData, _) => (
-              <Link href={`/orders/${rowData.id}`} passHref>
+              <Link href={`/admin/orders/${rowData.id}`} passHref>
                 <a className='text-blue-600'> ver orden </a>
               </Link>
             )}
           </Cell>
         </Column>
       </Table>
-    </ShopLayout>
+    </AdminLayout>
   )
 }
 
@@ -138,7 +134,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 
   try {
     const data = await axiosGraphqlUtils({
-      query: getAllOrdersByUserGql,
+      query: getAllOrderGql,
       variables: {
         idUser: user?.user.id
       },
@@ -146,7 +142,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
     })
 
     if (!data.errors) {
-      resp = { props: { orders: data.data.getAllOrderByUser as IOrderOne[] } }
+      resp = { props: { orders: data.data.getAllOrder as IOrderOne[] } }
     } else {
       resp = {
         redirect: {
@@ -168,4 +164,4 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   return resp
 }
 
-export default HistoryPage
+export default OrdersPage

@@ -17,6 +17,7 @@ export interface IOrderCartComponentProps {
   byId?: boolean
   edit?: boolean
   orderOne?: IOrderOne
+  admin?: boolean
 }
 
 export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
@@ -25,7 +26,8 @@ export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
   buttonText = 'Checkout',
   byId = false,
   edit = true,
-  orderOne
+  orderOne,
+  admin = false
 }) => {
   const router = useRouter()
   const address = useSelector((state: RootState) => state.address.address)
@@ -78,7 +80,7 @@ export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
             </div>
           </div>
           <div className='w-[95%] p-1 my-5 rounded-full'>
-            {!isPaying && (
+            {!isPaying && !admin && (
               <PayPalButtonsOrderComponent
                 orderId={orderOne?.id!}
                 total={orderOne?.total!}

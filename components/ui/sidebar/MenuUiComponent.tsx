@@ -2,15 +2,11 @@ import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { AiOutlineMan, AiOutlineWoman } from 'react-icons/ai'
-import { BsDoorClosed, BsKey } from 'react-icons/bs'
+import { BsCartCheck, BsDoorClosed, BsKey } from 'react-icons/bs'
 import { FaChild } from 'react-icons/fa'
 import { FiUsers } from 'react-icons/fi'
 import { HiOutlineUserCircle } from 'react-icons/hi'
-import {
-  MdOutlineCategory,
-  MdOutlineDashboard,
-  MdProductionQuantityLimits
-} from 'react-icons/md'
+import { MdOutlineCategory, MdOutlineDashboard } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
 import { SearchUiComponent } from '../..'
@@ -63,7 +59,7 @@ export const MenuUiComponent: FC = () => {
                 className='li_sidebar'
                 onClick={() => navigateTo(router, dispatch, '/orders/history')}
               >
-                <MdProductionQuantityLimits className='text-2xl' />
+                <BsCartCheck className='text-2xl' />
                 <p className='prose-lg'>Mis ordenes</p>
               </button>
             </li>
@@ -138,9 +134,14 @@ export const MenuUiComponent: FC = () => {
               <MdOutlineCategory className='text-2xl' />
               <p className='prose-lg'>Productos</p>
             </li>
-            <li className='li_sidebar'>
-              <MdProductionQuantityLimits className='text-2xl' />
-              <p className='prose-lg'>Ordenes</p>
+            <li>
+              <button
+                onClick={() => navigateTo(router, dispatch, '/admin/orders')}
+                className='li_sidebar'
+              >
+                <BsCartCheck className='text-2xl' />
+                <p className='prose-lg'>Ordenes</p>
+              </button>
             </li>
             <li>
               <button

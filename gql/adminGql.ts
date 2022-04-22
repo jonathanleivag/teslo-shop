@@ -31,3 +31,65 @@ export const updateRoleGql = gql`
     updateRole(input: $input)
   }
 `
+
+export const getAllOrderGql = gql`
+  query GetAllOrder($idUser: ID!) {
+    getAllOrder(idUser: $idUser) {
+      id
+      user {
+        name
+        email
+      }
+      numberOfItem
+      total
+      isPaid
+      paidAt
+      paymetResult
+      address {
+        address
+        country {
+          value
+        }
+      }
+      updatedAt
+    }
+  }
+`
+
+export const GetOneOrderAdminGql = gql`
+  query GetOneOrderAdmin($input: GetOneOrderAdminInput) {
+    getOneOrderAdmin(input: $input) {
+      id
+      user {
+        id
+      }
+      numberOfItem
+      subtotal
+      tax
+      total
+      isPaid
+      paidAt
+      paymetResult
+      orderItems {
+        id
+        image
+        price
+        slug
+        title
+        gender
+        size
+        quantity
+      }
+      address {
+        address
+        address0
+        postalCode
+        city
+        phono
+        country {
+          label
+        }
+      }
+    }
+  }
+`
