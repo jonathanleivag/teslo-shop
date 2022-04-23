@@ -93,3 +93,10 @@ export const getAllOrdersByUserGql = gql`
     }
   }
 `
+export const numberOfItemGql = gql`
+  query LoadOrderInCart($idUser: ID!) {
+    loadOrderInCart(idUser: $idUser) {
+      numberOfItem
+    }
+  }
+`

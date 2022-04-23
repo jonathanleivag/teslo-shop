@@ -30,7 +30,6 @@ export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
   admin = false
 }) => {
   const router = useRouter()
-  const address = useSelector((state: RootState) => state.address.address)
   const selectedAddress = useSelector(
     (state: RootState) => state.address.selectedAddress
   )
@@ -41,11 +40,7 @@ export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
 
   const handleRedirect = () => {
     if (title === 'Orden') {
-      if (address.length === 0) {
-        router.push('/checkout/address')
-      } else {
-        router.push('/checkout/address/history')
-      }
+      router.push('/checkout/address/history')
     }
 
     if (buttonText === 'Confirmar orden') {

@@ -1,37 +1,28 @@
 import axios from 'axios'
 import { print } from 'graphql'
-import { GetStaticProps, GetStaticPropsResult, NextPage } from 'next'
+import { NextPage, GetServerSidePropsResult, GetServerSideProps } from 'next'
+import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { FormCheckoutComponent, TitleUiComponent } from '../../../components'
-import { getCountriesGql } from '../../../gql'
+import { getCountriesGql, numberOfItemGql } from '../../../gql'
+import { ILogin } from '../../../interfaces'
 import { ShopLayout } from '../../../layouts'
 import { TCountry } from '../../../store/features'
 import { RootState } from '../../../store/index'
 
 export interface IAddressPageProps {
   countries: TCountry[]
+  numberOfItem?: number
 }
 
 const AddressPage: NextPage<IAddressPageProps> = ({ countries }) => {
-  const numberOfItem = useSelector(
-    (state: RootState) => state.cart.ordenSummary.numberOfItem
-  )
-
   const message = useSelector((state: RootState) => state.address.message)
   const isError = useSelector((state: RootState) => state.address.isError)
   const [editSelected, setEditSelected] = useState<string | boolean>(false)
 
   const router = useRouter()
-
-  useEffect(() => {
-    if (numberOfItem === 0) {
-      router.push('/')
-    }
-
-    return () => {}
-  }, [numberOfItem, router])
 
   useEffect(() => {
     const { edit = null } = router.query
@@ -40,8 +31,6 @@ const AddressPage: NextPage<IAddressPageProps> = ({ countries }) => {
     else setEditSelected(edit.toString())
     return () => {}
   }, [router.query])
-
-  if (numberOfItem === 0) return <></>
 
   return (
     <ShopLayout
@@ -71,10 +60,14 @@ const AddressPage: NextPage<IAddressPageProps> = ({ countries }) => {
   )
 }
 
-export const getStaticProps: GetStaticProps = async ctx => {
-  let res: GetStaticPropsResult<IAddressPageProps> = {
-    props: { countries: [] }
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  let res: GetServerSidePropsResult<IAddressPageProps> = {
+    props: { countries: [], numberOfItem: 0 }
   }
+
+  const session = await getSession({ req: ctx.req })
+  const user = session?.user as ILogin
+
   const { data } = await axios.post(
     process.env.URL_API!,
     {
@@ -85,12 +78,30 @@ export const getStaticProps: GetStaticProps = async ctx => {
     }
   )
 
-  if (data.errors) {
+  const { data: data0 } = await axios.post(
+    process.env.URL_API!,
+    {
+      query: print(numberOfItemGql),
+      variables: {
+        idUser: user.user.id
+      }
+    },
+    {
+      withCredentials: true
+    }
+  )
+
+  if (data.errors || data0.errors) {
     res = { redirect: { destination: '/', permanent: false } }
   } else {
-    res = {
-      props: {
-        countries: data.data.getCountries
+    if (data0.data.loadOrderInCart.numberOfItem === 0) {
+      res = { redirect: { destination: '/', permanent: false } }
+    } else {
+      res = {
+        props: {
+          countries: data.data.getCountries,
+          numberOfItem: data0.data.loadOrderInCart.numberOfItem
+        }
       }
     }
   }

@@ -1,33 +1,33 @@
-import { NextPage } from 'next'
+import { GetServerSideProps, NextPage, GetServerSidePropsResult } from 'next'
+import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { Cell, Column, HeaderCell, Table } from 'rsuite-table'
 import 'rsuite-table/dist/css/rsuite-table.css'
 import Swal from 'sweetalert2'
 import { TCheckInputs, TitleUiComponent } from '../../../components'
+import { getAddressByUserGql, numberOfItemGql } from '../../../gql'
+import { ILogin } from '../../../interfaces'
 import { ShopLayout } from '../../../layouts'
 import { RootState } from '../../../store'
 import { deleteAddress, selectedAddressAction } from '../../../store/features'
-import { Toast } from '../../../utils'
+import { axiosGraphqlUtils, URL_API } from '../../../utils'
+import { FullScreenLoadingUiComponent } from '../../../components/ui/FullScreenLoadingUiComponent'
 
 const titleAndDescription: string = 'Historial de direcciones'
 
-const HistoryPage: NextPage = () => {
-  const address = useSelector((state: RootState) => state.address.address)
+export interface IHistoryPageProps {
+  address: TCheckInputs[]
+}
+
+const HistoryPage: NextPage<IHistoryPageProps> = ({ address }) => {
   const selectedAddress = useSelector(
     (state: RootState) => state.address.selectedAddress
   )
+  const loading = useSelector((state: RootState) => state.address.loading)
   const router = useRouter()
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (address.length === 0) {
-      router.replace('/checkout/address')
-    }
-    return () => {}
-  }, [address, router])
 
   const selected = (event: TCheckInputs) => {
     dispatch(selectedAddressAction(event))
@@ -46,14 +46,8 @@ const HistoryPage: NextPage = () => {
       confirmButtonText: 'Remover'
     }).then(result => {
       if (result.isConfirmed) {
-        dispatch(deleteAddress(id))
+        dispatch(deleteAddress(id, router))
         dispatch(selectedAddressAction(undefined))
-
-        Toast.fire({
-          icon: 'success',
-          iconColor: '#2563EB',
-          title: 'Se removio la dirección'
-        })
       }
     })
   }
@@ -62,7 +56,9 @@ const HistoryPage: NextPage = () => {
     router.push('/checkout/address?edit=addressEdit')
     dispatch(selectedAddressAction(event))
   }
-  // TODO: No puedes eliminar una dirección si tienes pedido asociado a esa dirección
+
+  if (loading) return <FullScreenLoadingUiComponent />
+
   return (
     <ShopLayout
       title={titleAndDescription}
@@ -169,6 +165,46 @@ const HistoryPage: NextPage = () => {
       </div>
     </ShopLayout>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  let address: TCheckInputs[] = []
+  let resp: GetServerSidePropsResult<IHistoryPageProps> = {
+    props: { address }
+  }
+  const session = await getSession({ req: ctx.req })
+  const user = session?.user as ILogin
+
+  const data = await axiosGraphqlUtils({
+    query: getAddressByUserGql,
+    variables: { idUser: user.user.id },
+    url: URL_API
+  })
+
+  const data0 = await axiosGraphqlUtils({
+    query: numberOfItemGql,
+    variables: { idUser: user.user.id },
+    url: URL_API
+  })
+
+  if (data.errors || data0.errors) {
+    address = []
+    resp = { redirect: { destination: '/checkout/address', permanent: false } }
+  } else {
+    if (data0.data.loadOrderInCart.numberOfItem === 0) {
+      resp = { redirect: { destination: '/', permanent: false } }
+    } else {
+      if (data.data.getAddressesByUser.length === 0) {
+        resp = {
+          redirect: { destination: '/checkout/address', permanent: false }
+        }
+      } else {
+        resp = { props: { address: data.data.getAddressesByUser } }
+      }
+    }
+  }
+
+  return resp
 }
 
 export default HistoryPage

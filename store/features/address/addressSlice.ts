@@ -1,12 +1,7 @@
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit'
 import { NextRouter } from 'next/router'
-import {
-  addAddressGql,
-  deleteAddressGql,
-  editAddressGql,
-  getAddressByUserGql
-} from '../../../gql'
-import { axiosGraphqlUtils } from '../../../utils'
+import { addAddressGql, deleteAddressGql, editAddressGql } from '../../../gql'
+import { axiosGraphqlUtils, Toast } from '../../../utils'
 
 export type TCountry = {
   id: string
@@ -29,13 +24,15 @@ export interface IAddress {
   selectedAddress?: TCheckInputs
   isError: boolean
   message?: string
+  loading: boolean
 }
 
 const initialState: IAddress = {
   address: [],
   selectedAddress: undefined,
   isError: false,
-  message: undefined
+  message: undefined,
+  loading: false
 }
 
 const directionSlice = createSlice({
@@ -72,6 +69,9 @@ const directionSlice = createSlice({
       state.address = state.address.filter(
         address => address.id !== action.payload
       )
+    },
+    loadingAction: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload
     }
   }
 })
@@ -83,27 +83,14 @@ export const {
   isErrorAction,
   messageAction,
   editAddressAction,
-  deleteAddressAction
+  deleteAddressAction,
+  loadingAction
 } = directionSlice.actions
 
-export const loadAddress = (idUser: string = '') => async (
+export const loadAddress = (getAddressesByUser: TCheckInputs[]) => async (
   dispatch: Dispatch
 ) => {
-  if (idUser && idUser !== '') {
-    try {
-      const data = await axiosGraphqlUtils({
-        query: getAddressByUserGql,
-        variables: { idUser }
-      })
-      if (data.errors) {
-        dispatch(loadAddressAction(initialState.address))
-      } else {
-        dispatch(loadAddressAction(data.data.getAddressesByUser))
-      }
-    } catch (error) {
-      dispatch(loadAddressAction(initialState.address))
-    }
-  }
+  dispatch(loadAddressAction(getAddressesByUser))
 }
 
 export const addAddress = (
@@ -122,6 +109,10 @@ export const addAddress = (
     if (data.errors) {
       dispatch(isErrorAction(true))
       dispatch(messageAction(data.errors[0].message))
+      setTimeout(() => {
+        dispatch(messageAction(undefined))
+        dispatch(isErrorAction(false))
+      }, 3100)
     } else {
       dispatch(isErrorAction(false))
       dispatch(messageAction(undefined))
@@ -132,6 +123,10 @@ export const addAddress = (
   } catch (error) {
     dispatch(isErrorAction(true))
     dispatch(messageAction('Error al agregar la dirección'))
+    setTimeout(() => {
+      dispatch(messageAction(undefined))
+      dispatch(isErrorAction(false))
+    }, 3100)
   }
 }
 
@@ -157,6 +152,10 @@ export const editAddress = (
     if (data.errors) {
       dispatch(isErrorAction(true))
       dispatch(messageAction(data.errors[0].message))
+      setTimeout(() => {
+        dispatch(messageAction(undefined))
+        dispatch(isErrorAction(false))
+      }, 3100)
     } else {
       dispatch(isErrorAction(false))
       dispatch(messageAction(undefined))
@@ -167,11 +166,18 @@ export const editAddress = (
   } catch (error) {
     dispatch(isErrorAction(true))
     dispatch(messageAction('Error al agregar la dirección'))
+    setTimeout(() => {
+      dispatch(messageAction(undefined))
+      dispatch(isErrorAction(false))
+    }, 3100)
   }
 }
 
-export const deleteAddress = (id: string) => async (dispatch: Dispatch) => {
+export const deleteAddress = (id: string, router: NextRouter) => async (
+  dispatch: Dispatch
+) => {
   try {
+    dispatch(loadingAction(true))
     const data = await axiosGraphqlUtils({
       query: deleteAddressGql,
       variables: {
@@ -182,14 +188,36 @@ export const deleteAddress = (id: string) => async (dispatch: Dispatch) => {
     if (data.errors) {
       dispatch(isErrorAction(true))
       dispatch(messageAction(data.errors[0].message))
+      dispatch(loadingAction(false))
+      Toast.fire({
+        icon: 'error',
+        title: data.errors[0].message
+      })
+      setTimeout(() => {
+        dispatch(messageAction(undefined))
+        dispatch(isErrorAction(false))
+      }, 3100)
     } else {
       dispatch(isErrorAction(false))
       dispatch(messageAction(undefined))
       dispatch(deleteAddressAction(id))
+      Toast.fire({
+        icon: 'success',
+        iconColor: '#2563EB',
+        title: data.data.deleteAddress
+      }).then(() => {
+        router.reload()
+        dispatch(loadingAction(false))
+      })
     }
   } catch (error) {
     dispatch(isErrorAction(true))
     dispatch(messageAction('Error al eliminar la dirección'))
+    dispatch(loadingAction(false))
+    setTimeout(() => {
+      dispatch(messageAction(undefined))
+      dispatch(isErrorAction(false))
+    }, 3100)
   }
 }
 
