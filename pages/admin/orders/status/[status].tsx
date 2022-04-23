@@ -3,23 +3,59 @@ import format from 'date-fns/format'
 import es from 'date-fns/locale/es'
 import { GetServerSideProps, GetServerSidePropsResult, NextPage } from 'next'
 import { getSession } from 'next-auth/react'
-import Link from 'next/link'
+import { getAllOrderGql } from '../../../../gql'
+import { IOrderOne } from '../../../../interfaces'
+import { ILogin } from '../../../../interfaces/loginInterface'
+import { axiosGraphqlUtils, URL_API } from '../../../../utils'
+import { AdminLayout, IAdminLayoutProps } from '../../../../layouts'
 import { BsCartCheck } from 'react-icons/bs'
 import { Cell, Column, HeaderCell, Table } from 'rsuite-table'
 import 'rsuite-table/dist/css/rsuite-table.css'
-import { getAllOrderGql } from '../../../gql'
-import { priceClp } from '../../../helpers'
-import { ILogin, IOrderOne } from '../../../interfaces'
-import { AdminLayout } from '../../../layouts/AdminLayout'
-import { axiosGraphqlUtils, URL_API } from '../../../utils'
-import { IHistoryProps } from '../../orders/history'
+import { priceClp } from '../../../../helpers'
+import Link from 'next/link'
+import { IHistoryProps } from '../../../orders/history'
+import { useState, useEffect } from 'react'
 
-const OrdersPage: NextPage<IHistoryProps> = ({ orders }) => {
+export type TStatus = 'pending' | 'paid' | 'all'
+
+export interface IPropsOrderByStatusPage extends IHistoryProps {
+  status: TStatus
+}
+
+const OrderByStatusAdminPage: NextPage<IPropsOrderByStatusPage> = ({
+  orders,
+  status
+}) => {
+  const [titles, setTitles] = useState<IAdminLayoutProps>({
+    title: 'Ordenes',
+    subTitle: 'Mantenimientos de ordenes',
+    titleHead: 'Ordenes'
+  })
+
+  useEffect(() => {
+    if (status === 'pending') {
+      setTitles({
+        title: 'Ordenes pendientes',
+        subTitle: 'Mantenimientos de ordenes pendientes',
+        titleHead: 'Ordenes pendientes'
+      })
+    }
+
+    if (status === 'paid') {
+      setTitles({
+        title: 'Ordenes pagadas',
+        subTitle: 'Mantenimientos de ordenes pagadas',
+        titleHead: 'Ordenes pagadas'
+      })
+    }
+    return () => {}
+  }, [status])
+
   return (
     <AdminLayout
-      title={'Ordenes'}
-      subTitle={'Mantenimientos de ordenes'}
-      titleHead={'Ordenes'}
+      title={titles.title}
+      subTitle={titles.subTitle}
+      titleHead={titles.titleHead}
       Icon={BsCartCheck}
     >
       <Table
@@ -127,23 +163,23 @@ const OrdersPage: NextPage<IHistoryProps> = ({ orders }) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
-  let resp: GetServerSidePropsResult<IHistoryProps>
+  let resp: GetServerSidePropsResult<IPropsOrderByStatusPage>
 
   const session = await getSession({ req: ctx.req })
   const user = session?.user as ILogin | null
-
+  const { status = 'all' } = ctx.query as { status: TStatus }
   try {
     const data = await axiosGraphqlUtils({
       query: getAllOrderGql,
       variables: {
         idUser: user?.user.id,
-        status: 'all'
+        status
       },
       url: URL_API
     })
 
     if (!data.errors) {
-      resp = { props: { orders: data.data.getAllOrder as IOrderOne[] } }
+      resp = { props: { orders: data.data.getAllOrder as IOrderOne[], status } }
     } else {
       resp = {
         redirect: {
@@ -165,4 +201,4 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   return resp
 }
 
-export default OrdersPage
+export default OrderByStatusAdminPage

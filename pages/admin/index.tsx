@@ -72,6 +72,7 @@ const AdminPage: NextPage = () => {
           subTitle={'Ordenes totales'}
           Icon={AiFillCreditCard}
           classNameIcon='text-blue-500'
+          url='/admin/orders'
         />
 
         <AdminSummaryTileComponent
@@ -79,6 +80,7 @@ const AdminPage: NextPage = () => {
           subTitle={'Ordenes pagadas'}
           Icon={MdAttachMoney}
           classNameIcon='text-green-500'
+          url='/admin/orders/status/paid'
         />
 
         <AdminSummaryTileComponent
@@ -86,6 +88,7 @@ const AdminPage: NextPage = () => {
           subTitle={'Ordenes pendientes'}
           Icon={MdOutlineCreditCardOff}
           classNameIcon='text-red-500'
+          url='/admin/orders/status/pending'
         />
 
         <AdminSummaryTileComponent
@@ -93,6 +96,7 @@ const AdminPage: NextPage = () => {
           subTitle={'Clientes'}
           Icon={GrGroup}
           classNameIcon='text-red-500'
+          url='/admin/users'
         />
 
         <AdminSummaryTileComponent
@@ -121,6 +125,7 @@ const AdminPage: NextPage = () => {
           subTitle={'Actualización en: '}
           Icon={BiTimeFive}
           classNameIcon='text-blue-500'
+          className='cursor-not-allowed'
         />
       </div>
     </AdminLayout>

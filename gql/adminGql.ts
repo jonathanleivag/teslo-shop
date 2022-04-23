@@ -33,8 +33,8 @@ export const updateRoleGql = gql`
 `
 
 export const getAllOrderGql = gql`
-  query GetAllOrder($idUser: ID!) {
-    getAllOrder(idUser: $idUser) {
+  query GetAllOrder($idUser: ID!, $status: EStatus) {
+    getAllOrder(idUser: $idUser, status: $status) {
       id
       user {
         name
