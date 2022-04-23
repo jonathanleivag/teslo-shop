@@ -66,6 +66,11 @@ ver producto -> http://localhost:3000/product/slug
 
 # admin
 dashboard -> http://localhost:3000/admin
+ordenes -> http://localhost:3000/admin/orders
+una orden -> http://localhost:3000/admin/orders/[id]
+ordenes pagadas -> http://localhost:3000/admin/ordenes/status/[paid]
+ordenes pendientes -> http://localhost:3000/admin/ordenes/status/[pending]
+todas las ordenes -> http://localhost:3000/admin/ordenes/status/[all]
 
 #raiz
 404
