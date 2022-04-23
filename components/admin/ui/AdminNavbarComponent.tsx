@@ -19,9 +19,9 @@ export const AdminNavbarComponent: FC = () => {
           <Link href='/admin' replace passHref shallow={false}>
             <a>
               <span className='prose prose-base font-bold'>Dashboard </span>
-              <span className='prose prose-sm font-sans'> / </span>
             </a>
           </Link>
+          <span className='prose prose-sm font-sans'> / </span>
           <Link href='/' replace passHref shallow={false}>
             <a>
               <span className='prose prose-base font-bold'>Teslo |</span>
