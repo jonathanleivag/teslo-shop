@@ -1,24 +1,15 @@
-import { NextPage } from 'next'
-import {
-  FullScreenLoadingUiComponent,
-  ProductListComponent,
-  TitleUiComponent
-} from '../components'
+import { GetServerSideProps, NextPage, GetServerSidePropsResult } from 'next'
+import { ProductListComponent, TitleUiComponent } from '../components'
 import { ShopLayout } from '../layouts'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from '../store/index'
-import { useEffect } from 'react'
-import { addProduct } from '../store/features'
+import { IProduct } from '../interfaces'
+import { axiosGraphqlUtils, URL_API } from '../utils'
+import { ProductsGql } from '../gql'
 
-const HomePage: NextPage = () => {
-  const { products, loading } = useSelector((state: RootState) => state.product)
-  const dispatch = useDispatch()
+export interface IHomePageProps {
+  products: IProduct[]
+}
 
-  useEffect(() => {
-    dispatch(addProduct(null))
-    return () => {}
-  }, [dispatch])
-
+const HomePage: NextPage<IHomePageProps> = ({ products }) => {
   return (
     <ShopLayout
       title={'Teslo-Shop - Home'}
@@ -26,10 +17,31 @@ const HomePage: NextPage = () => {
     >
       <TitleUiComponent>TESLO SHOP</TitleUiComponent>
       <h2 className='mb-5 prose-xl'>Todos los productos</h2>
-      {loading && <FullScreenLoadingUiComponent />}
-      {!loading && <ProductListComponent products={products} />}
+      <ProductListComponent products={products} />
     </ShopLayout>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  let resp: GetServerSidePropsResult<IHomePageProps> = {
+    props: { products: [] }
+  }
+
+  const data = await axiosGraphqlUtils({
+    query: ProductsGql,
+    variables: { gender: null },
+    url: URL_API
+  })
+
+  if (!data.errors) {
+    resp = {
+      props: {
+        products: data.data.products
+      }
+    }
+  }
+
+  return resp
 }
 
 export default HomePage

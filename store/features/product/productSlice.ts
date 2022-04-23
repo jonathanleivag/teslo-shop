@@ -50,12 +50,17 @@ export const addProduct = (gender: TUseProducts) => async (
 ) => {
   try {
     dispatch(changeLoading(true))
-    const { data } = await axiosGraphqlUtils({
+    const data = await axiosGraphqlUtils({
       query: ProductsGql,
       variables: { gender }
     })
-    dispatch(changeLoading(false))
-    dispatch(addProductAction(data.products))
+    if (!data.errors) {
+      dispatch(changeLoading(false))
+      dispatch(addProductAction(data.data.products))
+    } else {
+      dispatch(changeLoading(false))
+      dispatch(changeError('Error al cargar los productos'))
+    }
   } catch (error) {
     dispatch(changeLoading(false))
     dispatch(changeError(error))
