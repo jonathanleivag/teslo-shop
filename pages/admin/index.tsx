@@ -104,6 +104,7 @@ const AdminPage: NextPage = () => {
           subTitle={'Productos'}
           Icon={MdOutlineCategory}
           classNameIcon='text-yellow-500'
+          url='/admin/products'
         />
 
         <AdminSummaryTileComponent

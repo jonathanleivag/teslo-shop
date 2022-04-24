@@ -130,9 +130,14 @@ export const MenuUiComponent: FC = () => {
                 <p className='prose-lg'>Dashboard</p>
               </button>
             </li>
-            <li className='li_sidebar'>
-              <MdOutlineCategory className='text-2xl' />
-              <p className='prose-lg'>Productos</p>
+            <li>
+              <button
+                className='li_sidebar'
+                onClick={() => navigateTo(router, dispatch, '/admin/products')}
+              >
+                <MdOutlineCategory className='text-2xl' />
+                <p className='prose-lg'>Productos</p>
+              </button>
             </li>
             <li>
               <button

@@ -93,3 +93,18 @@ export const GetOneOrderAdminGql = gql`
     }
   }
 `
+export const productsAdmin = gql`
+  query Products {
+    products {
+      images
+      gender
+      type
+      inStock
+      price
+      title
+      sizes
+      slug
+      updatedAt
+    }
+  }
+`
