@@ -11,7 +11,7 @@ import { AdminLayout, IAdminLayoutProps } from '../../../../layouts'
 import { BsCartCheck } from 'react-icons/bs'
 import { Cell, Column, HeaderCell, Table } from 'rsuite-table'
 import 'rsuite-table/dist/css/rsuite-table.css'
-import { priceClp } from '../../../../helpers'
+import { priceUSD } from '../../../../helpers'
 import Link from 'next/link'
 import { IHistoryProps } from '../../../orders/history'
 import { useState, useEffect } from 'react'
@@ -120,7 +120,7 @@ const OrderByStatusAdminPage: NextPage<IPropsOrderByStatusPage> = ({
           <Cell>
             {(rowData, _) => (
               <div className='flex flex-row justify-end'>
-                <p> {priceClp(rowData.total)} </p>
+                <p> {priceUSD(rowData.total)} </p>
               </div>
             )}
           </Cell>

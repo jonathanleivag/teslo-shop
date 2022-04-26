@@ -146,3 +146,62 @@ p {
 .rs-table {
   @apply min-h-[calc(100vh-250px)];
 }
+
+/* -------------------------------------------------------------------------- */
+/*                                form product                                */
+/* -------------------------------------------------------------------------- */
+
+.container_form_product {
+  @apply w-full flex flex-col gap-1 my-2;
+}
+
+.input_form_product {
+  @apply focus:outline-none border border-gray-400 h-10 px-1;
+}
+
+.textarea_form_product {
+  @apply focus:outline-none border border-gray-400 px-1 h-24 resize-none;
+}
+
+.grid_container_radio_button_produts {
+  @apply grid grid-cols-2 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-4 gap-2;
+}
+
+.container_radio_button_type_products {
+  @apply flex flex-row gap-2 my-2 items-center;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                    tags                                    */
+/* -------------------------------------------------------------------------- */
+
+.react-tag-input__tag {
+  @apply bg-blue-600 text-white rounded-full !important;
+}
+
+.react-tag-input__tag__remove {
+  @apply bg-blue-600 rounded-full flex flex-row justify-center items-center !important;
+}
+
+.react-tag-input__tag__remove:before,
+.react-tag-input__tag__remove:after {
+  @apply bg-white !important; /* X icon in remove button */
+}
+
+.react-tag-input {
+  @apply border border-gray-400 !important;
+}
+
+.react-tag-input__input {
+  @apply h-10 !important;
+}

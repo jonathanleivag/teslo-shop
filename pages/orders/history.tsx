@@ -8,7 +8,7 @@ import { Cell, Column, HeaderCell, Table } from 'rsuite-table'
 import 'rsuite-table/dist/css/rsuite-table.css'
 import { TitleUiComponent } from '../../components'
 import { getAllOrdersByUserGql } from '../../gql'
-import { priceClp } from '../../helpers'
+import { priceUSD } from '../../helpers'
 import { IOrderOne } from '../../interfaces'
 import { ILogin } from '../../interfaces/loginInterface'
 import { ShopLayout } from '../../layouts'
@@ -88,7 +88,7 @@ const HistoryPage: NextPage<IHistoryProps> = ({ orders }) => {
           <Cell>
             {(rowData, _) => (
               <div className='flex flex-row justify-end'>
-                <p> {priceClp(rowData.total)} </p>
+                <p> {priceUSD(rowData.total)} </p>
               </div>
             )}
           </Cell>

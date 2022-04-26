@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { FC, useState, useEffect } from 'react'
 import { SummaryResumePersonalComponent } from '..'
-import { priceClp } from '../../helpers'
+import { priceUSD } from '../../helpers'
 import { NEXT_PUBLIC_TAX } from '../../utils'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store'
@@ -61,7 +61,7 @@ export const OrderSummaryCartComponent: FC<IOrderSummaryCartComponentProps> = ({
       <div className='w-full flex flex-row'>
         <div className='w-1/2 flex flex-row justify-start'>Subtotal:</div>
         <div className='w-1/2 flex flex-row justify-end'>
-          {priceClp(order?.subtotal as number)}
+          {priceUSD(order?.subtotal as number)}
         </div>
       </div>
       <div className='w-full flex flex-row'>
@@ -69,13 +69,13 @@ export const OrderSummaryCartComponent: FC<IOrderSummaryCartComponentProps> = ({
           Impuesto ({NEXT_PUBLIC_TAX}%):
         </div>
         <div className='w-1/2 flex flex-row justify-end'>
-          {priceClp(order?.tax as number)}
+          {priceUSD(order?.tax as number)}
         </div>
       </div>
       <div className='w-full flex flex-row font-bold mt-3'>
         <div className='w-1/2 flex flex-row justify-start'>Total:</div>
         <div className='w-1/2 flex flex-row justify-end'>
-          {priceClp(order?.total as number)}
+          {priceUSD(order?.total as number)}
         </div>
       </div>
     </div>

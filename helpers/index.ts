@@ -1,1 +1,1 @@
-export * from './priceClp'
+export * from './priceUSD'

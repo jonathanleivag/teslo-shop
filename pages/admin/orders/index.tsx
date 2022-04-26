@@ -8,7 +8,7 @@ import { BsCartCheck } from 'react-icons/bs'
 import { Cell, Column, HeaderCell, Table } from 'rsuite-table'
 import 'rsuite-table/dist/css/rsuite-table.css'
 import { getAllOrderGql } from '../../../gql'
-import { priceClp } from '../../../helpers'
+import { priceUSD } from '../../../helpers'
 import { ILogin, IOrderOne } from '../../../interfaces'
 import { AdminLayout } from '../../../layouts/AdminLayout'
 import { axiosGraphqlUtils, URL_API } from '../../../utils'
@@ -84,7 +84,7 @@ const OrdersPage: NextPage<IHistoryProps> = ({ orders }) => {
           <Cell>
             {(rowData, _) => (
               <div className='flex flex-row justify-end'>
-                <p> {priceClp(rowData.total)} </p>
+                <p> {priceUSD(rowData.total)} </p>
               </div>
             )}
           </Cell>

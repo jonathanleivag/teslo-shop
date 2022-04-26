@@ -15,7 +15,7 @@ export const AdminNavbarComponent: FC = () => {
       }  top-0 bg-white w-full py-3 flex flex-row justify-center items-center`}
     >
       <div className='w-[96%] flex flex-row justify-between'>
-        <div className='w-1/2 lg:w-[90%] flex flex-row gap-1'>
+        <div className='w-[90%] flex flex-row gap-1'>
           <Link href='/admin' replace passHref shallow={false}>
             <a>
               <span className='prose prose-base font-bold'>Dashboard </span>
@@ -30,7 +30,7 @@ export const AdminNavbarComponent: FC = () => {
           </Link>
         </div>
 
-        <div className='w-1/2 lg:w-[10%] flex flex-row gap-3 justify-end lg:justify-center items-center'>
+        <div className='w-[10%] flex flex-row gap-3 justify-end lg:justify-center items-center'>
           <button
             onClick={() => dispatch(changeMenu(true))}
             className='menu-a font-medium'

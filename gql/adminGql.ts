@@ -108,3 +108,20 @@ export const productsAdmin = gql`
     }
   }
 `
+export const ProductBySlugAdminGql = gql`
+  query ProductBySlug($slug: String!) {
+    productBySlug(slug: $slug) {
+      id
+      tags
+      type
+      gender
+      description
+      images
+      slug
+      inStock
+      price
+      sizes
+      title
+    }
+  }
+`

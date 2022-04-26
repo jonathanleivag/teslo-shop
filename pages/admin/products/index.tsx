@@ -1,18 +1,16 @@
-// import { formatDistanceToNow } from 'date-fns'
-// import format from 'date-fns/format'
-// import es from 'date-fns/locale/es'
 import { GetServerSideProps, GetServerSidePropsResult, NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { AiFillDelete, AiFillEdit } from 'react-icons/ai'
 import { MdOutlineCategory } from 'react-icons/md'
 import { Cell, Column, HeaderCell, Table } from 'rsuite-table'
 import 'rsuite-table/dist/css/rsuite-table.css'
-import { productsAdmin } from '../../gql'
-import { useBlurDataURL } from '../../hooks'
-// import { priceClp } from '../../helpers'
-import { IProduct } from '../../interfaces'
-import { AdminLayout } from '../../layouts/AdminLayout'
-import { axiosGraphqlUtils, URL_API } from '../../utils'
+import { productsAdmin } from '../../../gql'
+import { priceUSD } from '../../../helpers'
+import { useBlurDataURL } from '../../../hooks'
+import { IProduct } from '../../../interfaces'
+import { AdminLayout } from '../../../layouts'
+import { axiosGraphqlUtils, URL_API } from '../../../utils'
 
 export interface IProductsPageProps {
   products: IProduct[]
@@ -76,7 +74,11 @@ const ProductsAdminPage: NextPage<IProductsPageProps> = ({ products }) => {
         </Column>
         <Column width={100} resizable>
           <HeaderCell>Precio</HeaderCell>
-          <Cell dataKey='price' />
+          <Cell>
+            {(rowData, _) => {
+              return priceUSD(rowData.price)
+            }}
+          </Cell>
         </Column>
         <Column width={250} resizable>
           <HeaderCell>Tallas</HeaderCell>
@@ -84,6 +86,23 @@ const ProductsAdminPage: NextPage<IProductsPageProps> = ({ products }) => {
             {(rowData, _) => {
               return rowData.sizes.join(', ')
             }}
+          </Cell>
+        </Column>
+        <Column width={200} resizable>
+          <HeaderCell>Producto</HeaderCell>
+          <Cell>
+            {(rowData, _) => (
+              <div className='w-full flex flex-row justify-start items-center'>
+                <Link href={`/admin/products/${rowData.slug}`}>
+                  <a className='bg-yellow-400 p-1 mx-1'>
+                    <AiFillEdit className='text-white' />
+                  </a>
+                </Link>
+                <button className='bg-red-600 p-1 mx-1'>
+                  <AiFillDelete className='text-white' />
+                </button>
+              </div>
+            )}
           </Cell>
         </Column>
       </Table>
