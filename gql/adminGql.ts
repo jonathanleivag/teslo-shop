@@ -125,3 +125,9 @@ export const ProductBySlugAdminGql = gql`
     }
   }
 `
+
+export const updateProductGql = gql`
+  mutation UpdateProduct($input: UpdateProductInput) {
+    updateProduct(input: $input)
+  }
+`

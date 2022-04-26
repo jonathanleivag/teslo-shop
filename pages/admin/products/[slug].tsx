@@ -17,11 +17,17 @@ import {
   AdminRadioButtonTypeComponent,
   AdminTagComponent
 } from '../../../components'
-import { ProductBySlugAdminGql, SlugProductsGql } from '../../../gql'
+import {
+  ProductBySlugAdminGql,
+  SlugProductsGql,
+  updateProductGql
+} from '../../../gql'
 import { IProduct, TGender, TValidSize, TValidType } from '../../../interfaces'
 import { AdminLayout } from '../../../layouts'
 import { axiosGraphqlUtils } from '../../../utils'
 import { productValidation } from '../../../validations'
+import { Toast } from '../../../utils/toastUtil'
+import { useSession0 } from '../../../hooks/useSession0'
 
 export interface IProductForm {
   description: string
@@ -57,6 +63,8 @@ const SlugPage: NextPage<ISlugPageProps> = ({ product }) => {
     mode: 'onChange'
   })
 
+  const session = useSession0()
+
   const [errorTag, setErrorTag] = useState<FieldError | undefined>(undefined)
   const [errorCheckbox, setErrorCheckbox] = useState<FieldError | undefined>(
     undefined
@@ -78,9 +86,37 @@ const SlugPage: NextPage<ISlugPageProps> = ({ product }) => {
     return () => subcription.unsubscribe()
   }, [setValue, watch])
 
-  const onSubmit = handleSubmit<IProduct>(value => {
+  const onSubmit = handleSubmit<IProduct>(async value => {
     if (errorCheckbox === undefined && errorTag === undefined) {
-      console.log(value)
+      try {
+        const data = await axiosGraphqlUtils({
+          query: updateProductGql,
+          variables: {
+            input: {
+              product: value,
+              idUser: session?.user.id
+            }
+          }
+        })
+
+        if (data.errors) {
+          Toast.fire({
+            icon: 'error',
+            title: data.errors[0].message
+          })
+        } else {
+          Toast.fire({
+            icon: 'success',
+            iconColor: '#2563EB',
+            title: data.data.updateProduct
+          })
+        }
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: 'Error al actualizar el producto'
+        })
+      }
     }
   })
 
