@@ -1,10 +1,11 @@
 import { ChangeEvent, FC } from 'react'
 import { UseFormSetValue } from 'react-hook-form'
-import { IProduct, TGender } from '../../../interfaces'
+import { TGender } from '../../../interfaces'
+import { IProductForm } from '../../../pages/admin/products/[slug]'
 
 export interface IAdminRadioButtonGenderComponentProps {
   genderSelect: TGender
-  setValue: UseFormSetValue<IProduct>
+  setValue: UseFormSetValue<IProductForm>
 }
 
 export interface IValidGenderComponent {

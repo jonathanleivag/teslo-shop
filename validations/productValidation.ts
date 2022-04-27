@@ -8,7 +8,7 @@ export const productValidation: yup.SchemaOf<IProductForm> = yup
     description: yup.string().required('La descripción es requerida'),
     inStock: yup
       .number()
-      .positive('Tiene que tener un stock positivo')
+      .min(0, 'Tiene que tener un stock positivo o 0')
       .required('La cantidad en stock es requerida'),
     price: yup
       .number()

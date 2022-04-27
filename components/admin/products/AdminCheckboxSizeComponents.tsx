@@ -1,10 +1,11 @@
 import { ChangeEvent, Dispatch, FC, SetStateAction, useEffect } from 'react'
 import { FieldError, UseFormSetValue } from 'react-hook-form'
-import { IProduct, TValidSize } from '../../../interfaces'
+import { TValidSize } from '../../../interfaces'
+import { IProductForm } from '../../../pages/admin/products/[slug]'
 
 export interface IAdminCheckboxSizeComponents {
   checkbox: TValidSize[]
-  setValue: UseFormSetValue<IProduct>
+  setValue: UseFormSetValue<IProductForm>
   setErrorCheckbox: Dispatch<SetStateAction<FieldError | undefined>>
 }
 

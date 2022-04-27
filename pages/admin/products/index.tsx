@@ -25,6 +25,13 @@ const ProductsAdminPage: NextPage<IProductsPageProps> = ({ products }) => {
       titleHead={'Productos'}
       Icon={MdOutlineCategory}
     >
+      <div className='w-full flex flex-row justify-end items-center my-3'>
+        <Link href={'/admin/products/new'}>
+          <a className='py-1 px-2 bg-blue-600 text-white rounded-lg'>
+            Crear producto
+          </a>
+        </Link>
+      </div>
       <Table
         renderEmpty={() => (
           <div className='w-full h-full flex flex-row justify-center items-center'>

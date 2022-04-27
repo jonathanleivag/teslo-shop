@@ -1,10 +1,10 @@
 import { FC, useState, useEffect, Dispatch, SetStateAction } from 'react'
 import ReactTagInput from '@pathofdev/react-tag-input'
 import { FieldError, UseFormSetValue } from 'react-hook-form'
-import { IProduct } from '../../../interfaces'
+import { IProductForm } from '../../../pages/admin/products/[slug]'
 
 export interface IAdminTagComponent {
-  setValue: UseFormSetValue<IProduct>
+  setValue: UseFormSetValue<IProductForm>
   selectTags: string[]
   setErrorTag: Dispatch<SetStateAction<FieldError | undefined>>
 }

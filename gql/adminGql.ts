@@ -131,3 +131,9 @@ export const updateProductGql = gql`
     updateProduct(input: $input)
   }
 `
+
+export const addProductGql = gql`
+  mutation AddProduct($input: UpdateProductInput) {
+    addProduct(input: $input)
+  }
+`

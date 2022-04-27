@@ -1,12 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import '@pathofdev/react-tag-input/build/index.css'
-import {
-  GetStaticPaths,
-  GetStaticPathsResult,
-  GetStaticProps,
-  GetStaticPropsResult,
-  NextPage
-} from 'next'
+import { GetServerSideProps, NextPage, GetServerSidePropsResult } from 'next'
 import { useEffect, useState } from 'react'
 import { FieldError, useForm } from 'react-hook-form'
 import { AiOutlineEdit, AiOutlineSave } from 'react-icons/ai'
@@ -18,8 +12,8 @@ import {
   AdminTagComponent
 } from '../../../components'
 import {
+  addProductGql,
   ProductBySlugAdminGql,
-  SlugProductsGql,
   updateProductGql
 } from '../../../gql'
 import { IProduct, TGender, TValidSize, TValidType } from '../../../interfaces'
@@ -28,6 +22,7 @@ import { axiosGraphqlUtils } from '../../../utils'
 import { productValidation } from '../../../validations'
 import { Toast } from '../../../utils/toastUtil'
 import { useSession0 } from '../../../hooks/useSession0'
+import { useRouter } from 'next/router'
 
 export interface IProductForm {
   description: string
@@ -43,9 +38,10 @@ export interface IProductForm {
 
 export interface ISlugPageProps {
   product: IProduct
+  edit: boolean
 }
 
-const SlugPage: NextPage<ISlugPageProps> = ({ product }) => {
+const SlugPage: NextPage<ISlugPageProps> = ({ product, edit }) => {
   const {
     register,
     handleSubmit,
@@ -53,7 +49,7 @@ const SlugPage: NextPage<ISlugPageProps> = ({ product }) => {
     getValues,
     setValue,
     watch
-  } = useForm<IProduct>({
+  } = useForm<IProductForm>({
     defaultValues: {
       ...product,
       inStock: product.inStock || 0,
@@ -64,6 +60,7 @@ const SlugPage: NextPage<ISlugPageProps> = ({ product }) => {
   })
 
   const session = useSession0()
+  const router = useRouter()
 
   const [errorTag, setErrorTag] = useState<FieldError | undefined>(undefined)
   const [errorCheckbox, setErrorCheckbox] = useState<FieldError | undefined>(
@@ -90,7 +87,7 @@ const SlugPage: NextPage<ISlugPageProps> = ({ product }) => {
     if (errorCheckbox === undefined && errorTag === undefined) {
       try {
         const data = await axiosGraphqlUtils({
-          query: updateProductGql,
+          query: edit ? updateProductGql : addProductGql,
           variables: {
             input: {
               product: value,
@@ -108,14 +105,16 @@ const SlugPage: NextPage<ISlugPageProps> = ({ product }) => {
           Toast.fire({
             icon: 'success',
             iconColor: '#2563EB',
-            title: data.data.updateProduct
+            title: edit ? data.data.updateProduct : data.data.addProduct
           })
+          if (!edit) router.replace(`/admin/products/${value.slug}`)
         }
       } catch (error) {
         Toast.fire({
           icon: 'error',
-          title: 'Error al actualizar el producto'
+          title: 'Error al agregar/actualizar el producto'
         })
+        console.error(error)
       }
     }
   })
@@ -123,8 +122,8 @@ const SlugPage: NextPage<ISlugPageProps> = ({ product }) => {
   return (
     <AdminLayout
       title={'Producto'}
-      subTitle={`Editando: ${product.title}`}
-      titleHead={product.title}
+      subTitle={edit ? `Editando: ${product.title}` : 'Nuevo Producto'}
+      titleHead={edit ? product.title : 'Nuevo Producto'}
       Icon={AiOutlineEdit}
     >
       <form className='flex flex-row justify-center' onSubmit={onSubmit}>
@@ -231,7 +230,7 @@ const SlugPage: NextPage<ISlugPageProps> = ({ product }) => {
               className='w-full md:w-[40%] h-10 rounded-full my-3 flex flex-row gap-2 justify-center items-center text-white bg-blue-600'
             >
               <AiOutlineSave />
-              <span>Guardar</span>
+              <span>{edit ? 'Guardar' : 'Crear '}</span>
             </button>
           </div>
         </div>
@@ -240,34 +239,8 @@ const SlugPage: NextPage<ISlugPageProps> = ({ product }) => {
   )
 }
 
-export const getStaticPaths: GetStaticPaths = async ctx => {
-  let result: GetStaticPathsResult<{ slog: string } | {}> = {
-    paths: [{ params: {} }],
-    fallback: true
-  }
-  try {
-    const data = await axiosGraphqlUtils({ query: SlugProductsGql })
-
-    if (data.errors) {
-      console.error(data.errors)
-    } else {
-      result = {
-        paths: data.data.products.map((product: IProduct) => ({
-          params: {
-            slug: product.slug
-          }
-        })),
-        fallback: 'blocking'
-      }
-    }
-  } catch (error) {
-    console.error(error)
-  }
-  return result
-}
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  let resp: GetStaticPropsResult<IProduct | {}> = { props: {} }
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  let resp: GetServerSidePropsResult<IProduct | {}> = { props: {} }
 
   const error = {
     redirect: {
@@ -277,21 +250,43 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 
   try {
-    const data = await axiosGraphqlUtils({
-      query: ProductBySlugAdminGql,
-      variables: {
-        slug: params!.slug as string
-      }
-    })
+    const { slug } = params as { slug: string }
 
-    if (data.errors) {
-      resp = error
+    if (slug !== 'new') {
+      const data = await axiosGraphqlUtils({
+        query: ProductBySlugAdminGql,
+        variables: {
+          slug: slug
+        }
+      })
+      if (data.errors) {
+        resp = error
+      } else {
+        resp = {
+          props: {
+            edit: true,
+            product: data.data.productBySlug
+          }
+        }
+      }
     } else {
       resp = {
         props: {
-          product: data.data.productBySlug
-        },
-        revalidate: 86400
+          edit: false,
+          product: {
+            id: '',
+            title: '',
+            slug: '',
+            description: '',
+            price: 0,
+            inStock: 0,
+            type: 'shirts',
+            gender: 'woman',
+            sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
+            images: [],
+            tags: ['Teslo', 'Shop']
+          }
+        }
       }
     }
   } catch (e) {

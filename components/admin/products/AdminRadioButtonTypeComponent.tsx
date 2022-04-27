@@ -1,10 +1,11 @@
 import { ChangeEvent, FC } from 'react'
 import { UseFormSetValue } from 'react-hook-form'
-import { IProduct, TValidType } from '../../../interfaces'
+import { TValidType } from '../../../interfaces'
+import { IProductForm } from '../../../pages/admin/products/[slug]'
 
 export interface IAdminRadioButtonTypeComponentProps {
   typeSelect: TValidType
-  setValue: UseFormSetValue<IProduct>
+  setValue: UseFormSetValue<IProductForm>
 }
 
 export interface IValidTypeComponent {

@@ -81,8 +81,7 @@ export const MenuUiComponent: FC = () => {
         )}
       </ul>
 
-      {/* menu lg  */}
-      <ul className='lg:hidden w-[85%] h-auto py-5 flex flex-col'>
+      <ul className='w-[85%] h-auto py-5 flex flex-col'>
         <li className='li_sidebar'>
           <p className='prose-lg'>Categoría</p>
         </li>
