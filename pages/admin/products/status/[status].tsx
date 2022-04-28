@@ -6,14 +6,14 @@ import { AiFillDelete, AiFillEdit } from 'react-icons/ai'
 import { MdOutlineCategory } from 'react-icons/md'
 import { Cell, Column, HeaderCell, Table } from 'rsuite-table'
 import 'rsuite-table/dist/css/rsuite-table.css'
-import { productsWithNoInventoryGql } from '../../../../gql'
+import { lowInventoryGql, productsWithNoInventoryGql } from '../../../../gql'
 import { priceUSD } from '../../../../helpers'
 import { useBlurDataURL } from '../../../../hooks'
 import { ILogin, IProduct } from '../../../../interfaces'
 import { AdminLayout } from '../../../../layouts'
 import { axiosGraphqlUtils, URL_API_GRAPHQL } from '../../../../utils'
 
-export type TStatus = 'no_inventory' | ''
+export type TStatus = 'no_inventory' | 'low_inventory'
 
 export interface IProductsPageProps {
   products: IProduct[]
@@ -28,10 +28,14 @@ const ProductsStatusAdminPage: NextPage<IProductsPageProps> = ({
   return (
     <AdminLayout
       title={`Productos ${
-        status === 'no_inventory' ? 'sin existencias' : ''
+        status === 'no_inventory' ? 'sin existencias' : 'bajo inventario'
       } (${products.length})`}
-      subTitle={'Mantenimientos de productos'}
-      titleHead={'Productos'}
+      subTitle={`Mantenimientos de productos ${
+        status === 'no_inventory' ? 'sin existencias' : 'bajo inventario'
+      }`}
+      titleHead={`Productos ${
+        status === 'no_inventory' ? 'sin existencias' : 'bajo inventario'
+      }`}
       Icon={MdOutlineCategory}
     >
       <div className='w-full flex flex-row justify-end items-center my-3'>
@@ -132,40 +136,56 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   const user = session?.user as ILogin
   const { status } = ctx.query as { status: TStatus }
 
-  try {
-    const data = await axiosGraphqlUtils({
-      query:
-        status === 'no_inventory'
-          ? productsWithNoInventoryGql
-          : productsWithNoInventoryGql,
-      variables: {
-        idUser: user.user.id
-      },
-      url: URL_API_GRAPHQL
-    })
+  const error = {
+    redirect: {
+      destination: '/admin',
+      permanent: false
+    }
+  }
 
-    if (!data.errors) {
-      resp = {
-        props: {
-          products: data.data.productsWithNoInventory as IProduct[],
-          status
+  try {
+    let data: any
+    if (status === 'no_inventory') {
+      data = await axiosGraphqlUtils({
+        query: productsWithNoInventoryGql,
+        variables: {
+          idUser: user.user.id
+        },
+        url: URL_API_GRAPHQL
+      })
+      if (!data.errors) {
+        resp = {
+          props: {
+            products: data.data.productsWithNoInventory as IProduct[],
+            status
+          }
         }
+      } else {
+        resp = error
+      }
+    } else if (status === 'low_inventory') {
+      data = await axiosGraphqlUtils({
+        query: lowInventoryGql,
+        variables: {
+          idUser: user.user.id
+        },
+        url: URL_API_GRAPHQL
+      })
+      if (!data.errors) {
+        resp = {
+          props: {
+            products: data.data.lowInventory as IProduct[],
+            status
+          }
+        }
+      } else {
+        resp = error
       }
     } else {
-      resp = {
-        redirect: {
-          destination: '/admin',
-          permanent: false
-        }
-      }
+      resp = error
     }
-  } catch (error) {
-    resp = {
-      redirect: {
-        destination: '/admin',
-        permanent: false
-      }
-    }
+  } catch (e) {
+    resp = error
     console.error(error)
   }
 

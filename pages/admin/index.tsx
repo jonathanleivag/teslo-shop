@@ -120,6 +120,7 @@ const AdminPage: NextPage = () => {
           subTitle={'Bajo inventario'}
           Icon={MdProductionQuantityLimits}
           classNameIcon='text-yellow-500'
+          url='/admin/products/status/low_inventory'
         />
 
         <AdminSummaryTileComponent

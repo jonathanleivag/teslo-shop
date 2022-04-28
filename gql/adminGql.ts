@@ -162,3 +162,18 @@ export const productsWithNoInventoryGql = gql`
     }
   }
 `
+export const lowInventoryGql = gql`
+  query LowInventory($idUser: ID!) {
+    lowInventory(idUser: $idUser) {
+      images
+      gender
+      type
+      inStock
+      price
+      title
+      sizes
+      slug
+      updatedAt
+    }
+  }
+`
