@@ -42,7 +42,7 @@ export const AdminImageComponent: FC<IAdminImageComponent> = ({
           <div className='w-[100px] h-[100px] relative'>
             <Image
               alt={`Imagen de producto ${title}`}
-              src={image.includes('http') ? image : `/products/${image}`}
+              src={image}
               layout='fill'
               objectFit='contain'
             />

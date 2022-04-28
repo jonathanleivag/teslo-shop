@@ -34,7 +34,7 @@ export const ProductCardComponet: FC<ProductCardComponentProps> = ({
             )}
             <Image
               layout='fill'
-              src={`/products/${product.images[onHovered ? 1 : 0]}`}
+              src={product.images[onHovered ? 1 : 0]}
               alt={product.description}
               objectFit='contain'
               className='transform duration-300 ease-in-out z-40'

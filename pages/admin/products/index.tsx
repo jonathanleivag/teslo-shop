@@ -48,7 +48,7 @@ const ProductsAdminPage: NextPage<IProductsPageProps> = ({ products }) => {
                 <Link href={`/product/${rowData.slug}`} passHref>
                   <a>
                     <Image
-                      src={`/products/${rowData.images[0]}`}
+                      src={rowData.images[0]}
                       alt='Picture of the author'
                       layout='fill'
                       objectFit='contain'

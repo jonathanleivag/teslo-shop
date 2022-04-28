@@ -13,7 +13,7 @@ export const ImageUiComponent: FC<IImageUiProps> = ({ image, description }) => {
   return (
     <Image
       layout='fill'
-      src={`/products/${image}`}
+      src={image}
       alt={description}
       className='transform duration-300 ease-in-out object-contain md:object-cover'
       loading='lazy'
