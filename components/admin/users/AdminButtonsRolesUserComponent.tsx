@@ -66,21 +66,27 @@ export const AdminButtonsRolesUserComponent: FC<IAdminButtonsRolesUserComponentP
         <input
           checked={role0 === 'admin'}
           onChange={changeRole}
+          className='cursor-pointer'
           type='radio'
           id={`admin-${id}`}
           name={id}
         />
-        <label htmlFor={`admin-${id}`}>Administrador</label>
+        <label className='cursor-pointer' htmlFor={`admin-${id}`}>
+          Administrador
+        </label>
       </div>
       <div className='flex flex-row gap-1 justify-center items-center'>
         <input
           checked={role0 === 'client'}
+          className='cursor-pointer'
           onChange={changeRole}
           type='radio'
           id={`client-${id}`}
           name={id}
         />
-        <label htmlFor={`client-${id}`}>Cliente</label>
+        <label className='cursor-pointer' htmlFor={`client-${id}`}>
+          Cliente
+        </label>
       </div>
     </div>
   )
