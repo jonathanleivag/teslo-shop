@@ -102,7 +102,11 @@ const SlugPage: NextPage<ISlugPageProps> = ({ product }) => {
   }, [count])
 
   return (
-    <ShopLayout title={product.title} pageDescription={product.description}>
+    <ShopLayout
+      title={product.title}
+      pageDescription={product.description}
+      imageFullUrl={product.images[0]}
+    >
       <div className='w-full min-h-[100vh] flex flex-col xl:flex-row'>
         <div className='w-full xl:w-[60%] relative overflow-hidden'>
           <CarouselProductSlugComponent product={product} />
