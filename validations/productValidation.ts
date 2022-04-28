@@ -5,6 +5,7 @@ import { IProductForm } from '../pages/admin/products/[slug]'
 export const productValidation: yup.SchemaOf<IProductForm> = yup
   .object()
   .shape({
+    images: yup.array<string[]>().required(),
     description: yup.string().required('La descripción es requerida'),
     inStock: yup
       .number()
