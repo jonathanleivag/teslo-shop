@@ -1,9 +1,10 @@
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react'
-import { TRole } from '../../../../../Node Ts/teslo-shop-api/src/models/UserModel'
 import { updateRoleGql } from '../../../gql'
 import { axiosGraphqlUtils, Toast } from '../../../utils'
 import { useSession0 } from '../../../hooks/useSession0'
 import { IUser } from '../../../store/features/user/userSlice'
+
+export type TRole = 'admin' | 'client'
 
 export interface IAdminButtonsRolesUserComponentProps {
   role: TRole
