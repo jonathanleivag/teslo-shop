@@ -71,6 +71,8 @@ una orden -> http://localhost:3000/admin/orders/[id]
 ordenes pagadas -> http://localhost:3000/admin/ordenes/status/[paid]
 ordenes pendientes -> http://localhost:3000/admin/ordenes/status/[pending]
 todas las ordenes -> http://localhost:3000/admin/ordenes/status/[all]
+bajo inventario ->http://localhost:3000/admin/products/status/[low_inventory]
+sin stock -> http://localhost:3000/admin/products/status/[no_inventory]
 
 #raiz
 404
