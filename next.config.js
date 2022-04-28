@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['localhost', 'res.cloudinary.com']
+    domains: ['localhost', 'res.cloudinary.com', 'teslo-shop.jonathanleivag.cl']
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     if (dev) {
