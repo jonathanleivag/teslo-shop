@@ -147,3 +147,18 @@ export const uploadImageGql = gql`
     }
   }
 `
+export const productsWithNoInventoryGql = gql`
+  query ProductsWithNoInventory($idUser: ID!) {
+    productsWithNoInventory(idUser: $idUser) {
+      images
+      gender
+      type
+      inStock
+      price
+      title
+      sizes
+      slug
+      updatedAt
+    }
+  }
+`

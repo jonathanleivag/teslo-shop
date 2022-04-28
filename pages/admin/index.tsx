@@ -112,6 +112,7 @@ const AdminPage: NextPage = () => {
           subTitle={'Sin existencias'}
           Icon={MdCancelPresentation}
           classNameIcon='text-red-500'
+          url='/admin/products/status/no_inventory'
         />
 
         <AdminSummaryTileComponent
