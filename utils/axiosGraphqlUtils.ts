@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { DocumentNode, print } from 'graphql'
-import { NEXT_PUBLIC_URL_API } from '.'
+import { NEXT_PUBLIC_URL_API_GRAPHQL } from '.'
 
 export interface IAxiosGraphqlUtils {
   query: DocumentNode
@@ -11,7 +11,7 @@ export interface IAxiosGraphqlUtils {
 export const axiosGraphqlUtils = async ({
   query,
   variables,
-  url = NEXT_PUBLIC_URL_API
+  url = NEXT_PUBLIC_URL_API_GRAPHQL
 }: IAxiosGraphqlUtils) => {
   const { data } = await axios.post(
     url,

@@ -11,7 +11,7 @@ import { getAllOrderGql } from '../../../gql'
 import { priceUSD } from '../../../helpers'
 import { ILogin, IOrderOne } from '../../../interfaces'
 import { AdminLayout } from '../../../layouts/AdminLayout'
-import { axiosGraphqlUtils, URL_API } from '../../../utils'
+import { axiosGraphqlUtils, URL_API_GRAPHQL } from '../../../utils'
 import { IHistoryProps } from '../../orders/history'
 
 const OrdersPage: NextPage<IHistoryProps> = ({ orders }) => {
@@ -139,7 +139,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
         idUser: user?.user.id,
         status: 'all'
       },
-      url: URL_API
+      url: URL_API_GRAPHQL
     })
 
     if (!data.errors) {

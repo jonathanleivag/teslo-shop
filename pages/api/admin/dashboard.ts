@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { IDashboard } from '../../admin'
 import { axiosGraphqlUtils } from '../../../utils/axiosGraphqlUtils'
 import { dashboardGql } from '../../../gql'
-import { URL_API } from '../../../utils'
+import { URL_API_GRAPHQL } from '../../../utils'
 import { getToken } from 'next-auth/jwt'
 import { ILogin } from '../../../interfaces'
 
@@ -28,7 +28,7 @@ export default async function dashboard (
     const user = session.user as ILogin
     const data = await axiosGraphqlUtils({
       query: dashboardGql,
-      url: URL_API,
+      url: URL_API_GRAPHQL,
       variables: { idUser: user.user.id }
     })
 

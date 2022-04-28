@@ -11,6 +11,7 @@ import { ILogin } from '../../../interfaces'
 import { ShopLayout } from '../../../layouts'
 import { TCountry } from '../../../store/features'
 import { RootState } from '../../../store/index'
+import { URL_API_GRAPHQL } from '../../../utils'
 
 export interface IAddressPageProps {
   countries: TCountry[]
@@ -69,7 +70,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   const user = session?.user as ILogin
 
   const { data } = await axios.post(
-    process.env.URL_API!,
+    URL_API_GRAPHQL,
     {
       query: print(getCountriesGql)
     },
@@ -79,7 +80,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   )
 
   const { data: data0 } = await axios.post(
-    process.env.URL_API!,
+    URL_API_GRAPHQL,
     {
       query: print(numberOfItemGql),
       variables: {

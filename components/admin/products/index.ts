@@ -1,5 +1,7 @@
+export * from './AdminButtonFileComponent'
 export * from './AdminCheckboxSizeComponents'
 export * from './AdminErrorFormFormComponent'
+export * from './AdminImageComponent'
 export * from './AdminRadioButtonGenderComponent'
 export * from './AdminRadioButtonTypeComponent'
 export * from './AdminTagComponent'

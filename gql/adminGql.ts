@@ -137,3 +137,13 @@ export const addProductGql = gql`
     addProduct(input: $input)
   }
 `
+
+export const uploadImageGql = gql`
+  mutation UploadImage($file: Upload!, $idUser: ID!) {
+    uploadImage(file: $file, idUser: $idUser) {
+      filename
+      mimetype
+      encoding
+    }
+  }
+`

@@ -13,7 +13,7 @@ import { IOrderOne } from '../../interfaces'
 import { ILogin } from '../../interfaces/loginInterface'
 import { ShopLayout } from '../../layouts'
 import { axiosGraphqlUtils } from '../../utils'
-import { URL_API } from '../../utils/envUtil'
+import { URL_API_GRAPHQL } from '../../utils/envUtil'
 
 export interface IHistoryProps {
   orders: IOrderOne[]
@@ -142,7 +142,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
       variables: {
         idUser: user?.user.id
       },
-      url: URL_API
+      url: URL_API_GRAPHQL
     })
 
     if (!data.errors) {

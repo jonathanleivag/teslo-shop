@@ -2,7 +2,7 @@ import { GetServerSideProps, NextPage, GetServerSidePropsResult } from 'next'
 import { ProductListComponent, TitleUiComponent } from '../components'
 import { ShopLayout } from '../layouts'
 import { IProduct } from '../interfaces'
-import { axiosGraphqlUtils, URL_API } from '../utils'
+import { axiosGraphqlUtils, URL_API_GRAPHQL } from '../utils'
 import { ProductsGql } from '../gql'
 
 export interface IHomePageProps {
@@ -30,7 +30,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   const data = await axiosGraphqlUtils({
     query: ProductsGql,
     variables: { gender: null },
-    url: URL_API
+    url: URL_API_GRAPHQL
   })
 
   if (!data.errors) {

@@ -8,7 +8,7 @@ import { GetOneOrderAdminGql } from '../../../gql'
 import { IOrderOne } from '../../../interfaces'
 import { ILogin } from '../../../interfaces/loginInterface'
 import { changeSelectedOrder } from '../../../store/features'
-import { axiosGraphqlUtils, URL_API } from '../../../utils'
+import { axiosGraphqlUtils, URL_API_GRAPHQL } from '../../../utils'
 import { AdminLayout } from '../../../layouts'
 
 export interface IPropsOrderByIdPage {
@@ -87,7 +87,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
             idUser: user.user.id
           }
         },
-        url: URL_API
+        url: URL_API_GRAPHQL
       })
 
       if (data.errors) {

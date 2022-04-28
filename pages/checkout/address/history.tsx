@@ -12,7 +12,7 @@ import { ILogin } from '../../../interfaces'
 import { ShopLayout } from '../../../layouts'
 import { RootState } from '../../../store'
 import { deleteAddress, selectedAddressAction } from '../../../store/features'
-import { axiosGraphqlUtils, URL_API } from '../../../utils'
+import { axiosGraphqlUtils, URL_API_GRAPHQL } from '../../../utils'
 import { FullScreenLoadingUiComponent } from '../../../components/ui/FullScreenLoadingUiComponent'
 
 const titleAndDescription: string = 'Historial de direcciones'
@@ -178,13 +178,13 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   const data = await axiosGraphqlUtils({
     query: getAddressByUserGql,
     variables: { idUser: user.user.id },
-    url: URL_API
+    url: URL_API_GRAPHQL
   })
 
   const data0 = await axiosGraphqlUtils({
     query: numberOfItemGql,
     variables: { idUser: user.user.id },
-    url: URL_API
+    url: URL_API_GRAPHQL
   })
 
   if (data.errors || data0.errors) {

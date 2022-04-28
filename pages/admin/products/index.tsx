@@ -10,7 +10,7 @@ import { priceUSD } from '../../../helpers'
 import { useBlurDataURL } from '../../../hooks'
 import { IProduct } from '../../../interfaces'
 import { AdminLayout } from '../../../layouts'
-import { axiosGraphqlUtils, URL_API } from '../../../utils'
+import { axiosGraphqlUtils, URL_API_GRAPHQL } from '../../../utils'
 
 export interface IProductsPageProps {
   products: IProduct[]
@@ -123,7 +123,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   try {
     const data = await axiosGraphqlUtils({
       query: productsAdmin,
-      url: URL_API
+      url: URL_API_GRAPHQL
     })
 
     if (!data.errors) {

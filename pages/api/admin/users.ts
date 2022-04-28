@@ -3,7 +3,7 @@ import { getToken } from 'next-auth/jwt'
 import { getUsersGql } from '../../../gql'
 import { ILogin } from '../../../interfaces'
 import { IUser } from '../../../store/features/user/userSlice'
-import { axiosGraphqlUtils, URL_API } from '../../../utils'
+import { axiosGraphqlUtils, URL_API_GRAPHQL } from '../../../utils'
 
 export default async function getUsers (
   req: NextApiRequest,
@@ -23,7 +23,7 @@ export default async function getUsers (
         variables: {
           idUser: user.user.id
         },
-        url: URL_API
+        url: URL_API_GRAPHQL
       })
 
       if (data.errors) {

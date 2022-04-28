@@ -6,7 +6,7 @@ import { getSession } from 'next-auth/react'
 import { getAllOrderGql } from '../../../../gql'
 import { IOrderOne } from '../../../../interfaces'
 import { ILogin } from '../../../../interfaces/loginInterface'
-import { axiosGraphqlUtils, URL_API } from '../../../../utils'
+import { axiosGraphqlUtils, URL_API_GRAPHQL } from '../../../../utils'
 import { AdminLayout, IAdminLayoutProps } from '../../../../layouts'
 import { BsCartCheck } from 'react-icons/bs'
 import { Cell, Column, HeaderCell, Table } from 'rsuite-table'
@@ -175,7 +175,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
         idUser: user?.user.id,
         status
       },
-      url: URL_API
+      url: URL_API_GRAPHQL
     })
 
     if (!data.errors) {

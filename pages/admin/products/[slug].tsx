@@ -1,12 +1,15 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import '@pathofdev/react-tag-input/build/index.css'
-import { GetServerSideProps, NextPage, GetServerSidePropsResult } from 'next'
+import { GetServerSideProps, GetServerSidePropsResult, NextPage } from 'next'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { FieldError, useForm } from 'react-hook-form'
 import { AiOutlineEdit, AiOutlineSave } from 'react-icons/ai'
 import {
+  AdminButtonFileComponent,
   AdminCheckboxSizeComponents,
   AdminErrorFormFormComponent,
+  AdminImageComponent,
   AdminRadioButtonGenderComponent,
   AdminRadioButtonTypeComponent,
   AdminTagComponent
@@ -16,13 +19,12 @@ import {
   ProductBySlugAdminGql,
   updateProductGql
 } from '../../../gql'
+import { useSession0 } from '../../../hooks/useSession0'
 import { IProduct, TGender, TValidSize, TValidType } from '../../../interfaces'
 import { AdminLayout } from '../../../layouts'
 import { axiosGraphqlUtils } from '../../../utils'
-import { productValidation } from '../../../validations'
 import { Toast } from '../../../utils/toastUtil'
-import { useSession0 } from '../../../hooks/useSession0'
-import { useRouter } from 'next/router'
+import { productValidation } from '../../../validations'
 
 export interface IProductForm {
   description: string
@@ -34,6 +36,7 @@ export interface IProductForm {
   title: string
   type: TValidType
   gender: TGender
+  images: string[]
 }
 
 export interface ISlugPageProps {
@@ -222,6 +225,30 @@ const SlugPage: NextPage<ISlugPageProps> = ({ product, edit }) => {
             />
             <p className='text-xs'>[Enter] para agregar etiqueta</p>
             <AdminErrorFormFormComponent error={errorTag} />
+          </div>
+
+          <div className='container_form_product justify-center items-center'>
+            <AdminButtonFileComponent
+              setValue={setValue}
+              getValues={getValues}
+            />
+          </div>
+
+          <div className='container_form_product justify-center items-center'>
+            <div className='grid_container_radio_button_produts'>
+              <AdminImageComponent
+                title={product.title}
+                getValues={getValues}
+                setValue={setValue}
+              />
+            </div>
+            {getValues('images').length < 2 && (
+              <div className='w-full flex flex-row justify-center items-center my-3'>
+                <div className='w-[80%] flex flex-row justify-center items-center text-white bg-red-600 rounded-full'>
+                  <span> Al menos necesitas dos imagenes </span>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className='container_form_product items-center col-span-1 md:col-span-2'>
