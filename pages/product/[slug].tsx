@@ -117,24 +117,28 @@ const SlugPage: NextPage<ISlugPageProps> = ({ product }) => {
             <p className='text-xl my-2'>${product.price} </p>
           </div>
           <div className='w-[90%]'>
-            <div className='flex flex-col my-3'>
-              <h2 className='text-lg my-2'>Talla</h2>
-              <SizeSelectorProductSlugComponent
-                selectedSize={tempCartProduct.size}
-                sizes={product.sizes}
-                setTempCartProduct={setTempCartProduct}
-              />
-            </div>
-            <div className='flex flex-col my-3'>
-              <h2 className='text-lg my-2'>Cantidad </h2>
-              <CountUiComponent
-                setTempCartProduct={setTempCartProduct}
-                inStock={product.inStock}
-                count={count}
-                setCount={setCount}
-                setCountCopy={setCountCopy}
-              />
-            </div>
+            {product.inStock > 0 && (
+              <>
+                <div className='flex flex-col my-3'>
+                  <h2 className='text-lg my-2'>Talla</h2>
+                  <SizeSelectorProductSlugComponent
+                    selectedSize={tempCartProduct.size}
+                    sizes={product.sizes}
+                    setTempCartProduct={setTempCartProduct}
+                  />
+                </div>
+                <div className='flex flex-col my-3'>
+                  <h2 className='text-lg my-2'>Cantidad </h2>
+                  <CountUiComponent
+                    setTempCartProduct={setTempCartProduct}
+                    inStock={product.inStock}
+                    count={count}
+                    setCount={setCount}
+                    setCountCopy={setCountCopy}
+                  />
+                </div>
+              </>
+            )}
             <div className='w-full lg:hidden'>
               <ButtonAddProductComponent
                 tempCartProduct={tempCartProduct}

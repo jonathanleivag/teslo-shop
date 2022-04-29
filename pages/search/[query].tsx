@@ -29,10 +29,14 @@ const SearchPage: NextPage<ISearchPageProps> = ({
         </h2>
       )}
       {!foundProducts && (
-        <h2 className='prose-xl'>No encontramos ningún producto </h2>
+        <h2 className='prose-xl my-10'>
+          Lo sentimos, no encontramos resultados para{' '}
+          <span className='prose-xl text-blue-600 capitalize'>{query}</span>
+        </h2>
       )}
+
       {!foundProducts && (
-        <h2 className='prose-xl text-blue-600 capitalize'> {query} </h2>
+        <h3 className='prose-xl my-5'>Productos Recomendados</h3>
       )}
       <ProductListComponent products={products} />
     </ShopLayout>
