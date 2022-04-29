@@ -14,6 +14,7 @@ const HomePage: NextPage<IHomePageProps> = ({ products }) => {
     <ShopLayout
       title={'Teslo-Shop - Home'}
       pageDescription={'Encuentra los mejores producto de teslo shop aquí'}
+      imageFullUrl={products[0].images[0]}
     >
       <TitleUiComponent>TESLO SHOP</TitleUiComponent>
       <h2 className='mb-5 prose-xl'>Todos los productos</h2>
