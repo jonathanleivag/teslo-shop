@@ -23,7 +23,6 @@ export const CountCartComponent: FC<ICountCartComponent> = ({ product }) => {
     gender: product.gender
   })
 
-  const [copyTempCartProduct] = useState<ICartData>(tempCartProduct)
   const dispatch = useDispatch()
   const { inStock, loading } = useSelector((state: RootState) => state.product)
   const session = useSession0()
@@ -39,11 +38,9 @@ export const CountCartComponent: FC<ICountCartComponent> = ({ product }) => {
   }, [count])
 
   useEffect(() => {
-    if (copyTempCartProduct.quantity !== tempCartProduct.quantity) {
-      dispatch(updateQuantity(tempCartProduct, session))
-    }
+    dispatch(updateQuantity(tempCartProduct, session))
     return () => {}
-  }, [copyTempCartProduct.quantity, dispatch, session, tempCartProduct])
+  }, [dispatch, session, tempCartProduct])
 
   if (loading) <FullScreenLoadingUiComponent />
 
