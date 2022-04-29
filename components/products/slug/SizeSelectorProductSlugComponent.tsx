@@ -22,9 +22,11 @@ export const SizeSelectorProductSlugComponent: FC<SizeSelectorProductSlugProps> 
       {sizes.map(size => (
         <button
           onClick={() => changeSelectedSize(size)}
-          className={`mx-2 border-b ${
-            size === selectedSize ? 'border-gray-600' : 'border-transparent'
-          }  hover:border-gray-600`}
+          className={`mx-2 border px-3  rounded-lg ${
+            size === selectedSize
+              ? 'border-gray-800 bg-slate-800 text-white'
+              : 'border-transparent'
+          }`}
           key={size}
         >
           {size}
