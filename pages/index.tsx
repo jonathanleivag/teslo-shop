@@ -17,7 +17,7 @@ const HomePage: NextPage<IHomePageProps> = ({ products }) => {
       imageFullUrl={products[0].images[0]}
     >
       <TitleUiComponent>TESLO SHOP</TitleUiComponent>
-      <h2 className='mb-5 prose-xl'>Todos los productos</h2>
+      <h2 className='mb-5 prose-xl'>Todos los productos de teslo-shop</h2>
       <ProductListComponent products={products} />
     </ShopLayout>
   )
