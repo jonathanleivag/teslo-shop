@@ -12,22 +12,25 @@ import {
   ButtonAddProductComponent,
   CarouselProductSlugComponent,
   CountUiComponent,
+  ProductListComponent,
   RemoveProductComponent,
   ShareButtonProduct,
   SizeSelectorProductSlugComponent
 } from '../../components'
-import { ProductBySlugGql, SlugProductsGql } from '../../gql'
+import { ProductBySlugGql, SearchProductGql, SlugProductsGql } from '../../gql'
 import { IProduct, TValidSize } from '../../interfaces'
 import { ShopLayout } from '../../layouts'
 import { RootState } from '../../store'
 import { ICartData } from '../../store/features'
 import { axiosGraphqlUtils } from '../../utils'
+import { NEXT_PUBLIC_REVALIDATE } from '../../utils/envUtil'
 
 export interface ISlugPageProps {
   product: IProduct
+  products: IProduct[]
 }
 
-const SlugPage: NextPage<ISlugPageProps> = ({ product }) => {
+const SlugPage: NextPage<ISlugPageProps> = ({ product, products }) => {
   const [count, setCount] = useState<number>(1)
   const [countCopy, setCountCopy] = useState<number>(count)
   const [tempCartProduct, setTempCartProduct] = useState<ICartData>({
@@ -171,6 +174,12 @@ const SlugPage: NextPage<ISlugPageProps> = ({ product }) => {
           </div>
         </div>
       </div>
+      <div className='my-10'>
+        <h2 className='mb-5 prose-xl text-3xl font-semibold'>
+          Productos Recomendados
+        </h2>
+        <ProductListComponent products={products} />
+      </div>
     </ShopLayout>
   )
 }
@@ -202,7 +211,7 @@ export const getStaticPaths: GetStaticPaths = async ctx => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  let resp: GetStaticPropsResult<IProduct | {}> = { props: {} }
+  let resp: GetStaticPropsResult<ISlugPageProps | {}> = { props: {} }
 
   const error = {
     redirect: {
@@ -222,11 +231,21 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     if (data.errors) {
       resp = error
     } else {
-      resp = {
-        props: {
-          product: data.data.productBySlug
-        },
-        revalidate: 86400
+      const data0 = await axiosGraphqlUtils({
+        query: SearchProductGql,
+        variables: {
+          search: data.data.productBySlug.tags[0]
+        }
+      })
+
+      if (!data0.errors) {
+        resp = {
+          props: {
+            product: data.data.productBySlug,
+            products: data0.data.searchProduct.slice(0, 6)
+          },
+          revalidate: NEXT_PUBLIC_REVALIDATE
+        }
       }
     }
   } catch (e) {

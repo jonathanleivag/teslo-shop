@@ -25,6 +25,9 @@ GITHUB_SECRET= #clave secreta de github
 
 # paypal
 NEXT_PUBLIC_PAYPAL_CLIENT_ID= # clave publica de paypal
+
+# tiempo (milisegundos) de actualizar productos del slug
+NEXT_PUBLIC_REVALIDATE=
 ```
 
 * Backend: [teslo-shop-api](https://github.com/jonathanleivag/teslo-shop-api)

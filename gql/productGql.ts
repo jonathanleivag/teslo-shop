@@ -41,6 +41,7 @@ export const ProductBySlugGql = gql`
       price
       sizes
       title
+      tags
     }
   }
 `

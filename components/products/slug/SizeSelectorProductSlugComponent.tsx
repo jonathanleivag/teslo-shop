@@ -25,7 +25,7 @@ export const SizeSelectorProductSlugComponent: FC<SizeSelectorProductSlugProps> 
           className={`mx-2 border px-3  rounded-lg ${
             size === selectedSize
               ? 'border-gray-800 bg-slate-800 text-white'
-              : 'border-transparent'
+              : 'border-transparent hover:border-gray-800'
           }`}
           key={size}
         >
