@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { AdminBackUiComponent } from '.'
 import { RootState } from '../../../store'
 import { changeMenu } from '../../../store/features'
 
@@ -16,6 +17,7 @@ export const AdminNavbarComponent: FC = () => {
     >
       <div className='w-[96%] flex flex-row justify-between'>
         <div className='w-[90%] flex flex-row gap-1'>
+          <AdminBackUiComponent />
           <Link href='/admin' replace passHref shallow={false}>
             <a>
               <span className='prose prose-base font-bold'>Dashboard </span>

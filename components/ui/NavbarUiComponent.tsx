@@ -5,6 +5,7 @@ import { AiOutlineSearch, AiOutlineShoppingCart } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeMenu } from '../../store/features'
 import { RootState } from '../../store/index'
+import { BackUiComponent } from './BackUiComponent'
 
 export const NavbarUiComponent: FC = () => {
   const dispatch = useDispatch()
@@ -21,7 +22,8 @@ export const NavbarUiComponent: FC = () => {
       }  top-0 bg-white w-full py-3 flex flex-row justify-center items-center`}
     >
       <div className='w-[96%] flex flex-row'>
-        <div className='w-1/2 lg:w-[10%]'>
+        <div className='w-1/2 lg:w-[13%] flex flex-row justify-start items-center gap-1'>
+          <BackUiComponent />
           <Link href='/' replace passHref shallow={false}>
             <a>
               <span className='prose prose-base font-bold'>Teslo |</span>
@@ -58,7 +60,7 @@ export const NavbarUiComponent: FC = () => {
           </ul>
         </div>
 
-        <div className='w-1/2 lg:w-[10%] flex flex-row gap-3 justify-end lg:justify-center items-center'>
+        <div className='w-1/2 lg:w-[7%] flex flex-row gap-3 justify-end lg:justify-center items-center'>
           <button onClick={() => dispatch(changeMenu(true))}>
             <AiOutlineSearch className='text-xl' />
           </button>
