@@ -15,6 +15,7 @@ import { AdminSummaryTileComponent } from '../../components'
 import { AdminLayout } from '../../layouts'
 import { FullScreenLoadingUiComponent } from '../../components/ui/FullScreenLoadingUiComponent'
 import { useState, useEffect } from 'react'
+import { NEXT_PUBLIC_REVALIDATE_DASHBOARD } from '../../utils'
 
 export interface IDashboard {
   numberOfOrders: number
@@ -30,14 +31,18 @@ const fetcher = (url: string) => fetch(url).then(r => r.json())
 
 const AdminPage: NextPage = () => {
   const { data, error } = useSWR<IDashboard>('/api/admin/dashboard', fetcher, {
-    refreshInterval: 30 * 1000
+    refreshInterval: NEXT_PUBLIC_REVALIDATE_DASHBOARD * 1000
   })
 
-  const [refreshIn, setRefreshIn] = useState<number>(30)
+  const [refreshIn, setRefreshIn] = useState<number>(
+    NEXT_PUBLIC_REVALIDATE_DASHBOARD
+  )
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setRefreshIn(refreshIn => (refreshIn > 0 ? refreshIn - 1 : 30))
+      setRefreshIn(refreshIn =>
+        refreshIn > 0 ? refreshIn - 1 : NEXT_PUBLIC_REVALIDATE_DASHBOARD
+      )
     }, 1000)
 
     return () => clearInterval(interval)

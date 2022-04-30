@@ -22,8 +22,7 @@ import { IProduct, TValidSize } from '../../interfaces'
 import { ShopLayout } from '../../layouts'
 import { RootState } from '../../store'
 import { ICartData } from '../../store/features'
-import { axiosGraphqlUtils } from '../../utils'
-import { NEXT_PUBLIC_REVALIDATE } from '../../utils/envUtil'
+import { axiosGraphqlUtils, REVALIDATE } from '../../utils'
 
 export interface ISlugPageProps {
   product: IProduct
@@ -244,7 +243,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             product: data.data.productBySlug,
             products: data0.data.searchProduct.slice(0, 6)
           },
-          revalidate: NEXT_PUBLIC_REVALIDATE
+          revalidate: REVALIDATE
         }
       }
     }
