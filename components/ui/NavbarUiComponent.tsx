@@ -65,18 +65,16 @@ export const NavbarUiComponent: FC = () => {
             <AiOutlineSearch className='text-xl' />
           </button>
 
-          <div className='relative'>
-            {totalCart > 0 && (
-              <div className='absolute flex flex-row justify-center items-center text-white text-[10px] h-4 w-4 -top-2 -right-2 rounded-full bg-blue-600'>
-                {totalCart > 9 ? '9+' : totalCart}
-              </div>
-            )}
-            <Link href='/cart' passHref replace shallow={false}>
-              <a>
-                <AiOutlineShoppingCart className='text-xl' />
-              </a>
-            </Link>
-          </div>
+          <Link href='/cart' passHref replace shallow={false}>
+            <a className='relative'>
+              {totalCart > 0 && (
+                <div className='absolute flex flex-row justify-center items-center text-white text-[10px] h-4 w-4 -top-2 -right-2 rounded-full bg-blue-600'>
+                  {totalCart > 9 ? '9+' : totalCart}
+                </div>
+              )}
+              <AiOutlineShoppingCart className='text-xl' />
+            </a>
+          </Link>
           <button
             onClick={() => dispatch(changeMenu(true))}
             className='menu-a font-medium'
