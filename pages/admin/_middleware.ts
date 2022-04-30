@@ -13,36 +13,34 @@ export async function middleware (req: NextRequest, ev: NextFetchEvent) {
   if (!session) {
     let requestPage = ''
 
-    if (name === '/admin') {
-      requestPage = '/admin'
-    }
-
-    if (name === '/admin/orders') {
-      requestPage = '/admin/orders'
-    }
-
-    if (name === '/admin/orders/[id] ') {
-      requestPage = '/admin/orders/' + params!.id
-    }
-
-    if (name === '/admin/orders/status/[status]') {
-      requestPage = '/admin/orders/status/' + params!.status
-    }
-
-    if (name === '/admin/users') {
-      requestPage = '/admin/users'
-    }
-
-    if (name === '/admin/products') {
-      requestPage = '/admin/products'
-    }
-
-    if (name === '/admin/products/[slug]') {
-      requestPage = '/admin/products/' + params!.slug
-    }
-
-    if (name === '/admin/products/status/[status]') {
-      requestPage = '/admin/products/status/' + params!.status
+    switch (name) {
+      case '/admin':
+        requestPage = '/admin'
+        break
+      case '/admin/orders':
+        requestPage = '/admin/orders'
+        break
+      case '/admin/orders/[id]':
+        requestPage = '/admin/orders/' + params!.id
+        break
+      case '/admin/orders/status/[status]':
+        requestPage = '/admin/orders/status/' + params!.status
+        break
+      case '/admin/users':
+        requestPage = '/admin/users'
+        break
+      case '/admin/products':
+        requestPage = '/admin/products'
+        break
+      case '/admin/products/[slug]':
+        requestPage = '/admin/products/' + params!.slug
+        break
+      case '/admin/products/status/[status]':
+        requestPage = '/admin/products/status/' + params!.status
+        break
+      default:
+        requestPage = '/'
+        break
     }
 
     return NextResponse.redirect(`${origin}/auth/login?redirect=${requestPage}`)
