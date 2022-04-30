@@ -39,6 +39,7 @@ const AddressPage: NextPage<IAddressPageProps> = ({ countries }) => {
       pageDescription={'Confirmar la dirección del destino - Teslo Shop'}
     >
       <TitleUiComponent>Dirección</TitleUiComponent>
+      <p className='mb-5 -mt-10 prose-xl'>Crea una dirección de envio</p>
       {isError && (
         <div className='flex flex-row justify-center items-center my-3'>
           <div className='w-full md:w-[60%] text-center bg-red-600 rounded-full'>

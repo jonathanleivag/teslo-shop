@@ -65,6 +65,7 @@ const HistoryPage: NextPage<IHistoryPageProps> = ({ address }) => {
       pageDescription={titleAndDescription}
     >
       <TitleUiComponent>Historial de Direcciónes</TitleUiComponent>
+      <p className='mb-5 -mt-10 prose-xl'>Usar una dirección para envio</p>
       <Table data={address} className='max-h-[calc(100vh-250px)]'>
         <Column width={100} sortable fixed resizable>
           <HeaderCell>Seleccionado</HeaderCell>

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { FieldError, useForm } from 'react-hook-form'
 import { AiOutlineEdit, AiOutlineSave } from 'react-icons/ai'
 import {
+  AdminButtonDeleteComponent,
   AdminButtonFileComponent,
   AdminCheckboxSizeComponents,
   AdminErrorFormFormComponent,
@@ -129,7 +130,8 @@ const SlugPage: NextPage<ISlugPageProps> = ({ product, edit }) => {
       titleHead={edit ? product.title : 'Nuevo Producto'}
       Icon={AiOutlineEdit}
     >
-      <form className='flex flex-row justify-center' onSubmit={onSubmit}>
+      <form className='flex flex-col items-center' onSubmit={onSubmit}>
+        <AdminButtonDeleteComponent id={product.id} />
         <div className='w-[90%] grid grid-cols-1 md:grid-cols-2 gap-2'>
           <div className='container_form_product'>
             <label htmlFor='title'>Título</label>

@@ -96,6 +96,7 @@ export const GetOneOrderAdminGql = gql`
 export const productsAdmin = gql`
   query Products {
     products {
+      id
       images
       gender
       type
@@ -175,5 +176,10 @@ export const lowInventoryGql = gql`
       slug
       updatedAt
     }
+  }
+`
+export const deleteProductGql = gql`
+  mutation DeleteProduct($input: GetOneOrderAdminInput) {
+    deleteProduct(input: $input)
   }
 `

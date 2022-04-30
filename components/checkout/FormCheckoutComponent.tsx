@@ -208,9 +208,7 @@ export const FormCheckoutComponent: FC<IAddressPageProps> = ({ countries }) => {
           type='submit'
           className='md:w-[30%] w-full p-1 rounded-full bg-blue-600 text-white'
         >
-          {editSelected === 'addressEdit'
-            ? 'Editar dirección'
-            : ' Revisar pedido'}
+          {editSelected === 'addressEdit' ? 'Editar dirección' : ' Siguiente'}
         </button>
       </div>
     </form>

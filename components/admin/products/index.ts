@@ -1,3 +1,4 @@
+export * from './AdminButtonDeleteComponent'
 export * from './AdminButtonFileComponent'
 export * from './AdminCheckboxSizeComponents'
 export * from './AdminErrorFormFormComponent'

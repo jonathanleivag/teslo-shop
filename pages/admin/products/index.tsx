@@ -1,16 +1,18 @@
 import { GetServerSideProps, GetServerSidePropsResult, NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useState } from 'react'
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai'
 import { MdOutlineCategory } from 'react-icons/md'
 import { Cell, Column, HeaderCell, Table } from 'rsuite-table'
 import 'rsuite-table/dist/css/rsuite-table.css'
-import { productsAdmin } from '../../../gql'
+import Swal from 'sweetalert2'
+import { deleteProductGql, productsAdmin } from '../../../gql'
 import { priceUSD } from '../../../helpers'
-import { useBlurDataURL } from '../../../hooks'
+import { useBlurDataURL, useSession0 } from '../../../hooks'
 import { IProduct } from '../../../interfaces'
 import { AdminLayout } from '../../../layouts'
-import { axiosGraphqlUtils, URL_API_GRAPHQL } from '../../../utils'
+import { axiosGraphqlUtils, Toast, URL_API_GRAPHQL } from '../../../utils'
 
 export interface IProductsPageProps {
   products: IProduct[]
@@ -18,9 +20,57 @@ export interface IProductsPageProps {
 
 const ProductsAdminPage: NextPage<IProductsPageProps> = ({ products }) => {
   const blurDataUrl = useBlurDataURL(20, 20 * 0.9)
+  const session = useSession0()
+  const [products0, setProducts0] = useState(products)
+
+  const deleteProduct = async (id: string) => {
+    try {
+      const data = await axiosGraphqlUtils({
+        query: deleteProductGql,
+        variables: {
+          input: {
+            id,
+            idUser: session?.user.id
+          }
+        }
+      })
+
+      if (!data.errors) {
+        Toast.fire({
+          icon: 'success',
+          title: data.data.deleteProduct
+        })
+        setProducts0(items => items.filter(product => product.id !== id))
+      } else {
+        Toast.fire({
+          icon: 'error',
+          title: data.errors[0].message
+        })
+      }
+    } catch (error) {
+      Toast.fire({
+        icon: 'error',
+        title: 'Error al eliminar el producto'
+      })
+    }
+  }
+
+  const handlerDeleteProduct = async (id: string) => {
+    Swal.fire({
+      title: '¿Quieres eliminar el producto?',
+      confirmButtonColor: '#FF0000',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar'
+    }).then(result => {
+      if (result.isConfirmed) {
+        deleteProduct(id)
+      }
+    })
+  }
+
   return (
     <AdminLayout
-      title={`Productos (${products.length})`}
+      title={`Productos (${products0.length})`}
       subTitle={'Mantenimientos de productos'}
       titleHead={'Productos'}
       Icon={MdOutlineCategory}
@@ -38,7 +88,7 @@ const ProductsAdminPage: NextPage<IProductsPageProps> = ({ products }) => {
             <p>No hay productos</p>
           </div>
         )}
-        data={products}
+        data={products0}
       >
         <Column width={100} fixed resizable>
           <HeaderCell>Imagen</HeaderCell>
@@ -105,7 +155,11 @@ const ProductsAdminPage: NextPage<IProductsPageProps> = ({ products }) => {
                     <AiFillEdit className='text-white' />
                   </a>
                 </Link>
-                <button className='bg-red-600 p-1 mx-1'>
+                <button
+                  type='button'
+                  onClick={() => handlerDeleteProduct(rowData.id)}
+                  className='bg-red-600 p-1 mx-1'
+                >
                   <AiFillDelete className='text-white' />
                 </button>
               </div>

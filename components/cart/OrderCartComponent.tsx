@@ -23,7 +23,7 @@ export interface IOrderCartComponentProps {
 export const OrderCartComponent: FC<IOrderCartComponentProps> = ({
   title = 'Orden',
   resume = false,
-  buttonText = 'Checkout',
+  buttonText = 'Siguiente',
   byId = false,
   edit = true,
   orderOne,
