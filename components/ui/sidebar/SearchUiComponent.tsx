@@ -26,9 +26,9 @@ export const SearchUiComponent: FC = () => {
         className='w-full focus:outline-none font-light'
         placeholder='Buscar...'
       />
-      <button onClick={onClick}>
+      <div onClick={onClick}>
         <BiSearchAlt2 className='text-2xl pointer-events-none' />
-      </button>
+      </div>
     </div>
   )
 }
