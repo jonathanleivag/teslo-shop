@@ -5,6 +5,7 @@ export const ProductsGql = gql`
     products(gender: $gender) {
       id
       images
+      description
       inStock
       price
       slug
@@ -51,6 +52,7 @@ export const SearchProductGql = gql`
     searchProduct(search: $search) {
       id
       images
+      description
       inStock
       price
       slug
