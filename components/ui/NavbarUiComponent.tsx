@@ -9,7 +9,7 @@ import { BackUiComponent } from './BackUiComponent'
 
 export const NavbarUiComponent: FC = () => {
   const dispatch = useDispatch()
-  const { asPath } = useRouter()
+  const { asPath, push } = useRouter()
   const open = useSelector((state: RootState) => state.menu.open)
   const totalCart = useSelector(
     (state: RootState) => state.cart.ordenSummary.numberOfItem
@@ -61,19 +61,19 @@ export const NavbarUiComponent: FC = () => {
         </div>
 
         <div className='w-1/2 lg:w-[7%] flex flex-row gap-3 justify-end lg:justify-center items-center'>
-          <button onClick={() => dispatch(changeMenu(true))}>
+          <div onClick={() => dispatch(changeMenu(true))}>
             <AiOutlineSearch className='text-xl' />
-          </button>
+          </div>
 
           <Link href='/cart' passHref replace shallow={false}>
-            <a className='relative'>
+            <div onClick={() => push('/cart')} className='relative'>
               {totalCart > 0 && (
                 <div className='absolute flex flex-row justify-center items-center text-white text-[10px] h-4 w-4 -top-2 -right-2 rounded-full bg-blue-600'>
                   {totalCart > 9 ? '9+' : totalCart}
                 </div>
               )}
               <AiOutlineShoppingCart className='text-xl' />
-            </a>
+            </div>
           </Link>
           <button
             onClick={() => dispatch(changeMenu(true))}

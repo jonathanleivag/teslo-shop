@@ -1,9 +1,9 @@
-import { GetServerSideProps, GetServerSidePropsResult, NextPage } from 'next'
+import { GetStaticProps, GetStaticPropsResult, NextPage } from 'next'
 import { IHomePageProps } from '..'
 import { ProductListComponent, TitleUiComponent } from '../../components'
 import { ProductsGql } from '../../gql'
 import { ShopLayout } from '../../layouts'
-import { axiosGraphqlUtils, URL_API_GRAPHQL } from '../../utils'
+import { axiosGraphqlUtils, REVALIDATE, URL_API_GRAPHQL } from '../../utils'
 
 const MenPage: NextPage<IHomePageProps> = ({ products }) => {
   return (
@@ -20,8 +20,8 @@ const MenPage: NextPage<IHomePageProps> = ({ products }) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  let resp: GetServerSidePropsResult<IHomePageProps> = {
+export const getStaticProps: GetStaticProps = async ctx => {
+  let resp: GetStaticPropsResult<IHomePageProps> = {
     props: { products: [] }
   }
 
@@ -35,7 +35,8 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
     resp = {
       props: {
         products: data.data.products
-      }
+      },
+      revalidate: REVALIDATE
     }
   }
 

@@ -1,8 +1,8 @@
-import { GetServerSideProps, NextPage, GetServerSidePropsResult } from 'next'
+import { NextPage, GetStaticProps, GetStaticPropsResult } from 'next'
 import { ProductListComponent, TitleUiComponent } from '../components'
 import { ShopLayout } from '../layouts'
 import { IProduct } from '../interfaces'
-import { axiosGraphqlUtils, URL_API_GRAPHQL } from '../utils'
+import { axiosGraphqlUtils, REVALIDATE, URL_API_GRAPHQL } from '../utils'
 import { ProductsGql } from '../gql'
 
 export interface IHomePageProps {
@@ -23,8 +23,8 @@ const HomePage: NextPage<IHomePageProps> = ({ products }) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  let resp: GetServerSidePropsResult<IHomePageProps> = {
+export const getStaticProps: GetStaticProps = async ctx => {
+  let resp: GetStaticPropsResult<IHomePageProps> = {
     props: { products: [] }
   }
 
@@ -38,7 +38,8 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
     resp = {
       props: {
         products: data.data.products
-      }
+      },
+      revalidate: REVALIDATE
     }
   }
 
