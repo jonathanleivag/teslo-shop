@@ -12,6 +12,14 @@ const HeaderMetaComponent: FC<IShopLayoutProps> = ({
       <title> {title} </title>
       <meta name='description' content={pageDescription} />
       <meta property='og:title' content={title} />
+      <meta name='apple-mobile-web-app-capable' content='yes' />
+      <meta name='apple-mobile-web-app-status-bar-style' content='default' />
+      <meta name='apple-mobile-web-app-title' content='Teslo-shop' />
+      <meta name='mobile-web-app-capable' content='yes' />
+      <meta name='msapplication-config' content='/icons/browserconfig.xml' />
+      <meta name='msapplication-TileColor' content='#2B5797' />
+      <meta name='msapplication-tap-highlight' content='no' />
+      <meta name='theme-color' content='#000000' />
       <meta property='og:description' content={pageDescription} />
       {imageFullUrl && <meta property='og:image' content={imageFullUrl} />}
       <meta property='og:type' content='website' />

@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
+const withPWA = require('next-pwa')
+
 const nextConfig = {
   reactStrictMode: true,
+  pwa: {
+    dest: 'public'
+  },
   images: {
     domains: ['localhost', 'res.cloudinary.com', 'teslo-shop.jonathanleivag.cl']
   },
@@ -16,4 +21,4 @@ const nextConfig = {
   }
 }
 
-module.exports = nextConfig
+module.exports = withPWA(nextConfig)
