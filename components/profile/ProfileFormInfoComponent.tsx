@@ -89,7 +89,7 @@ export const ProfileFormInfoComponent: FC<IProfileFormInfoComponent> = ({
           />
           <AdminErrorFormFormComponent error={errors.name} />
         </div>
-        <div className='w-full flex flex-col'>
+        <div className='w-full flex flex-col gap-2'>
           <label htmlFor='name'>rol: </label>
           <input
             type='text'
