@@ -115,10 +115,10 @@ export const ProfileFormInfoComponent: FC<IProfileFormInfoComponent> = ({
         <div className='container_form_product items-center col-span-1 sm:col-span-2'>
           <button
             type='submit'
-            className='w-full sm:w-[40%] h-10 rounded-full my-3 flex flex-row gap-2 justify-center items-center text-white bg-blue-600'
+            className='w-full sm:w-[50%] h-10 rounded-full my-3 flex flex-row gap-2 justify-center items-center text-white bg-blue-600'
           >
             <AiOutlineEdit />
-            <span>Actualizar</span>
+            <span>Actualizar información</span>
           </button>
         </div>
       </form>

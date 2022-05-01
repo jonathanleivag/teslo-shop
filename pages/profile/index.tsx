@@ -1,6 +1,10 @@
 import { GetServerSideProps, GetServerSidePropsResult, NextPage } from 'next'
 import { getSession } from 'next-auth/react'
-import { ProfileFormInfoComponent, TitleUiComponent } from '../../components'
+import {
+  ChangePasswordComponent,
+  ProfileFormInfoComponent,
+  TitleUiComponent
+} from '../../components'
 import { ILogin } from '../../interfaces'
 import { ShopLayout } from '../../layouts'
 import { axiosGraphqlUtils } from '../../utils'
@@ -22,6 +26,7 @@ const ProfilePage: NextPage<IProfilePageProps> = ({ user, type }) => {
         Aquí podras modificar la información personal
       </p>
       <ProfileFormInfoComponent user={user} />
+      {type === 'email' && <ChangePasswordComponent />}
     </ShopLayout>
   )
 }
