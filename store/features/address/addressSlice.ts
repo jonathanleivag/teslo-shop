@@ -118,7 +118,11 @@ export const addAddress = (
       dispatch(messageAction(undefined))
       dispatch(addAddressAction(data.data.addAddress))
       dispatch(selectedAddressAction(data.data.addAddress.address))
-      router.push('/checkout/summary')
+      if (router.pathname.split('/')[1] === 'profile') {
+        router.replace('/profile')
+      } else {
+        router.replace('/checkout/summary')
+      }
     }
   } catch (error) {
     dispatch(isErrorAction(true))
@@ -161,7 +165,11 @@ export const editAddress = (
       dispatch(messageAction(undefined))
       dispatch(addAddressAction(data.data.editAddress))
       dispatch(selectedAddressAction(data.data.editAddress.address))
-      router.push('/checkout/summary')
+      if (router.pathname.split('/')[1] === 'profile') {
+        router.replace('/profile')
+      } else {
+        router.replace('/checkout/summary')
+      }
     }
   } catch (error) {
     dispatch(isErrorAction(true))

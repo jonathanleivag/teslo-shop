@@ -38,6 +38,8 @@ export const FormCheckoutComponent: FC<IAddressPageProps> = ({ countries }) => {
     setValue
   } = useForm<TCheckInputs>({ defaultValues })
 
+  const [buttonText, setButtonText] = useState<string>('Siguiente')
+
   const userId = useSelector((state: RootState) => state.user.user?.id)
 
   const router = useRouter()
@@ -52,6 +54,15 @@ export const FormCheckoutComponent: FC<IAddressPageProps> = ({ countries }) => {
     }
     return () => {}
   }, [router.query])
+
+  useEffect(() => {
+    if (router.pathname.split('/')[1] === 'profile') {
+      setButtonText('Guardar')
+    } else {
+      setButtonText('Siguiente')
+    }
+    return () => {}
+  }, [router.pathname])
 
   const onSubmit = handleSubmit(async input => {
     const { address, address0, postalCode, city, phono, country } = input
@@ -208,7 +219,7 @@ export const FormCheckoutComponent: FC<IAddressPageProps> = ({ countries }) => {
           type='submit'
           className='md:w-[30%] w-full p-1 rounded-full bg-blue-600 text-white'
         >
-          {editSelected === 'addressEdit' ? 'Editar dirección' : ' Siguiente'}
+          {editSelected === 'addressEdit' ? 'Editar dirección' : buttonText}
         </button>
       </div>
     </form>
