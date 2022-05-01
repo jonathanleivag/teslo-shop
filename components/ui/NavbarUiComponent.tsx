@@ -60,21 +60,22 @@ export const NavbarUiComponent: FC = () => {
           </ul>
         </div>
 
-        <div className='w-1/2 lg:w-[7%] flex flex-row gap-3 justify-end lg:justify-center items-center'>
+        <div className='w-1/2 lg:w-[7%] flex flex-row gap-3 justify-end lg:justify-center items-center cursor-pointer'>
           <div onClick={() => dispatch(changeMenu(true))}>
             <AiOutlineSearch className='text-xl' />
           </div>
 
-          <Link href='/cart' passHref replace shallow={false}>
-            <div onClick={() => push('/cart')} className='relative'>
-              {totalCart > 0 && (
-                <div className='absolute flex flex-row justify-center items-center text-white text-[10px] h-4 w-4 -top-2 -right-2 rounded-full bg-blue-600'>
-                  {totalCart > 9 ? '9+' : totalCart}
-                </div>
-              )}
-              <AiOutlineShoppingCart className='text-xl' />
-            </div>
-          </Link>
+          <div
+            onClick={() => push('/cart')}
+            className='relative cursor-pointer'
+          >
+            {totalCart > 0 && (
+              <div className='absolute flex flex-row justify-center items-center text-white text-[10px] h-4 w-4 -top-2 -right-2 rounded-full bg-blue-600'>
+                {totalCart > 9 ? '9+' : totalCart}
+              </div>
+            )}
+            <AiOutlineShoppingCart className='text-xl' />
+          </div>
           <button
             onClick={() => dispatch(changeMenu(true))}
             className='menu-a font-medium'

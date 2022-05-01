@@ -18,7 +18,7 @@ export const SearchUiComponent: FC = () => {
   return (
     <div className='li_sidebar border-b mb-5'>
       <input
-        autoFocus
+        autoFocus={false}
         value={searchTerm}
         onChange={e => setSearchTerm(e.target.value)}
         type='text'
@@ -26,7 +26,7 @@ export const SearchUiComponent: FC = () => {
         className='w-full focus:outline-none font-light'
         placeholder='Buscar...'
       />
-      <div onClick={onClick}>
+      <div className='cursor-pointer' onClick={onClick}>
         <BiSearchAlt2 className='text-2xl pointer-events-none' />
       </div>
     </div>
