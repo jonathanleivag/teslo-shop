@@ -31,6 +31,7 @@ export const AdminButtonDeleteComponent: FC<IAdminButtonDeleteComponent> = ({
       if (!data.errors) {
         Toast.fire({
           icon: 'success',
+          iconColor: '#2563EB',
           title: data.data.deleteProduct
         })
         router.replace('/admin/products')

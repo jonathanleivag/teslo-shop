@@ -19,3 +19,14 @@ export const registerValidation: yup.SchemaOf<TRegisterInputs> = yup
       .required('La contraseña es requerida')
   })
   .required()
+
+export const updateUserValidation: yup.SchemaOf<{
+  name: string
+  email: string
+}> = yup.object().shape({
+  name: yup.string().required('El nombre es requerido'),
+  email: yup
+    .string()
+    .email('El email no es válido')
+    .required('El email es requerido')
+})

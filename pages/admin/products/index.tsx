@@ -38,6 +38,7 @@ const ProductsAdminPage: NextPage<IProductsPageProps> = ({ products }) => {
       if (!data.errors) {
         Toast.fire({
           icon: 'success',
+          iconColor: '#2563EB',
           title: data.data.deleteProduct
         })
         setProducts0(items => items.filter(product => product.id !== id))

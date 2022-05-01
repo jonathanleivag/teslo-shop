@@ -12,7 +12,7 @@ export interface IHomePageProps {
 const HomePage: NextPage<IHomePageProps> = ({ products }) => {
   return (
     <ShopLayout
-      title={'Teslo-Shop - Home'}
+      title={'Home'}
       pageDescription={'Encuentra los mejores producto de teslo shop aquí'}
       imageFullUrl={products[0].images[0]}
     >

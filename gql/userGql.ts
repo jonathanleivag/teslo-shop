@@ -59,3 +59,23 @@ export const loginWithOauthGql = gql`
     }
   }
 `
+
+export const getOneUserGql = gql`
+  query GetOneUser($idUser: ID!) {
+    getOneUser(idUser: $idUser) {
+      user {
+        id
+        name
+        email
+        role
+      }
+      type
+    }
+  }
+`
+
+export const updateUserGql = gql`
+  mutation UpdateUser($input: UserUpdateInput) {
+    updateUser(input: $input)
+  }
+`

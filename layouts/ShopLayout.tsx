@@ -20,7 +20,7 @@ export const ShopLayout: FC<IShopLayoutProps> = ({
   return (
     <>
       <HeaderMetaComponent
-        title={title}
+        title={`Teslo-Shop - ${title}`}
         pageDescription={pageDescription}
         imageFullUrl={imageFullUrl}
       />

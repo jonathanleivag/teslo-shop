@@ -50,9 +50,14 @@ export const MenuUiComponent: FC = () => {
         {/* menu profile */}
         {user.token && user.user && (
           <>
-            <li className='li_sidebar'>
-              <HiOutlineUserCircle className='text-2xl' />
-              <p className='prose-lg'>Perfil</p>
+            <li>
+              <button
+                onClick={() => navigateTo(router, dispatch, '/profile')}
+                className='li_sidebar'
+              >
+                <HiOutlineUserCircle className='text-2xl' />
+                <p className='prose-lg'>Perfil</p>
+              </button>
             </li>
             <li>
               <button
