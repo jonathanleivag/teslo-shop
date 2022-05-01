@@ -4,6 +4,10 @@ export default function Document () {
   return (
     <Html lang='es'>
       <Head>
+        <meta
+          name='viewport'
+          content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover'
+        />
         <link
           rel='apple-touch-icon'
           sizes='57x57'
@@ -73,7 +77,7 @@ export default function Document () {
           sizes='16x16'
           href='/icons/favicon-16x16.png'
         />
-        <link rel='manifest' href='/icons/manifest.json' />
+        <link rel='manifest' href='/manifest.json' />
         <meta name='msapplication-TileColor' content='#ffffff' />
         <meta
           name='msapplication-TileImage'
