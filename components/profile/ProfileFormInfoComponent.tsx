@@ -59,7 +59,7 @@ export const ProfileFormInfoComponent: FC<IProfileFormInfoComponent> = ({
     }
   }
 
-  const onSubmit = handleSubmit(async (data: IUser) => {
+  const onSubmit = handleSubmit<IUser>(data => {
     Swal.fire({
       title: '¿Quieres actualizar los datos?',
       confirmButtonColor: '#2563EB',

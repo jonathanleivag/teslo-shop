@@ -79,3 +79,9 @@ export const updateUserGql = gql`
     updateUser(input: $input)
   }
 `
+
+export const updatePasswordGql = gql`
+  mutation UpdatePassword($input: UpdatePasswordInput) {
+    updatePassword(input: $input)
+  }
+`

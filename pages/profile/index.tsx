@@ -26,7 +26,7 @@ const ProfilePage: NextPage<IProfilePageProps> = ({ user, type }) => {
         Aquí podras modificar la información personal
       </p>
       <ProfileFormInfoComponent user={user} />
-      {type === 'email' && <ChangePasswordComponent />}
+      {type === 'email' && <ChangePasswordComponent id={user.id} />}
     </ShopLayout>
   )
 }

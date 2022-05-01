@@ -89,6 +89,7 @@ const RegisterPage: NextPage = () => {
                 <input
                   type='email'
                   id='email'
+                  autoComplete='username'
                   placeholder='email@email.cl'
                   className='w-full border-2 border-gray-400 rounded-lg py-2 px-4'
                   {...register('email')}
@@ -106,6 +107,7 @@ const RegisterPage: NextPage = () => {
                   type='password'
                   id='password'
                   placeholder='********'
+                  autoComplete='new-password'
                   className='w-full border-2 border-gray-400 rounded-lg py-2 px-4'
                   {...register('password')}
                 />
@@ -122,6 +124,7 @@ const RegisterPage: NextPage = () => {
                   type='password'
                   id='password0'
                   placeholder='********'
+                  autoComplete='new-password'
                   className='w-full border-2 border-gray-400 rounded-lg py-2 px-4'
                   {...register('password0')}
                 />

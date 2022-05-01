@@ -77,6 +77,7 @@ const LoginPage: NextPage = () => {
                 <input
                   type='email'
                   id='email'
+                  autoComplete='username'
                   placeholder='email@email.cl'
                   className='w-full border-2 border-gray-400 rounded-lg py-2 px-4'
                   {...register('email', {
@@ -96,6 +97,7 @@ const LoginPage: NextPage = () => {
                   type='password'
                   id='password'
                   placeholder='********'
+                  autoComplete='current-password'
                   className='w-full border-2 border-gray-400 rounded-lg py-2 px-4'
                   {...register('password', {
                     required: 'La contraseña es obligatoria'
