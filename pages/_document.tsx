@@ -10,6 +10,11 @@ export default function Document () {
         />
         <link
           rel='apple-touch-icon'
+          sizes='152x152'
+          href='/icons/teslo-512x512.png'
+        />
+        <link
+          rel='apple-touch-icon'
           sizes='57x57'
           href='/icons/apple-icon-57x57.png'
         />
