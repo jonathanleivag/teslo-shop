@@ -41,7 +41,7 @@ const HistoryPage: NextPage<IHistoryPageProps> = ({ address }) => {
       title={titleAndDescription}
       pageDescription={titleAndDescription}
     >
-      <TitleUiComponent>Historial de Direcciónes</TitleUiComponent>
+      <TitleUiComponent>Historial de Direcciones</TitleUiComponent>
       <p className='mb-5 -mt-10 prose-xl'>Usar una dirección para envio</p>
       <HistoryCheckoutComponent address={address} />
       <div className='w-full flex flex-row justify-center my-3'>
